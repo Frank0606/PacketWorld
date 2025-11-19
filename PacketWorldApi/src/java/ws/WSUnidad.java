@@ -47,9 +47,9 @@ public class WSUnidad {
     public Mensaje agregarUnidad(String jsonColaborador) {
         try {
             Gson gson = new Gson();
-            Unidad unidades = gson.fromJson(jsonColaborador, Unidad.class);
+            Unidad unidad = gson.fromJson(jsonColaborador, Unidad.class);
 
-            return ImpUnidad.agregarUnidad(unidades);
+            return ImpUnidad.agregarUnidad(unidad);
         } catch (Exception e) {
             throw new BadRequestException();
         }
