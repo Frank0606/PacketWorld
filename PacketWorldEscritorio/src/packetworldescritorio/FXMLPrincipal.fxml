@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="packetworldescritorio.FXMLPrincipalController">
+   <children>
+      <HBox prefHeight="120.0" prefWidth="1200.0" style="-fx-background-color: #850303;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="120.0" prefWidth="491.0" style="-fx-background-color: #BC9E82;" text="PacketWorld" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Candara" size="64.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" prefHeight="120.0" prefWidth="750.0" style="-fx-background-color: BC9E82;" text="Sistema de Gestión" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnCerrarSesion" mnemonicParsing="false" prefHeight="120.0" prefWidth="244.0" style="-fx-background-color: #BC9E82; -fx-border-width: 0;" text="Cerrar sesión" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <VBox layoutY="120.0" prefHeight="680.0" prefWidth="300.0" style="-fx-background-color: #838383;">
+         <children>
+            <Button fx:id="btnColaboradores" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #FFC300; -fx-border-color: #838383, #838383, white, #838383; -fx-border-width: 0, 0, 2, 0;" text="Colaboradores" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnClientes" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #FFC300; -fx-border-color: #838383, #838383, white, #838383; -fx-border-width: 0, 0, 2, 0;" text="Clientes" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnUnidades" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #FFC300; -fx-border-color: #838383, #838383, white, #838383; -fx-border-width: 0, 0, 2, 0;" text="Unidades" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnEnvios" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #FFC300; -fx-border-color: #838383, #838383, white, #838383; -fx-border-width: 0, 0, 2, 0;" text="Envios" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnPaquetes" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #FFC300; -fx-border-color: #838383, #838383, white, #838383; -fx-border-width: 0, 0, 2, 0;" text="Paquetes" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <AnchorPane fx:id="contenedorPrincipal" layoutX="300.0" layoutY="120.0" prefHeight="680.0" prefWidth="900.0">
+         <children>
+            <ImageView fitHeight="680.0" fitWidth="900.0" nodeOrientation="INHERIT" opacity="0.05" pickOnBounds="true" smooth="false">
+               <image>
+                  <Image url="@recursos/fondo_paquetes.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="contenedorPrincipal">
+        <div id="contenedorTitulo">
+            <h1>Packet<h1 id="tituloGris">World</h1>
+            </h1>
+        </div>
+        <div id="contenedorBusqueda">
+            <label><strong>Consulta el estado de tu envio</strong></label>
+            <div id="contenedorBusqueda2">
+                <p>Número de guia:</p>
+                <input type="text" id="barraBusqueda" placeholder="Ej: GXXXXXXXXX">
+                <p id="pError"></p>
+                <button type="button" id="btnBuscar">Buscar</button>
+            </div>
+        </div>
+    </div>
+    <div class="contenedorCargando">
+        <div class="ruedaCargando"></div>
+        <p>Buscando...</p>
+    </div>
+    <script type="module" src="index.js"></script>
+</body>
+
+</html>

@@ -1,41 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="unidad">
-    <select id = "unidades" resultType="pojo.Unidad">
-        Select u.idUnidad, u.marca, u.modelo,u.anio,u.vin,
-        u.noIdentificacion, tu.tipoUnidad, c.noPersonal,
-        tu.idTipoUnidad
-        from Unidad u
-        LEFT JOIN colaborador c ON c.idUnidad = u.idUnidad
-        INNER JOIN TipoUnidad tu on tu.idTipoUnidad = u.idTipoUnidad;
+<mapper namespace="UnidadMapper">
+
+    <!-- Obtener todas las unidades -->
+    <select id="obtenerTodos" resultType="pojo.Unidad">
+        SELECT u.idUnidad,
+               u.anio,
+               u.vin,
+               u.noIdentificacion,
+               u.numeroPersonal,
+               u.idTipoUnidad,
+               t.nombre AS tipoUnidad,
+               u.numeroInterno,
+               u.marca,
+               u.modelo,
+               u.estatus
+        FROM Unidad u
+        INNER JOIN TipoUnidad t ON t.idTipoUnidad = u.idTipoUnidad;
     </select>
-    <select id = "unidadVin" resultType="pojo.Unidad">
-        Select u.idUnidad, u.marca, u.modelo, u.anio, u.vin, u.noIdentificacion, 
-        tu.tipoUnidad
-        from Unidad u
-        INNER JOIN TipoUnidad tu ON tu.idTipoUnidad = u.TipoUnidad
-        WHERE u.vin = #{vin};
+
+    <!-- Obtener unidad por ID -->
+    <select id="obtenerPorId" parameterType="int" resultType="pojo.Unidad">
+        SELECT u.idUnidad,
+               u.anio,
+               u.vin,
+               u.noIdentificacion,
+               u.numeroPersonal,
+               u.idTipoUnidad,
+               t.nombre AS tipoUnidad,
+               u.numeroInterno,
+               u.marca,
+               u.modelo,
+               u.estatus
+        FROM Unidad u
+        INNER JOIN TipoUnidad t ON t.idTipoUnidad = u.idTipoUnidad
+        WHERE u.idUnidad = #{idUnidad};
     </select>
-    <insert id ="registrarUnidad" parameterType="pojo.Unidad">
-        insert into Unidad (marca, modelo,anio,vin,noIdentificacion, idTipoUnidad)
-        values(#{marca}, #{modelo},#{anio},#{vin},#{noIdentificacion}, #{idTipoUnidad})
+
+    <!-- Registrar unidad -->
+    <insert id="registrar" parameterType="pojo.Unidad">
+        INSERT INTO Unidad (
+            anio, vin, noIdentificacion, numeroPersonal,
+            idTipoUnidad, numeroInterno, marca, modelo, estatus
+        )
+        VALUES (
+            #{anio}, #{vin}, #{noIdentificacion}, #{numeroPersonal},
+            #{idTipoUnidad}, #{numeroInterno}, #{marca}, #{modelo}, #{estatus}
+        );
     </insert>
-    <update id ="actualizarUnidad" parameterType="pojo.Unidad">
-        update Unidad 
-        set 
-        marca = #{marca}, 
-        modelo = #{modelo},
-        anio = #{anio},  
-        noIdentificacion = #{noIdentificacion},  
-        idTipoUnidad = #{idTipoUnidad}
-        WHERE vin = #{vin};
+
+    <!-- Editar unidad -->
+    <update id="editar" parameterType="pojo.Unidad">
+        UPDATE Unidad SET
+            anio = #{anio},
+            vin = #{vin},
+            noIdentificacion = #{noIdentificacion},
+            numeroPersonal = #{numeroPersonal},
+            idTipoUnidad = #{idTipoUnidad},
+            numeroInterno = #{numeroInterno},
+            marca = #{marca},
+            modelo = #{modelo},
+            estatus = #{estatus}
+        WHERE idUnidad = #{idUnidad};
     </update>
-    <delete id ="eliminarUnidad" parameterType="pojo.Colaborador">
+
+    <!-- Eliminar unidad -->
+    <delete id="eliminar" parameterType="String">
         DELETE FROM Unidad
         WHERE vin = #{vin};
     </delete>
+
 </mapper>

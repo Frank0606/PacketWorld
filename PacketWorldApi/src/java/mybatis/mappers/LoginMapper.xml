@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IniciarSesionMapper">
+
+  <select id="loginColaborador" resultType="pojo.Colaborador" parameterType="map">
+    SELECT
+      c.idColaborador,
+      c.nombre,
+      c.apellidoPaterno,
+      c.apellidoMaterno,
+      c.curp,
+      c.correo,
+      c.numeroPersonal,
+      c.contrasena,
+      c.idRol,
+      r.nombre AS nombreRol,
+      c.idSucursal,
+      s.nombreCorto AS nombreSucursal,
+      c.fotografia,
+      c.numeroLicencia,
+      c.fechaAlta
+    FROM Colaborador c
+    JOIN Rol r ON r.idRol = c.idRol
+    JOIN Sucursal s ON s.idSucursal = c.idSucursal
+    WHERE c.numeroPersonal = #{numeroPersonal}
+      AND c.contrasena = #{contrasena}
+  </select>
+
+</mapper>
+

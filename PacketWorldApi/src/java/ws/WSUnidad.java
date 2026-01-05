@@ -1,17 +1,9 @@
 package ws;
 
-import com.google.gson.Gson;
 import dominio.ImpUnidad;
+import com.google.gson.Gson;
 import java.util.List;
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import pojo.Mensaje;
 import pojo.Unidad;
@@ -19,64 +11,42 @@ import pojo.Unidad;
 @Path("unidad")
 public class WSUnidad {
 
-    @Path("todos")
     @GET
+    @Path("obtener-todos")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Unidad> obtenerUnidades() {
-        return ImpUnidad.obtenerUnidades();
+    public List<Unidad> obtenerTodos() {
+        return ImpUnidad.obtenerTodos();
     }
 
-    @Path("obtenerUnidadVin/{vin}")
     @GET
+    @Path("obtener/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Unidad obtenerUnidadVin(@PathParam("vin") String vin) {
-        if (vin != null && !vin.isEmpty()) {
-            Unidad unidades = ImpUnidad.obtenerUnidadVin(vin);
-            if (unidades != null) {
-                return unidades;
-            }
-            throw new BadRequestException("No se encontro el colaborador:");
-        }
-        throw new BadRequestException("Se encontro el colaborador seleccionado:");
+    public Unidad obtener(@PathParam("id") int id) {
+        return ImpUnidad.obtenerPorId(id);
     }
 
-    @Path("agregar")
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Path("registrar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Mensaje agregarUnidad(String jsonColaborador) {
-        try {
-            Gson gson = new Gson();
-            Unidad unidad = gson.fromJson(jsonColaborador, Unidad.class);
-
-            return ImpUnidad.agregarUnidad(unidad);
-        } catch (Exception e) {
-            throw new BadRequestException();
-        }
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje registrar(String json) {
+        Unidad unidad = new Gson().fromJson(json, Unidad.class);
+        return ImpUnidad.registrar(unidad);
     }
 
-    @Path("actualizar")
     @PUT
-    @Produces(MediaType.APPLICATION_JSON)
+    @Path("editar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Mensaje actualizarColaborador(String jsonColaborador) {
-        try {
-            Gson gson = new Gson();
-            Unidad unidades = gson.fromJson(jsonColaborador, Unidad.class);
-            return ImpUnidad.actualizarUnidad(unidades);
-        } catch (Exception e) {
-            throw new BadRequestException();
-        }
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje editar(String json) {
+        Unidad unidad = new Gson().fromJson(json, Unidad.class);
+        return ImpUnidad.editar(unidad);
     }
 
-    @Path("eliminar/{vin}")
     @DELETE
+    @Path("eliminar/{vin}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Mensaje eliminarColaborador(@PathParam("vin") String vin) {
-        if (!vin.isEmpty()) {
-            return ImpUnidad.eliminarUnidad(vin);
-        } else {
-            throw new BadRequestException("ID Inválido.");
-        }
+    public Mensaje eliminar(@PathParam("vin") String vin) {
+        return ImpUnidad.eliminar(vin);
     }
 }

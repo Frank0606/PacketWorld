@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="packetworldescritorio.FXMLInicioSesionController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="600.0" layoutX="600.0" layoutY="0.0" opacity="0.05" pickOnBounds="true">
+         <image>
+            <Image url="@recursos/fondo_paquetes.png" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="600.0" prefHeight="800.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="109.0" layoutY="190.0" text="¡Bienvenido al sistema de paqueteria!">
+               <font>
+                  <Font name="Candara Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="169.0" layoutY="130.0" text="Packet" textFill="#ffc300">
+               <font>
+                  <Font name="Candara Bold" size="48.0" />
+               </font>
+            </Label>
+            <Label layoutX="311.0" layoutY="130.0" text="World" textFill="#bc9e82">
+               <font>
+                  <Font name="Candara Bold" size="48.0" />
+               </font>
+            </Label>
+            <Label layoutX="215.0" layoutY="300.0" text="Número de personal:">
+               <font>
+                  <Font name="Candara" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="249.0" layoutY="400.0" text="Contraseña:">
+               <font>
+                  <Font name="Candara" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfNoPersonal" layoutX="188.0" layoutY="330.0" promptText="Ej: EMPXXX">
+               <font>
+                  <Font name="Candara" size="18.0" />
+               </font>
+            </TextField>
+            <PasswordField fx:id="tfContrasena" layoutX="188.0" layoutY="430.0">
+               <font>
+                  <Font name="Candara" size="18.0" />
+               </font>
+            </PasswordField>
+            <Button fx:id="btnIngresar" layoutX="258.0" layoutY="500.0" mnemonicParsing="false" onAction="#clickIniciarSesion" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Ingresar" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="18.0" />
+               </font>
+            </Button>
+            <Label fx:id="labelErrorNoPersonal" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="188.0" layoutY="364.0" prefHeight="21.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#850303" underline="true">
+               <font>
+                  <Font name="Candara" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelErrorContrasena" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="188.0" layoutY="464.0" prefHeight="21.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#850303" underline="true">
+               <font>
+                  <Font name="Candara" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="800.0" fitWidth="600.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@recursos/fondo_inicioSesion.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EnvioMapper">
+
+    <!-- Obtener por número guía -->
+    <select id="obtenerPorGuia" parameterType="string" resultType="pojo.Envio">
+        SELECT * 
+        FROM Envio 
+        WHERE numeroGuia = #{numeroGuia};
+    </select>
+
+    <!-- Obtener por ID -->
+    <select id="obtenerPorId" parameterType="int" resultType="pojo.Envio">
+        SELECT * 
+        FROM Envio 
+        WHERE idEnvio = #{idEnvio};
+    </select>
+
+    <!-- Obtener envíos por cliente -->
+    <select id="obtenerPorCliente" parameterType="int" resultType="pojo.Envio">
+        SELECT * 
+        FROM Envio 
+        WHERE idCliente = #{idCliente};
+    </select>
+
+    <!-- Registrar -->
+    <insert id="registrar" parameterType="pojo.Envio">
+        INSERT INTO Envio (
+            idCliente, idColaborador, nombreDestinatario, apellidoPaternoDest, apellidoMaternoDest,
+            idSucursalOrigen, calleDestino, numeroDestino, coloniaDestino, cpDestino,
+            ciudadDestino, estadoDestino, numeroGuia,
+            distanciaKm, costoKm, costoPaquetes, costoTotal, estatus
+        )
+        VALUES (
+            #{idCliente}, #{idColaborador}, #{nombreDestinatario}, #{apellidoPaternoDest}, #{apellidoMaternoDest},
+            #{idSucursalOrigen}, #{calleDestino}, #{numeroDestino}, #{coloniaDestino}, #{cpDestino},
+            #{ciudadDestino}, #{estadoDestino}, #{numeroGuia},
+            #{distanciaKm}, #{costoKm}, #{costoPaquetes}, #{costoTotal}, #{estatus}
+        );
+    </insert>
+
+    <!-- Actualizar envío (NO número guía) -->
+    <update id="editar" parameterType="pojo.Envio">
+        UPDATE Envio
+        SET nombreDestinatario = #{nombreDestinatario},
+            apellidoPaternoDest = #{apellidoPaternoDest},
+            apellidoMaternoDest = #{apellidoMaternoDest},
+            calleDestino = #{calleDestino},
+            numeroDestino = #{numeroDestino},
+            coloniaDestino = #{coloniaDestino},
+            cpDestino = #{cpDestino},
+            ciudadDestino = #{ciudadDestino},
+            estadoDestino = #{estadoDestino},
+            distanciaKm = #{distanciaKm},
+            costoKm = #{costoKm},
+            costoPaquetes = #{costoPaquetes},
+            costoTotal = #{costoTotal},
+            idColaborador = #{idColaborador}
+        WHERE idEnvio = #{idEnvio};
+    </update>
+
+</mapper>

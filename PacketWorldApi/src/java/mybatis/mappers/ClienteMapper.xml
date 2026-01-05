@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ClienteMapper">
+
+    <!-- =======================================================
+         RESULT MAP
+    ======================================================== -->
+    <resultMap id="ClienteMap" type="pojo.Cliente">
+        <id property="idCliente" column="idCliente"/>
+        <result property="nombre" column="nombre"/>
+        <result property="apellidoPaterno" column="apellidoPaterno"/>
+        <result property="apellidoMaterno" column="apellidoMaterno"/>
+        <result property="calle" column="calle"/>
+        <result property="numero" column="numero"/>
+        <result property="colonia" column="colonia"/>
+        <result property="codigoPostal" column="codigoPostal"/>
+        <result property="telefono" column="telefono"/>
+        <result property="correo" column="correo"/>
+        <result property="contrasena" column="contrasena"/>
+    </resultMap>
+
+    <!-- =======================================================
+         LISTAR TODOS
+    ======================================================== -->
+    <select id="obtenerTodos" resultMap="ClienteMap">
+        SELECT
+            idCliente,
+            nombre,
+            apellidoPaterno,
+            apellidoMaterno,
+            calle,
+            numero,
+            colonia,
+            codigoPostal,
+            telefono,
+            correo,
+            contrasena
+        FROM Cliente;
+    </select>
+
+    <!-- =======================================================
+         OBTENER POR ID
+    ======================================================== -->
+    <select id="obtenerPorId" parameterType="int" resultMap="ClienteMap">
+        SELECT
+            idCliente,
+            nombre,
+            apellidoPaterno,
+            apellidoMaterno,
+            calle,
+            numero,
+            colonia,
+            codigoPostal,
+            telefono,
+            correo,
+            contrasena
+        FROM Cliente
+        WHERE idCliente = #{idCliente};
+    </select>
+
+    <!-- =======================================================
+         BUSCAR POR NOMBRE
+    ======================================================== -->
+    <select id="buscarPorNombre" parameterType="string" resultMap="ClienteMap">
+        SELECT
+            *
+        FROM Cliente
+        WHERE nombre LIKE CONCAT('%', #{nombre}, '%');
+    </select>
+
+    <!-- =======================================================
+         BUSCAR POR TELÉFONO
+    ======================================================== -->
+    <select id="buscarPorTelefono" parameterType="string" resultMap="ClienteMap">
+        SELECT
+            *
+        FROM Cliente
+        WHERE telefono = #{telefono};
+    </select>
+
+    <!-- =======================================================
+         BUSCAR POR CORREO
+    ======================================================== -->
+    <select id="buscarPorCorreo" parameterType="string" resultMap="ClienteMap">
+        SELECT
+            *
+        FROM Cliente
+        WHERE correo = #{correo};
+    </select>
+
+    <!-- =======================================================
+         REGISTRAR
+    ======================================================== -->
+    <insert id="registrar" parameterType="pojo.Cliente">
+        INSERT INTO Cliente (
+            nombre,
+            apellidoPaterno,
+            apellidoMaterno,
+            calle,
+            numero,
+            colonia,
+            codigoPostal,
+            telefono,
+            correo,
+            contrasena
+        )
+        VALUES (
+            #{nombre},
+            #{apellidoPaterno},
+            #{apellidoMaterno},
+            #{calle},
+            #{numero},
+            #{colonia},
+            #{codigoPostal},
+            #{telefono},
+            #{correo},
+            #{contrasena}
+        );
+    </insert>
+
+    <!-- =======================================================
+         EDITAR
+    ======================================================== -->
+    <update id="editar" parameterType="pojo.Cliente">
+        UPDATE Cliente SET
+            nombre = #{nombre},
+            apellidoPaterno = #{apellidoPaterno},
+            apellidoMaterno = #{apellidoMaterno},
+            calle = #{calle},
+            numero = #{numero},
+            colonia = #{colonia},
+            codigoPostal = #{codigoPostal},
+            telefono = #{telefono},
+            correo = #{correo},
+            contrasena = #{contrasena}
+        WHERE idCliente = #{idCliente};
+    </update>
+
+    <!-- =======================================================
+         ELIMINAR
+    ======================================================== -->
+    <delete id="eliminar" parameterType="String">
+        DELETE FROM Cliente
+        WHERE correo = #{correo};
+    </delete>
+
+</mapper>

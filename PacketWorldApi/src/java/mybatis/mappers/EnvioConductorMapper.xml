@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EnvioConductorMapper">
+
+    <!-- Obtener asignación de un envío -->
+    <select id="obtenerAsignacionPorEnvio" parameterType="int" resultType="pojo.EnvioConductor">
+        SELECT * FROM EnvioConductor WHERE idEnvio = #{idEnvio};
+    </select>
+
+    <!-- Obtener asignaciones por conductor -->
+    <select id="obtenerEnviosPorConductor" parameterType="int" resultType="pojo.EnvioConductor">
+        SELECT * FROM EnvioConductor WHERE idConductor = #{idConductor};
+    </select>
+
+    <!-- Registrar asignación -->
+    <insert id="registrarAsignacion" parameterType="pojo.EnvioConductor">
+        INSERT INTO EnvioConductor(idEnvio, idConductor)
+        VALUES(#{idEnvio}, #{idConductor});
+    </insert>
+
+    <!-- Eliminar asignación -->
+    <delete id="eliminarAsignacion" parameterType="int">
+        DELETE FROM EnvioConductor WHERE idEnvio = #{idEnvio};
+    </delete>
+    
+    <!-- Obtener conductor asignado a un envío -->
+    <select id="obtenerConductorDeEnvio" parameterType="int" resultType="pojo.EnvioConductor">
+        SELECT ec.idEnvio, ec.idConductor, c.nombre, c.apellidoPaterno, c.apellidoMaterno
+        FROM EnvioConductor ec
+        INNER JOIN Colaborador c ON c.idColaborador = ec.idConductor
+        WHERE ec.idEnvio = #{idEnvio};
+    </select>
+
+</mapper>

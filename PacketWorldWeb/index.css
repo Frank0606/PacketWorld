@@ -1,0 +1,184 @@
+* {
+    font-family: 'Candara', sans-serif;
+}
+
+body {
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+}
+
+#contenedorPrincipal {
+    background-image: url("fondo_paquetes.png");
+    background-size: contain;
+    background-color: rgba(255, 255, 255, 0.95);
+    background-blend-mode: overlay;
+    margin: 0 auto;
+    height: 100vh;
+    padding: 2rem;
+    justify-items: center;
+    animation: slideIn 1s ease-out;
+}
+
+/* Animación inicial */
+@keyframes slideIn {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#contenedorTitulo {
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+}
+
+h1 {
+    font-size: 5rem;
+    display: inline;
+    color: #850303;
+    border: none;
+}
+
+#tituloGris {
+    color: #636363;
+}
+
+#contenedorBusqueda {
+    width: 100%;
+    text-align: center;
+    margin-top: 5rem;
+    animation: fadeIn 1s ease-out 0.5s;
+}
+
+label {
+    font-size: 1.2rem;
+}
+
+#contenedorBusqueda2 {
+    width: 30%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#contenedorBusqueda2 p {
+    width: 80%;
+    text-align: left !important;
+}
+
+#contenedorBusqueda2 input {
+    width: 90%;
+    height: 2rem;
+    border: 0.125rem solid #850303;
+    border-radius: 3rem;
+    background-color: #E6E0E9;
+    font-weight: bold;
+    padding-left: 1rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+}
+
+#contenedorBusqueda2 input::placeholder {
+    margin-left: 1rem;
+    color: #888;
+}
+
+/* Efecto del input al hacer clic */
+#contenedorBusqueda2 input:focus {
+    outline: none;
+    border-color: #ce0505;
+    box-shadow: 0rem 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
+    transform: translateY(-0.3rem);
+}
+
+#contenedorBusqueda2 button {
+    width: 20%;
+    margin-top: 1rem;
+    color: #FFFFFF;
+    background-color: #850303;
+    border: none;
+    border-radius: 3rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Efecto del botón al pasar el ratón */
+#contenedorBusqueda2 button:hover {
+    background-color: #636363;
+}
+
+/* Animación de fade-in */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Desvanecimiento de todos los elementos al hacer clic en el botón */
+#contenedorBusqueda2 button:active~* {
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+.ruedaCargando {
+    border: 1rem solid #a3a3a3;
+    border-top: 1rem solid #850303;
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.contenedorCargando {
+    display: none;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    flex-direction: column;
+}
+
+#pError {
+    display: none;
+    font-size: 1.1rem;
+    color: #850303;
+    text-align: left;
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+}

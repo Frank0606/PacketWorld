@@ -2,35 +2,34 @@ package pojo;
 
 public class TipoUnidad {
 
-    private Integer idTipoUnidad;
-    private String tipoUnidad;
+    private int idTipoUnidad;
+    private String nombre;
+    private String descripcion;
 
-    TipoUnidad() {
+    public TipoUnidad() {
     }
 
-    public TipoUnidad(Integer idTipoUnidad, String tipoUnidad) {
-        this.idTipoUnidad = idTipoUnidad;
-        this.tipoUnidad = tipoUnidad;
-    }
-
-    public Integer getIdTipoUnidad() {
+    public int getIdTipoUnidad() {
         return idTipoUnidad;
     }
 
-    public void setIdTipoUnidad(Integer idTipoUnidad) {
+    public void setIdTipoUnidad(int idTipoUnidad) {
         this.idTipoUnidad = idTipoUnidad;
     }
 
-    public String getTipoUnidad() {
-        return tipoUnidad;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setTipoUnidad(String tipoUnidad) {
-        this.tipoUnidad = tipoUnidad;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    @Override
-    public String toString() {
-        return "TipoUnidad{" + "idTipoUnidad=" + idTipoUnidad + ", tipoUnidad=" + tipoUnidad + '}';
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

@@ -14,8 +14,19 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ws.WSCliente.class);
+        resources.add(ws.WSColaborador.class);
+        resources.add(ws.WSConductorUnidad.class);
+        resources.add(ws.WSConsultaEnvio.class);
+        resources.add(ws.WSEnvio.class);
+        resources.add(ws.WSEnvioConductor.class);
+        resources.add(ws.WSEnvioHistorial.class);
+        resources.add(ws.WSLogin.class);
+        resources.add(ws.WSPaquete.class);
+        resources.add(ws.WSRol.class);
+        resources.add(ws.WSSucursal.class);
         resources.add(ws.WSTipoUnidad.class);
         resources.add(ws.WSUnidad.class);
     }
-
+    
 }

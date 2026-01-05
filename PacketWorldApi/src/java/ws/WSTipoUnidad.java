@@ -1,20 +1,52 @@
 package ws;
 
 import dominio.ImpTipoUnidad;
+import com.google.gson.Gson;
 import java.util.List;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import pojo.Mensaje;
 import pojo.TipoUnidad;
 
-@Path("tipoUnidad")
+@Path("tipounidad")
 public class WSTipoUnidad {
 
-    @Path("todos")
     @GET
+    @Path("obtener-Todos")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TipoUnidad> obtencionRol() {
-        return ImpTipoUnidad.obtenerUnidad();
+    public List<TipoUnidad> obtenerTodos() {
+        return ImpTipoUnidad.obtenerTodos();
+    }
+
+    @GET
+    @Path("obtener/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public TipoUnidad obtener(@PathParam("id") int id) {
+        return ImpTipoUnidad.obtenerPorId(id);
+    }
+
+    @POST
+    @Path("registrar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje registrar(String json) {
+        TipoUnidad tipo = new Gson().fromJson(json, TipoUnidad.class);
+        return ImpTipoUnidad.registrar(tipo);
+    }
+
+    @PUT
+    @Path("editar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje editar(String json) {
+        TipoUnidad tipo = new Gson().fromJson(json, TipoUnidad.class);
+        return ImpTipoUnidad.editar(tipo);
+    }
+
+    @DELETE
+    @Path("eliminar{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje eliminar(@PathParam("id") int id) {
+        return ImpTipoUnidad.eliminar(id);
     }
 }

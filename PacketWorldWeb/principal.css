@@ -1,0 +1,205 @@
+* {
+    font-family: 'Candara', sans-serif;
+}
+
+body {
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+}
+
+#contenedorPrincipal {
+    background-image: url("fondo_paquetes.png");
+    background-size: contain;
+    background-color: rgba(255, 255, 255, 0.95);
+    background-blend-mode: overlay;
+    margin: 0 auto;
+    height: 100%;
+    padding: 2rem;
+    justify-items: center;
+    animation: slideIn 1s ease-out;
+}
+
+/* Animación inicial */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+#contenedorTitulo {
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+}
+
+h1 {
+    font-size: 5rem;
+    display: inline;
+    color: #850303;
+    border: none;
+}
+
+#tituloGris {
+    color: #636363;
+}
+
+#contenedorNumeroGuia {
+    width: 90%;
+    padding-left: 10%;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+#labelNumeroGuia {
+    text-align: left;
+    text-shadow: 0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.5);
+}
+
+#contenedorOrigenDestino {
+    width: 100%;
+    margin-right: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+#contenedorOrigen {
+    margin-right: 0.75rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#contenedorOrigen label {
+    font-weight: bold;
+}
+
+#contenedorDestino {
+    display: flex;
+    flex-direction: column;
+}
+
+#contenedorDestino label {
+    font-weight: bold;
+}
+
+#contenedorPaquetes {
+    width: 90%;
+    background-color: white;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0rem 0.5rem 1rem rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#contenedorPaquetes label {
+    align-self: flex-start;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-left: 5%;
+    margin-bottom: 1rem;
+}
+
+.contenedorPaquete {
+    width: 90%;
+    height: 10rem;
+    border: 0.1rem solid #757575;
+    border-radius: 0.5rem;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: row;
+}
+
+#historialEstados {
+    width: 80%;
+    background-color: white;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    /* box-shadow: 0rem 0.1rem 0.5rem rgba(0, 0, 0, 0.5); */
+    border: 0.15rem solid #757575;
+}
+
+#historialEstados label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding-left: 0.5rem;
+}
+
+#contenedorTituloHistorial {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}
+
+#iconoCamion {
+    height: 1.5rem;
+    width: auto;
+    margin-left: 1.5rem;
+}
+
+#labelOrigen {
+    margin-top: 0.25rem;
+    font-weight: normal !important;
+}
+
+#labelDestino {
+    margin-top: 0.25rem;
+    font-weight: normal !important;
+}
+
+.labelTitulo {
+    font-size: 1.5rem !important;
+    margin-left: 0 !important;
+}
+
+.labelDatos {
+    font-weight: normal !important;
+    font-size: 1rem !important;
+    color: #757575;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.divDatosIzq {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.divDatosDer {
+    align-self: flex-end;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: end !important;
+    margin-left: auto;
+}
+
+.divEstado {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    margin-bottom: 1rem;
+    color: #757575 !important;
+}
+
+.labelEstado {
+    margin-left: 0 !important;
+    padding-left: 4rem !important;
+    font-weight: normal !important;
+}

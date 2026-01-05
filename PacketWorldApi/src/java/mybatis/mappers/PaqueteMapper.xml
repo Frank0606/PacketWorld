@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PaqueteMapper">
+
+    <!-- Obtener todos los paquetes de un envío -->
+    <select id="obtenerPorEnvio" parameterType="int" resultType="pojo.Paquete">
+        SELECT 
+            idPaquete, idEnvio, numeroGuia, descripcion, peso, alto, ancho, profundidad, costo
+        FROM Paquete
+        WHERE idEnvio = #{idEnvio};
+    </select>
+    
+    <select id="obtenerTodos" resultType="pojo.Paquete">
+        SELECT 
+            idPaquete, idEnvio, numeroGuia, descripcion, peso, alto, ancho, profundidad, costo
+        FROM Paquete;
+    </select>
+
+    <!-- Obtener un paquete por ID -->
+    <select id="obtenerPorId" parameterType="int" resultType="pojo.Paquete">
+        SELECT 
+            idPaquete, idEnvio, numeroGuia, descripcion, peso, alto, ancho, profundidad, costo
+        FROM Paquete
+        WHERE idPaquete = #{idPaquete};
+    </select>
+
+    <!-- Registrar paquete -->
+    <insert id="registrar" parameterType="pojo.Paquete">
+        INSERT INTO Paquete (
+            idEnvio, numeroGuia, descripcion, peso, alto, ancho, profundidad, costo
+        )
+        VALUES (
+            #{idEnvio}, #{numeroGuia}, #{descripcion}, #{peso}, #{alto}, #{ancho}, #{profundidad}, #{costo}
+        );
+    </insert>
+
+    <!-- Editar paquete (NO se modifica el envío ni la guía) -->
+    <update id="editar" parameterType="pojo.Paquete">
+        UPDATE Paquete
+        SET descripcion = #{descripcion},
+            peso = #{peso},
+            alto = #{alto},
+            ancho = #{ancho},
+            profundidad = #{profundidad},
+            costo = #{costo}
+        WHERE idPaquete = #{idPaquete};
+    </update>
+
+    <!-- Eliminar paquete -->
+    <delete id="eliminar" parameterType="int">
+        DELETE FROM Paquete 
+        WHERE idPaquete = #{idPaquete};
+    </delete>
+
+</mapper>

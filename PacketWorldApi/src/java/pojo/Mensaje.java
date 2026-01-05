@@ -1,23 +1,27 @@
 package pojo;
 
+/**
+ *
+ * @author Manzano
+ */
 public class Mensaje {
 
-    private Boolean error;
+    private boolean error;
     private String mensaje;
 
     public Mensaje() {
     }
 
-    public Mensaje(Boolean error, String mensaje) {
+    public Mensaje(boolean error, String mensaje) {
         this.error = error;
         this.mensaje = mensaje;
     }
 
-    public Boolean getError() {
+    public boolean isError() {
         return error;
     }
 
-    public void setError(Boolean error) {
+    public void setError(boolean error) {
         this.error = error;
     }
 
@@ -27,10 +31,5 @@ public class Mensaje {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
-    }
-
-    @Override
-    public String toString() {
-        return "Mensaje{" + "error=" + error + ", mensaje=" + mensaje + '}';
     }
 }

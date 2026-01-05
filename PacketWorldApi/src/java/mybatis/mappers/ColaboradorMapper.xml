@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ColaboradorMapper">
+
+    <!-- =======================================================
+         Result Map: Mapea columnas de BD → POJO Colaborador
+    ======================================================== -->
+    <resultMap id="ColaboradorMap" type="pojo.Colaborador">
+        <id property="idColaborador" column="idColaborador"/>
+        <result property="nombre" column="nombre"/>
+        <result property="apellidoPaterno" column="apellidoPaterno"/>
+        <result property="apellidoMaterno" column="apellidoMaterno"/>
+        <result property="curp" column="curp"/>
+        <result property="correo" column="correo"/>
+        <result property="numeroPersonal" column="numeroPersonal"/>
+        <result property="contrasena" column="contrasena"/>
+        <result property="idRol" column="idRol"/>
+        <result property="nombreRol" column="nombreRol"/>
+        <result property="idSucursal" column="idSucursal"/>
+        <result property="nombreSucursal" column="nombreSucursal"/>
+        <result property="idUnidad" column="idUnidad"/>
+        <result property="fotografia" column="fotografia"/>
+        <result property="numeroLicencia" column="numeroLicencia"/>
+        <result property="fechaAlta" column="fechaAlta"/>
+    </resultMap>
+
+
+    <!-- =======================================================
+         1. LISTAR TODOS LOS COLABORADORES
+    ======================================================== -->
+    <select id="obtenerTodosColaborador" resultMap="ColaboradorMap">
+        SELECT 
+            c.idColaborador,
+            c.nombre,
+            c.apellidoPaterno,
+            c.apellidoMaterno,
+            c.curp,
+            c.correo,
+            c.numeroPersonal,
+            c.contrasena,
+            c.idRol,
+            r.nombre AS nombreRol,
+            c.idSucursal,
+            s.nombreCorto AS nombreSucursal,
+            c.idUnidad,
+            c.fotografia,
+            c.numeroLicencia,
+            c.fechaAlta
+        FROM Colaborador c
+        INNER JOIN Rol r     ON r.idRol = c.idRol
+        INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal;
+    </select>
+
+
+    <!-- =======================================================
+         2. BUSCAR POR NÚMERO DE PERSONAL
+    ======================================================== -->
+    <select id="obtenerPorNumeroPersonal" resultMap="ColaboradorMap">
+        SELECT 
+            c.idColaborador,
+            c.nombre,
+            c.apellidoPaterno,
+            c.apellidoMaterno,
+            c.curp,
+            c.correo,
+            c.numeroPersonal,
+            c.contrasena,
+            c.idRol,
+            r.nombre AS nombreRol,
+            c.idSucursal,
+            s.nombreCorto AS nombreSucursal,
+            c.idUnidad,
+            c.fotografia,
+            c.numeroLicencia,
+            c.fechaAlta
+        FROM Colaborador c
+        INNER JOIN Rol r ON r.idRol = c.idRol
+        INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
+        WHERE c.numeroPersonal = #{numeroPersonal};
+    </select>
+    
+    
+    <select id="obtenerPorId" resultMap="ColaboradorMap">
+        SELECT 
+            c.idColaborador,
+            c.nombre,
+            c.apellidoPaterno,
+            c.apellidoMaterno,
+            c.curp,
+            c.correo,
+            c.numeroPersonal,
+            c.contrasena,
+            c.idRol,
+            r.nombre AS nombreRol,
+            c.idSucursal,
+            s.nombreCorto AS nombreSucursal,
+            c.idUnidad,
+            c.fotografia,
+            c.numeroLicencia,
+            c.fechaAlta
+        FROM Colaborador c
+        INNER JOIN Rol r ON r.idRol = c.idRol
+        INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
+        WHERE c.idColaborador = #{idColaborador};
+    </select>
+
+
+    <!-- =======================================================
+         3. BUSCAR POR NOMBRE
+    ======================================================== -->
+    <select id="buscarPorNombre" resultMap="ColaboradorMap">
+        SELECT 
+            c.idColaborador,
+            c.nombre,
+            c.apellidoPaterno,
+            c.apellidoMaterno,
+            c.curp,
+            c.correo,
+            c.numeroPersonal,
+            c.contrasena,
+            c.idRol,
+            r.nombre AS nombreRol,
+            c.idSucursal,
+            s.nombreCorto AS nombreSucursal,
+            c.idUnidad,
+            c.fotografia,
+            c.numeroLicencia,
+            c.fechaAlta
+        FROM Colaborador c
+        INNER JOIN Rol r ON r.idRol = c.idRol
+        INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
+        WHERE c.nombre LIKE CONCAT('%', #{nombre}, '%');
+    </select>
+
+
+    <!-- =======================================================
+         4. BUSCAR POR ROL
+    ======================================================== -->
+    <select id="buscarPorRol" resultMap="ColaboradorMap">
+        SELECT 
+            c.idColaborador,
+            c.nombre,
+            c.apellidoPaterno,
+            c.apellidoMaterno,
+            c.curp,
+            c.correo,
+            c.numeroPersonal,
+            c.contrasena,
+            c.idRol,
+            r.nombre AS nombreRol,
+            c.idSucursal,
+            s.nombreCorto AS nombreSucursal,
+            c.idUnidad,
+            c.fotografia,
+            c.numeroLicencia,
+            c.fechaAlta
+        FROM Colaborador c
+        INNER JOIN Rol r ON r.idRol = c.idRol
+        INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
+        WHERE c.idRol = #{idRol};
+    </select>
+
+
+    <!-- =======================================================
+         5. REGISTRAR COLABORADOR
+    ======================================================== -->
+    <insert id="registrar" parameterType="pojo.Colaborador">
+        INSERT INTO Colaborador
+        (nombre, apellidoPaterno, apellidoMaterno, curp, correo,
+         numeroPersonal, contrasena, idRol, idSucursal, idUnidad,
+         fotografia, numeroLicencia)
+        VALUES
+        (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{curp}, #{correo},
+         #{numeroPersonal}, #{contrasena}, #{idRol}, #{idSucursal}, #{idUnidad},
+         #{fotografia}, #{numeroLicencia});
+    </insert>
+
+
+    <!-- =======================================================
+         6. EDITAR COLABORADOR
+         (NO se puede cambiar numeroPersonal ni idRol)
+    ======================================================== -->
+    <update id="editar" parameterType="pojo.Colaborador">
+        UPDATE Colaborador SET
+            nombre = #{nombre},
+            apellidoPaterno = #{apellidoPaterno},
+            apellidoMaterno = #{apellidoMaterno},
+            curp = #{curp},
+            correo = #{correo},
+            contrasena = #{contrasena},
+            idSucursal = #{idSucursal},
+            idUnidad = #{idUnidad},
+            fotografia = #{fotografia},
+            numeroLicencia = #{numeroLicencia}
+        WHERE numeroPersonal = #{numeroPersonal};
+    </update>
+
+
+    <!-- =======================================================
+         7. ELIMINAR COLABORADOR
+    ======================================================== -->
+    <delete id="eliminar">
+        DELETE FROM Colaborador
+        WHERE numeroPersonal = #{numeroPersonal};
+    </delete>
+
+</mapper>

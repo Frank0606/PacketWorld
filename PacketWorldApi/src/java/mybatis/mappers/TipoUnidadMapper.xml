@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="obtenerTipoUnidad">
-    <select id = "tipoUnidad" resultType="pojo.TipoUnidad">
-        Select idTipoUnidad, tipoUnidad from TipoUnidad;
-    </select>
-</mapper>
+<mapper namespace="TipoUnidadMapper">
 
+    <select id="obtenerTodos" resultType="pojo.TipoUnidad">
+        SELECT idTipoUnidad, nombre, descripcion
+        FROM tipoUnidad;
+    </select>
+
+    <select id="obtenerPorId" parameterType="int" resultType="pojo.TipoUnidad">
+        SELECT idTipoUnidad, nombre, descripcion
+        FROM tipoUnidad
+        WHERE idTipoUnidad = #{idTipoUnidad};
+    </select>
+
+    <insert id="registrar" parameterType="pojo.TipoUnidad">
+        INSERT INTO tipoUnidad (nombre, descripcion)
+        VALUES (#{nombre}, #{descripcion});
+    </insert>
+
+    <update id="editar" parameterType="pojo.TipoUnidad">
+        UPDATE tipoUnidad
+        SET nombre = #{nombre},
+            descripcion = #{descripcion}
+        WHERE idTipoUnidad = #{idTipoUnidad};
+    </update>
+
+    <delete id="eliminar" parameterType="int">
+        DELETE FROM tipoUnidad
+        WHERE idTipoUnidad = #{idTipoUnidad};
+    </delete>
+
+</mapper>

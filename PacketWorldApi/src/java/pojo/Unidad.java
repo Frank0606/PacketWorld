@@ -2,62 +2,41 @@ package pojo;
 
 public class Unidad {
 
-    private Integer idUnidad;
-    private String marca;
-    private String modelo;
+    private int idUnidad;
     private int anio;
     private String vin;
     private String noIdentificacion;
-    private Integer idTipoUnidad;
+    private String numeroPersonal;
+    private int idTipoUnidad;
     private String tipoUnidad;
-    private String noPersonal;
+    private String numeroInterno;
+    private String marca;
+    private String modelo;
+    private String estatus;
 
     public Unidad() {
     }
 
-    public Unidad(Integer idUnidad, String marca, String modelo, int anio, String vin,
-            String noIdentificacion, Integer idTipoUnidad, String tipoUnidad, String noPersonal) {
+    public Unidad(int idUnidad, int anio, String vin, String noIdentificacion, String numeroPersonal, int idTipoUnidad, String tipoUnidad, String numeroInterno, String marca, String modelo, String estatus) {
         this.idUnidad = idUnidad;
-        this.marca = marca;
-        this.modelo = modelo;
         this.anio = anio;
         this.vin = vin;
         this.noIdentificacion = noIdentificacion;
+        this.numeroPersonal = numeroPersonal;
         this.idTipoUnidad = idTipoUnidad;
         this.tipoUnidad = tipoUnidad;
-        this.noPersonal = noPersonal;
+        this.numeroInterno = numeroInterno;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.estatus = estatus;
     }
 
-    public String getNoPersonal() {
-        return noPersonal;
-    }
-
-    public void setNoPersonal(String noPersonal) {
-        this.noPersonal = noPersonal;
-    }
-
-    public Integer getIdUnidad() {
+    public int getIdUnidad() {
         return idUnidad;
     }
 
-    public void setIdUnidad(Integer idUnidad) {
+    public void setIdUnidad(int idUnidad) {
         this.idUnidad = idUnidad;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
     }
 
     public int getAnio() {
@@ -84,11 +63,19 @@ public class Unidad {
         this.noIdentificacion = noIdentificacion;
     }
 
-    public Integer getIdTipoUnidad() {
+    public String getNumeroPersonal() {
+        return numeroPersonal;
+    }
+
+    public void setNumeroPersonal(String numeroPersonal) {
+        this.numeroPersonal = numeroPersonal;
+    }
+
+    public int getIdTipoUnidad() {
         return idTipoUnidad;
     }
 
-    public void setIdTipoUnidad(Integer idTipoUnidad) {
+    public void setIdTipoUnidad(int idTipoUnidad) {
         this.idTipoUnidad = idTipoUnidad;
     }
 
@@ -100,9 +87,35 @@ public class Unidad {
         this.tipoUnidad = tipoUnidad;
     }
 
-    @Override
-    public String toString() {
-        return "Unidad{" + "idUnidad=" + idUnidad + ", marca=" + marca + ", modelo=" + modelo + ", anio=" + anio + ", vin=" + vin + ", noIdentificacion=" + noIdentificacion + ", idTipoUnidad=" + idTipoUnidad + ", tipoUnidad=" + tipoUnidad + ", noPersonal=" + noPersonal + '}';
+    public String getNumeroInterno() {
+        return numeroInterno;
     }
 
+    public void setNumeroInterno(String numeroInterno) {
+        this.numeroInterno = numeroInterno;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
 }

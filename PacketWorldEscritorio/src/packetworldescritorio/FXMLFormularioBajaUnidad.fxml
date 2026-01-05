@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="680.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="packetworldescritorio.FXMLFormularioBajaUnidadController">
+    <children>
+        <ImageView fitHeight="680.0" fitWidth="900.0" opacity="0.05" pickOnBounds="true">
+            <image>
+                <Image url="@recursos/fondo_paquetes.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="labelID" layoutX="50.0" layoutY="30.0" text="" />
+        
+        <TextField fx:id="tfDescripcion" layoutX="50.0" layoutY="60.0" prefWidth="500.0" prefHeight="100.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </TextField>
+        
+        <Label fx:id="labelError" layoutX="50.0" layoutY="170.0" textFill="#850303">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
+        </Label>
+        
+        <Button fx:id="btnContinuar" layoutX="150.0" layoutY="220.0" onAction="#btnContinuar" style="-fx-background-color: #850303; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Continuar" textFill="WHITE">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
+        </Button>
+        
+        <Button fx:id="btnCancelar" layoutX="350.0" layoutY="220.0" onAction="#btnCancelar" style="-fx-background-color: #850303; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

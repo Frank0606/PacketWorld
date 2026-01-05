@@ -1,66 +1,60 @@
 package pojo;
 
 public class Colaborador {
-    
-    private Integer idColaborador;
-    private String nombreColaborador;
-    private String apellidoMaterno;
+
+    private int idColaborador;
+    private String nombre;
     private String apellidoPaterno;
+    private String apellidoMaterno;
     private String curp;
-    private String correoElectronico;
-    private String noPersonal;
-    private String contrasenia;
-    private String licencia;
+    private String correo;
+    private String numeroPersonal;
+    private String contrasena;
+    private int idRol;
+    private String nombreRol;
+    private int idSucursal;
+    private String nombreSucursal;
+    private int idUnidad;
     private byte[] fotografia;
-    private Integer idRol;
-    private String tipoRol;
-    private Integer idUnidad;
-    private String vin;
+    private String numeroLicencia;
+    private String fechaAlta;
 
     public Colaborador() {
     }
 
-    public Colaborador(Integer idColaborador, String nombreColaborador, String apellidoMaterno, 
-            String apellidoPaterno, String curp, String correoElectronico, String noPersonal, 
-            String contrasenia, byte[] fotografia, String licencia, Integer idRol, String tipoRol, Integer idUnidad, String vin) {
+    public Colaborador(int idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String curp, String correo, String numeroPersonal, String contrasena, int idRol, String nombreRol, int idSucursal, String nombreSucursal, int idUnidad, byte[] fotografia, String numeroLicencia, String fechaAlta) {
         this.idColaborador = idColaborador;
-        this.nombreColaborador = nombreColaborador;
-        this.apellidoMaterno = apellidoMaterno;
+        this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
         this.curp = curp;
-        this.correoElectronico = correoElectronico;
-        this.noPersonal = noPersonal;
-        this.contrasenia = contrasenia;
-        this.fotografia = fotografia;
-        this.licencia = licencia;
+        this.correo = correo;
+        this.numeroPersonal = numeroPersonal;
+        this.contrasena = contrasena;
         this.idRol = idRol;
-        this.tipoRol = tipoRol;
+        this.nombreRol = nombreRol;
+        this.idSucursal = idSucursal;
+        this.nombreSucursal = nombreSucursal;
         this.idUnidad = idUnidad;
-        this.vin = vin;
+        this.fotografia = fotografia;
+        this.numeroLicencia = numeroLicencia;
+        this.fechaAlta = fechaAlta;
     }
 
-    public Integer getIdColaborador() {
+    public int getIdColaborador() {
         return idColaborador;
     }
 
-    public void setIdColaborador(Integer idColaborador) {
+    public void setIdColaborador(int idColaborador) {
         this.idColaborador = idColaborador;
     }
 
-    public String getNombreColaborador() {
-        return nombreColaborador;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreColaborador(String nombreColaborador) {
-        this.nombreColaborador = nombreColaborador;
-    }
-
-    public String getApellidoMaterno() {
-        return apellidoMaterno;
-    }
-
-    public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getApellidoPaterno() {
@@ -71,6 +65,14 @@ public class Colaborador {
         this.apellidoPaterno = apellidoPaterno;
     }
 
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
     public String getCurp() {
         return curp;
     }
@@ -79,28 +81,68 @@ public class Colaborador {
         this.curp = curp;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
-    public String getNoPersonal() {
-        return noPersonal;
+    public String getNumeroPersonal() {
+        return numeroPersonal;
     }
 
-    public void setNoPersonal(String noPersonal) {
-        this.noPersonal = noPersonal;
+    public void setNumeroPersonal(String numeroPersonal) {
+        this.numeroPersonal = numeroPersonal;
     }
 
-    public String getContrasenia() {
-        return contrasenia;
+    public String getContrasena() {
+        return contrasena;
     }
 
-    public void setContrasenia(String contrasenia) {
-        this.contrasenia = contrasenia;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public int getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
+    }
+
+    public String getNombreRol() {
+        return nombreRol;
+    }
+
+    public void setNombreRol(String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
+
+    public int getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(int idSucursal) {
+        this.idSucursal = idSucursal;
+    }
+
+    public String getNombreSucursal() {
+        return nombreSucursal;
+    }
+
+    public void setNombreSucursal(String nombreSucursal) {
+        this.nombreSucursal = nombreSucursal;
+    }
+
+    public int getIdUnidad() {
+        return idUnidad;
+    }
+
+    public void setIdUnidad(int idUnidad) {
+        this.idUnidad = idUnidad;
     }
 
     public byte[] getFotografia() {
@@ -111,48 +153,24 @@ public class Colaborador {
         this.fotografia = fotografia;
     }
 
-    public String getLicencia() {
-        return licencia;
+    public String getNumeroLicencia() {
+        return numeroLicencia;
     }
 
-    public void setLicencia(String licencia) {
-        this.licencia = licencia;
+    public void setNumeroLicencia(String numeroLicencia) {
+        this.numeroLicencia = numeroLicencia;
     }
 
-    public Integer getIdRol() {
-        return idRol;
+    public String getFechaAlta() {
+        return fechaAlta;
     }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
-    }
-
-    public String getTipoRol() {
-        return tipoRol;
-    }
-
-    public void setTipoRol(String tipoRol) {
-        this.tipoRol = tipoRol;
-    }
-
-    public Integer getIdUnidad() {
-        return idUnidad;
-    }
-
-    public void setIdUnidad(Integer idUnidad) {
-        this.idUnidad = idUnidad;
-    }
-
-    public String getVin() {
-        return vin;
-    }
-
-    public void setVin(String vin) {
-        this.vin = vin;
+    public void setFechaAlta(String fechaAlta) {
+        this.fechaAlta = fechaAlta;
     }
 
     @Override
     public String toString() {
-        return "Colaborador{" + "idColaborador=" + idColaborador + ", nombreColaborador=" + nombreColaborador + ", apellidoMaterno=" + apellidoMaterno + ", apellidoPaterno=" + apellidoPaterno + ", curp=" + curp + ", correoElectronico=" + correoElectronico + ", noPersonal=" + noPersonal + ", contrasenia=" + contrasenia + ", fotografia=" + fotografia + ", idRol=" + idRol + ", tipoRol=" + tipoRol + ", idUnidad=" + idUnidad + ", vin=" + vin + '}';
+        return "(" + idRol + ") " + nombreRol;
     }
 }
