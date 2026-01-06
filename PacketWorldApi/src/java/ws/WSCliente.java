@@ -23,14 +23,14 @@ public class WSCliente {
 
     @GET
     @Path("obtener-todos")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Cliente> obtenerTodos() {
         return ImpCliente.obtenerClientes();
     }
 
     @GET
     @Path("obtener-id/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Cliente obtenerPorId(@PathParam("id") int idCliente) {
         Cliente c = ImpCliente.obtenerPorId(idCliente);
         if (c == null) throw new BadRequestException("Cliente no encontrado.");
@@ -39,7 +39,7 @@ public class WSCliente {
 
     @GET
     @Path("correo/{correo}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Cliente buscarPorCorreo(@PathParam("correo") String correo) {
         Cliente c = ImpCliente.buscarPorCorreo(correo);
         if (c == null) throw new BadRequestException("Correo no encontrado.");
@@ -48,14 +48,14 @@ public class WSCliente {
 
     @GET
     @Path("nombre/{nombre}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Cliente> buscarPorNombre(@PathParam("nombre") String nombre) {
         return ImpCliente.buscarPorNombre(nombre);
     }
 
     @GET
     @Path("telefono/{telefono}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Cliente buscarPorTelefono(@PathParam("telefono") String telefono) {
         Cliente c = ImpCliente.buscarPorTelefono(telefono);
         if (c == null) throw new BadRequestException("Cliente no encontrado.");
@@ -65,7 +65,7 @@ public class WSCliente {
     @POST
     @Path("registrar")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Mensaje registrar(String json) {
         Cliente cliente = gson.fromJson(json, Cliente.class);
         return ImpCliente.registrar(cliente);
@@ -74,7 +74,7 @@ public class WSCliente {
     @PUT
     @Path("editar")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Mensaje editar(String json) {
         Cliente cliente = gson.fromJson(json, Cliente.class);
         return ImpCliente.editar(cliente);
@@ -82,7 +82,7 @@ public class WSCliente {
 
     @DELETE
     @Path("eliminar/{correo}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Mensaje eliminar(@PathParam("correo") String correo) {
         return ImpCliente.eliminar(correo);
     }

@@ -14,7 +14,7 @@ public class PaquetesDAO {
 
     public static List<Paquete> obtenerPaquetes() {
         List<Paquete> paquetes = null;
-        String url = Constantes.URL_WS + "paquete/todos";
+        String url = Constantes.URL_WS + "paquete/obtener-todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
@@ -31,7 +31,7 @@ public class PaquetesDAO {
 
     public static Mensaje agregarPaquete(Paquete paquete) {
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "paquete/agregar";
+        String url = Constantes.URL_WS + "paquete/registrar";
         Gson gson = new Gson();
         try {
             String parametros = gson.toJson(paquete);
@@ -51,7 +51,7 @@ public class PaquetesDAO {
 
     public static Mensaje actualizarPaquete(Paquete paquete) {
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "paquete/actualizar";
+        String url = Constantes.URL_WS + "paquete/editar";
         Gson gson = new Gson();
         try {
             String parametros = gson.toJson(paquete);

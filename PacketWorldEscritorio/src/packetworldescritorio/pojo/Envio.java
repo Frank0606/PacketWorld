@@ -48,7 +48,6 @@ public class Envio {
         this.estatus = estatus;
         this.fechaCreacion = fechaCreacion;
     }
-
     
     public int getIdEnvio() {
         return idEnvio;

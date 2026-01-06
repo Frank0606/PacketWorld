@@ -14,7 +14,7 @@ public class TiposUnidadesDAO {
 
     public static List<TipoUnidad> obtenerTiposUnidad() {
         List<TipoUnidad> unidades = null;
-        String url = Constantes.URL_WS + "tipoUnidad/todos";
+        String url = Constantes.URL_WS + "tipoUnidad/obtener-todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {

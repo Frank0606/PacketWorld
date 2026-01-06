@@ -1,4 +1,4 @@
-package pojo;
+package packetworldescritorio.pojo;
 
 public class Sucursal {
 

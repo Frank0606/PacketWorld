@@ -6,25 +6,24 @@
 <mapper namespace="TipoUnidadMapper">
 
     <select id="obtenerTodos" resultType="pojo.TipoUnidad">
-        SELECT idTipoUnidad, nombre, descripcion
+        SELECT idTipoUnidad, nombre 
         FROM tipoUnidad;
     </select>
 
     <select id="obtenerPorId" parameterType="int" resultType="pojo.TipoUnidad">
-        SELECT idTipoUnidad, nombre, descripcion
+        SELECT idTipoUnidad, nombre 
         FROM tipoUnidad
         WHERE idTipoUnidad = #{idTipoUnidad};
     </select>
 
     <insert id="registrar" parameterType="pojo.TipoUnidad">
-        INSERT INTO tipoUnidad (nombre, descripcion)
-        VALUES (#{nombre}, #{descripcion});
+        INSERT INTO tipoUnidad (nombre)
+        VALUES (#{nombre});
     </insert>
 
     <update id="editar" parameterType="pojo.TipoUnidad">
         UPDATE tipoUnidad
-        SET nombre = #{nombre},
-            descripcion = #{descripcion}
+        SET nombre = #{nombre} 
         WHERE idTipoUnidad = #{idTipoUnidad};
     </update>
 

@@ -50,7 +50,6 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
     private Label labelErrorAnio;
     @FXML
     private Label labelErrorVin;
-    private Label labelErrorNoIdentificacion;
     @FXML
     private Label labelErrorTipoUnidad;
 
@@ -134,7 +133,6 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
         labelErrorModelo.setText("");
         labelErrorAnio.setText("");
         labelErrorVin.setText("");
-        labelErrorNoIdentificacion.setText("");
         labelErrorTipoUnidad.setText("");
 
         // Validar marca
@@ -193,7 +191,7 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
 
     private void cargarDatos() {
         tfMarca.setText(this.unidad.getMarca());
-        tfModelo.setText(String.valueOf(this.unidad.getModelo()));
+        tfModelo.setText(this.unidad.getModelo());
         tfAnio.setText(String.valueOf(this.unidad.getAnio()));
         tfVin.setText(String.valueOf(this.unidad.getVin()));
         labelNoIdentificacion.setText(String.valueOf(this.unidad.getNoIdentificacion()));
@@ -203,7 +201,7 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
 
     private void cerrarVentana() {
         AnchorPane contenerdorPrincipal = (AnchorPane) tfMarca.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLUnidades.fxml", contenerdorPrincipal);
+        Funciones.cargarVista("/packetworldescritorio/FXMLUnidades.fxml", contenerdorPrincipal);
     }
 
     private void cargarTipoUnidad() {
@@ -212,7 +210,7 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
             listaObservableTipoUnidad = FXCollections.observableArrayList(tiposUnidad);
             cbTipoUnidad.setItems(listaObservableTipoUnidad);
         } else {
-            Alertas.mostrarAlertaSimple("Error al cargar", "Lo sentiento, no se pudo obtener la informacion de Roles",
+            Alertas.mostrarAlertaSimple("Error al cargar", "Lo sentiento, no se pudo obtener la informacion de los tipos de unidades",
                     Alert.AlertType.ERROR);
         }
     }

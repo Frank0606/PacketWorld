@@ -30,70 +30,47 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.SucursalDAO;
+import packetworldescritorio.pojo.Sucursal;
 
 public class FXMLFormularioEnviosController implements Initializable, ControladorPrincipal<Envio> {
 
-    @FXML
-    private TextField tfCalle;
-    @FXML
-    private TextField tfCostoEnvio;
-    @FXML
-    private TextField tfNumeroCasa;
-    @FXML
-    private TextField tfColonia;
-    @FXML
-    private TextField tfCP;
-    @FXML
-    private TextField tfCiudad;
-    @FXML
-    private TextField tfEstado;
     @FXML
     private Button btnGuardar;
     @FXML
     private Button btnCancelar;
     @FXML
-    private Label labelErrorCalle;
-    @FXML
-    private Label labelErrorCostoEnvio;
-    @FXML
-    private Label labelErrorNumeroCasa;
-    @FXML
-    private Label labelErrorColonia;
-    @FXML
-    private Label labelErrorCP;
-    @FXML
-    private Label labelErrorCiudad;
-    @FXML
-    private Label labelErrorEstado;
-    @FXML
-    private Label labelErrorIdCliente;
-    @FXML
     private ComboBox<Cliente> cbCliente;
-
-    private Envio envio;
-    private ObservableList<Cliente> listaObservableClientes;
-    private ObservableList<Colaborador> listaObservableConductores;
-    private String noPersonalColaborador;
-
-    @FXML
-    private TextField tfNumeroGuia;
     @FXML
     private Label labelErrorIdColaborador;
     @FXML
+    private Label labelErrorIdCliente;
+    @FXML
+    private Label labelErrorIdSucursal;
+    
+    private String noPersonalColaborador;
+    private ObservableList<Cliente> listaObservableClientes;
+    private ObservableList<Colaborador> listaObservableColaboradores;
+    private ObservableList<Sucursal> listaObservableSucursales;
+    
+    private Envio envio;
+    
+    @FXML
     private ComboBox<Colaborador> cbColaborador;
+    @FXML
+    private Label lblDireccionDestino;
+    @FXML
+    private ComboBox<Sucursal> cbSucursal;
+    @FXML
+    private Label lblDireccionOrigen;
+    @FXML
+    private TextField tfNumeroGuia;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarClientes();
         cargarConductores();
-        configurarTextField(tfCalle, Pattern.compile("[a-zA-Z0-9 ]{0,50}"));
-        configurarTextField(tfCostoEnvio, Pattern.compile("\\d{0,10}([\\.]\\d{0,2})?"));
-        configurarTextField(tfNumeroCasa, Pattern.compile("[a-zA-Z0-9]{0,10}"));
-        configurarTextField(tfColonia, Pattern.compile("[a-zA-Z0-9 ]{0,50}"));
-        configurarTextField(tfCP, Pattern.compile("[0-9]{0,5}"));
-        configurarTextField(tfCiudad, Pattern.compile("[a-zA-Z ]{0,50}"));
-        configurarTextField(tfEstado, Pattern.compile("[a-zA-Z ]{0,50}"));
-
+        cargarSucursales();
     }
 
     private void configurarTextField(TextField textField, Pattern pattern) {
@@ -120,20 +97,13 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
 
             Integer idColaborador = ((cbColaborador.getSelectionModel().getSelectedItem() != null)
                     ? cbColaborador.getSelectionModel().getSelectedItem().getIdColaborador() : null);
-
-            envio.setCalleDestino(tfCalle.getText().toUpperCase());
             
-            
-            
-            envio.setNumeroDestino(tfNumeroCasa.getText().toUpperCase());
-            envio.setColoniaDestino(tfColonia.getText().toUpperCase());
-            envio.setCpDestino(tfCP.getText());
-            envio.setCiudadDestino(tfCiudad.getText().toUpperCase());
-            envio.setEstadoDestino(tfEstado.getText().toUpperCase());
-            envio.setNumeroGuia(tfNumeroGuia.getText().toUpperCase());
+            Integer idSucursal = ((cbSucursal.getSelectionModel().getSelectedItem() != null)
+                    ? cbSucursal.getSelectionModel().getSelectedItem().getIdSucursal() : null);
 
             envio.setIdCliente(idCliente);
             envio.setIdColaborador(idColaborador);
+            envio.setIdSucursalOrigen(idSucursal);
 
             if (btnGuardar.getText().equals("Editar")) {
                 
@@ -173,70 +143,10 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
 
     private boolean validarCampos() {
         boolean valid = true;
-        labelErrorCalle.setText("");
-        labelErrorCostoEnvio.setText("");
-        labelErrorNumeroCasa.setText("");
-        labelErrorColonia.setText("");
-        labelErrorCP.setText("");
-        labelErrorEstado.setText("");
-        labelErrorCiudad.setText("");
+        
         labelErrorIdCliente.setText("");
         labelErrorIdColaborador.setText("");
-
-        // Validar calle
-        if (tfCalle.getText() == null || tfCalle.getText().trim().isEmpty()
-                || tfCalle.getText().length() > 25) {
-            labelErrorCalle.setText("Calle inválida");
-            valid = false;
-        }
-
-        // Validar costo de envío
-        try {
-            Double costoEnvio = Double.valueOf(tfCostoEnvio.getText());
-            if (costoEnvio == null || tfCostoEnvio.getText().trim().isEmpty()
-                    || tfCostoEnvio.getText().length() > 10 || !tfCostoEnvio.getText().matches("\\d+(\\.\\d{1,2})?")) {
-                labelErrorCostoEnvio.setText("Costo de envío inválido");
-                valid = false;
-            }
-        } catch (NumberFormatException e) {
-            labelErrorCostoEnvio.setText("Costo de envío debe ser un número válido");
-            valid = false;
-        }
-
-        // Validar número de casa
-        if (tfNumeroCasa.getText() == null || tfNumeroCasa.getText().trim().isEmpty()
-                || tfNumeroCasa.getText().length() > 10) {
-            labelErrorNumeroCasa.setText("Número de casa inválido");
-            valid = false;
-        }
-
-        // Validar colonia
-        if (tfColonia.getText() == null || tfColonia.getText().trim().isEmpty()
-                || tfColonia.getText().length() > 25) {
-            labelErrorColonia.setText("Colonia inválida");
-            valid = false;
-        }
-
-        // Validar código postal
-        if (tfCP.getText() == null || tfCP.getText().trim().isEmpty()
-                || tfCP.getText().length() != 5) {
-            labelErrorCP.setText("Código Postal inválido");
-            valid = false;
-        }
-
-        // Validar ciudad
-        if (tfCiudad.getText() == null || tfCiudad.getText().trim().isEmpty()
-                || tfCiudad.getText().length() > 25) {
-            labelErrorCiudad.setText("Ciudad inválida");
-            valid = false;
-        }
-
-        // Validar estado
-        if (tfEstado.getText() == null || tfEstado.getText().trim().isEmpty()
-                || tfEstado.getText().length() > 25) {
-            labelErrorEstado.setText("Estado inválido");
-            valid = false;
-        }
+        labelErrorIdSucursal.setText("");
 
         // Validar cliente
         if (cbCliente.getValue() == null) {
@@ -247,6 +157,12 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
         // Validar colaborador
         if (cbColaborador.getValue() == null) {
             labelErrorIdColaborador.setText("Seleccione un conductor válido");
+            valid = false;
+        }
+        
+        // Validar colaborador
+        if (cbSucursal.getValue() == null) {
+            labelErrorIdSucursal.setText("Seleccione un conductor válido");
             valid = false;
         }
 
@@ -265,25 +181,17 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
     }
 
     private void cargarDatos() {
-        tfCalle.setText(this.envio.getCalleDestino());
-        
-        tfCostoEnvio.setText(String.valueOf(this.envio.getCostoTotal()));
-        
-        tfNumeroCasa.setText(this.envio.getNumeroDestino());
-        tfColonia.setText(this.envio.getColoniaDestino());
-        tfCP.setText(this.envio.getCpDestino());
-        tfCiudad.setText(this.envio.getCiudadDestino());
-        tfEstado.setText(this.envio.getEstadoDestino());
-        tfNumeroGuia.setText(this.envio.getNumeroGuia());
         int posicion = buscarCliente(this.envio.getIdCliente());
         cbCliente.getSelectionModel().select(posicion);
         posicion = buscarColaborador(this.envio.getIdColaborador());
         cbColaborador.getSelectionModel().select(posicion);
+        posicion = buscarSucursal(this.envio.getIdSucursalOrigen());
+        cbSucursal.getSelectionModel().select(posicion);
     }
 
     private void cerrarVentana() {
-        AnchorPane contenerdorPrincipal = (AnchorPane) tfCalle.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLEnvios.fxml", contenerdorPrincipal);
+        AnchorPane contenerdorPrincipal = (AnchorPane) cbCliente.getScene().lookup("#contenedorPrincipal");
+        Funciones.cargarVista("/packetworldescritorio/FXMLEnvios.fxml", contenerdorPrincipal);
     }
 
     private void cargarClientes() {
@@ -302,14 +210,25 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
         List<Colaborador> conductores = new ArrayList();
         if (colaboradores != null && !colaboradores.isEmpty()) {
             for (Colaborador colaborador : colaboradores) {
-                if (colaborador.getIdRol() == 3 && colaborador.getIdUnidad() != 0) {
+                if (colaborador.getIdRol() == 3 && (colaborador.getIdUnidad() != null || colaborador.getIdUnidad() != 0)) {
                     conductores.add(colaborador);
                 }
             }
-            listaObservableConductores = FXCollections.observableArrayList(conductores);
-            cbColaborador.setItems(listaObservableConductores);
+            listaObservableColaboradores = FXCollections.observableArrayList(conductores);
+            cbColaborador.setItems(listaObservableColaboradores);
         } else {
             Alertas.mostrarAlertaSimple("Error al cargar", "Lo sentiento, no se pudo obtener la informacion de los conductores",
+                    Alert.AlertType.ERROR);
+        }
+    }
+    
+    private void cargarSucursales() {
+        List<Sucursal> sucursales = SucursalDAO.obtenerSucursales();
+        if (sucursales != null && !sucursales.isEmpty()) {
+            listaObservableSucursales = FXCollections.observableArrayList(sucursales);
+            cbSucursal.setItems(listaObservableSucursales);
+        } else {
+            Alertas.mostrarAlertaSimple("Error al cargar", "Lo sentiento, no se pudo obtener la informacion de las sucursales.",
                     Alert.AlertType.ERROR);
         }
     }
@@ -324,8 +243,17 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
     }
 
     private int buscarColaborador(Integer idColaborador) {
-        for (int i = 0; i < listaObservableConductores.size(); i++) {
-            if (listaObservableConductores.get(i).getIdColaborador() == idColaborador) {
+        for (int i = 0; i < listaObservableColaboradores.size(); i++) {
+            if (listaObservableColaboradores.get(i).getIdColaborador() == idColaborador) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    
+    private int buscarSucursal(Integer idSucursal) {
+        for (int i = 0; i < listaObservableSucursales.size(); i++) {
+            if (listaObservableSucursales.get(i).getIdSucursal() == idSucursal) {
                 return i;
             }
         }
@@ -343,7 +271,7 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
             }
         }
 
-        int numeroMax = Integer.parseInt(maxNumeroGuia.substring(1));
+        int numeroMax = Integer.parseInt(maxNumeroGuia.substring(4));
         int nuevoNumero = numeroMax + 1;
         String nuevoNumeroGuia = "GUIA" + String.format("%03d", nuevoNumero);
         tfNumeroGuia.setText(nuevoNumeroGuia);

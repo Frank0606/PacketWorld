@@ -23,7 +23,7 @@
     <!-- =======================================================
          LISTAR TODAS
     ======================================================== -->
-    <select id="obtenerTodas" resultMap="SucursalMap">
+    <select id="obtenerTodos" resultMap="SucursalMap">
         SELECT *
         FROM Sucursal;
     </select>

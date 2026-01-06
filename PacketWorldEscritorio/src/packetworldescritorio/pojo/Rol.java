@@ -2,34 +2,34 @@ package packetworldescritorio.pojo;
 
 public class Rol {
     private Integer idRol;
-    private String tipoRol;
+    private String nombre;
 
     public Rol() {
     }
 
-    public Rol(Integer idRol, String tipoRol) {
+    public Rol(Integer idRol, String nombre) {
         this.idRol = idRol;
-        this.tipoRol = tipoRol;
+        this.nombre = nombre;
     }
 
     public Integer getIdRol() {
         return idRol;
     }
 
-    public void setIdRole(Integer idRol) {
+    public void setIdRol(Integer idRol) {
         this.idRol = idRol;
     }
 
-    public String getTipoRol() {
-        return tipoRol;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setTipoRol(String tipoRol) {
-        this.tipoRol = tipoRol;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @Override
     public String toString() {
-        return idRol + " - " + tipoRol;
+        return idRol + " - " + nombre;
     }
 }

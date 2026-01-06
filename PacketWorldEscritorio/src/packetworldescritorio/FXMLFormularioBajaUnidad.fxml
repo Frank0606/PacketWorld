@@ -25,19 +25,19 @@
             </font>
         </TextField>
         
-        <Label fx:id="labelError" layoutX="50.0" layoutY="170.0" textFill="#850303">
+        <Label fx:id="labelError" layoutX="50.0" layoutY="170.0" textFill="#BC9E82">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Label>
         
-        <Button fx:id="btnContinuar" layoutX="150.0" layoutY="220.0" onAction="#btnContinuar" style="-fx-background-color: #850303; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Continuar" textFill="WHITE">
+        <Button fx:id="btnContinuar" layoutX="150.0" layoutY="220.0" onAction="#btnContinuar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Continuar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
         
-        <Button fx:id="btnCancelar" layoutX="350.0" layoutY="220.0" onAction="#btnCancelar" style="-fx-background-color: #850303; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
+        <Button fx:id="btnCancelar" layoutX="350.0" layoutY="220.0" onAction="#btnCancelar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>

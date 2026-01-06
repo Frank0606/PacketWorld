@@ -25,6 +25,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.SucursalDAO;
+import packetworldescritorio.pojo.Sucursal;
 
 public class FXMLEnviosController implements Initializable {
 
@@ -54,7 +56,7 @@ public class FXMLEnviosController implements Initializable {
     private String noPersonalColaborador;
 
     @FXML
-    private TableColumn colDestino;
+    private TableColumn<Envio, String> colDestino;
     @FXML
     private TableColumn colNombreCliente;
     @FXML
@@ -85,7 +87,18 @@ public class FXMLEnviosController implements Initializable {
 
             return new SimpleStringProperty(nombreColaborador);
         });
-        colDestino.setCellValueFactory(new PropertyValueFactory<>("destino"));
+        colDestino.setCellValueFactory(cellData -> {
+            Envio envio = cellData.getValue();
+            Sucursal sucursalDestino = SucursalDAO.obtenerPorId(envio.getIdSucursalOrigen());
+            if (sucursalDestino != null) {
+                String direccionCompleta = sucursalDestino.getCalle() + " " + sucursalDestino.getNumero() + ", "
+                        + sucursalDestino.getColonia() + ", " + sucursalDestino.getCodigoPostal() + ", "
+                        + sucursalDestino.getCiudad() + ", " + sucursalDestino.getEstado();
+                return new SimpleStringProperty(direccionCompleta);
+            } else {
+                return new SimpleStringProperty("Sucursal no encontrada");
+            }
+        });
         colOrigen.setCellValueFactory(cellData -> {
             Envio envio = cellData.getValue();
             String direccionCompleta = envio.getCalleDestino() + " " + envio.getNumeroDestino() + ", "
@@ -95,7 +108,7 @@ public class FXMLEnviosController implements Initializable {
         colNumeroGuia.setCellValueFactory(new PropertyValueFactory<>("numeroGuia"));
         colCostoEnvio.setCellValueFactory(new PropertyValueFactory<>("costoTotal"));
         colEstatus.setCellValueFactory(new PropertyValueFactory<>("estatus"));
-        colNombreCliente.setCellValueFactory(new PropertyValueFactory<>("nombreDestino"));
+        colNombreCliente.setCellValueFactory(new PropertyValueFactory<>("nombreDestinatario"));
     }
 
     private void cargarInformacion() {
@@ -140,7 +153,7 @@ public class FXMLEnviosController implements Initializable {
 
     @FXML
     private void btnAgregar(ActionEvent event) {
-        Funciones.cargarVistaConDatos("/clienteescritorio/FXMLFormularioEnvios.fxml",
+        Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioEnvios.fxml",
                 (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), null, noPersonalColaborador,
                 new FXMLFormularioEnviosController());
     }
@@ -149,7 +162,7 @@ public class FXMLEnviosController implements Initializable {
     private void btnEditar(ActionEvent event) {
         Envio envio = tablaEnvios.getSelectionModel().getSelectedItem();
         if (envio != null) {
-            Funciones.cargarVistaConDatos("/clienteescritorio/FXMLFormularioEnvios.fxml",
+            Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioEnvios.fxml",
                     (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), envio,
                     new FXMLFormularioEnviosController());
         } else {
@@ -171,10 +184,10 @@ public class FXMLEnviosController implements Initializable {
         Mensaje msj = EnviosDAO.eliminarEnvio(numeroGuia);
         for (Paquete paquete : paquetes) {
             if (paquete.getNumeroGuia().equals(numeroGuia)) {
-                Alertas.mostrarAlertaSimple("Error al eliminar.", "El envio tiene paquetes asociados. "
-                        + "Eliminalos para poner eliminar el envio.", Alert.AlertType.WARNING);
+                Alertas.mostrarAlertaSimple("Error al eliminar.",
+                        "El envío tiene paquetes asociados. Elimínalos primero.", Alert.AlertType.WARNING);
+                return;
             }
-            return;
         }
 
         if (!msj.isError()) {
@@ -201,7 +214,7 @@ public class FXMLEnviosController implements Initializable {
         Envio envio = tablaEnvios.getSelectionModel().getSelectedItem();
         if (envio != null) {
             envio.setCalleDestino(noPersonalColaborador);
-            Funciones.cargarVistaConDatos("/clienteescritorio/FXMLFormularioCambiarEstatus.fxml",
+            Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioCambiarEstatus.fxml",
                     (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), envio,
                     new FXMLFormularioCambiarEstatusController());
         } else {

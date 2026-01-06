@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import static packetworldescritorio.utilidades.Alertas.mostrarAlertaConfirmacion;
 
 public class FXMLClientesController implements Initializable {
 
@@ -70,14 +71,22 @@ public class FXMLClientesController implements Initializable {
     }
 
     private void eliminarCliente(String correoElectronico) {
-        Mensaje msj = ClientesDAO.eliminarCliente(correoElectronico);
-        if (!msj.isError()) {
-            Alertas.mostrarAlertaSimple("Cliente eliminado", "El cliente ha sido eliminado correctamente.",
-                    Alert.AlertType.INFORMATION);
-            cargarInformacion();
-        } else {
-            Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar al cliente. Intente de nuevo mas tarde.",
-                    Alert.AlertType.WARNING);
+        boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                "¿Está seguro de que desea eliminar este colaborador?");
+        if (confirmado) {
+            confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                    "¿Realmente está seguro de que desea eliminar este colaborador?");
+            if (confirmado) {
+                Mensaje msj = ClientesDAO.eliminarCliente(correoElectronico);
+                if (!msj.isError()) {
+                    Alertas.mostrarAlertaSimple("Cliente eliminado", "El cliente ha sido eliminado correctamente.",
+                            Alert.AlertType.INFORMATION);
+                    cargarInformacion();
+                } else {
+                    Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar al cliente. Intente de nuevo mas tarde.",
+                            Alert.AlertType.WARNING);
+                }
+            }
         }
     }
 

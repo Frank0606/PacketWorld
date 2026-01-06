@@ -4,7 +4,6 @@ public class TipoUnidad {
 
     private int idTipoUnidad;
     private String nombre;
-    private String descripcion;
 
     public TipoUnidad() {
     }
@@ -25,11 +24,10 @@ public class TipoUnidad {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    @Override
+    public String toString() {
+        return nombre;
     }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    
+    
 }

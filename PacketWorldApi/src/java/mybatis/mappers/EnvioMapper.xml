@@ -3,11 +3,22 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="EnvioMapper">
+    
+    <select id="obtenerTodos" resultType="pojo.Envio">
+        SELECT * 
+        FROM Envio;
+    </select>
 
     <!-- Obtener por número guía -->
     <select id="obtenerPorGuia" parameterType="string" resultType="pojo.Envio">
         SELECT * 
         FROM Envio 
+        WHERE numeroGuia = #{numeroGuia};
+    </select>
+    
+    <select id="obtenerEnvioGuiaDireccion" parameterType="string" resultType="pojo.Envio">
+        SELECT *
+        FROM Envio
         WHERE numeroGuia = #{numeroGuia};
     </select>
 
@@ -28,16 +39,16 @@
     <!-- Registrar -->
     <insert id="registrar" parameterType="pojo.Envio">
         INSERT INTO Envio (
-            idCliente, idColaborador, nombreDestinatario, apellidoPaternoDest, apellidoMaternoDest,
-            idSucursalOrigen, calleDestino, numeroDestino, coloniaDestino, cpDestino,
-            ciudadDestino, estadoDestino, numeroGuia,
-            distanciaKm, costoKm, costoPaquetes, costoTotal, estatus
+        idCliente, idColaborador, nombreDestinatario, apellidoPaternoDest, apellidoMaternoDest,
+        idSucursalOrigen, calleDestino, numeroDestino, coloniaDestino, cpDestino,
+        ciudadDestino, estadoDestino, numeroGuia,
+        distanciaKm, costoKm, costoPaquetes, costoTotal, estatus
         )
         VALUES (
-            #{idCliente}, #{idColaborador}, #{nombreDestinatario}, #{apellidoPaternoDest}, #{apellidoMaternoDest},
-            #{idSucursalOrigen}, #{calleDestino}, #{numeroDestino}, #{coloniaDestino}, #{cpDestino},
-            #{ciudadDestino}, #{estadoDestino}, #{numeroGuia},
-            #{distanciaKm}, #{costoKm}, #{costoPaquetes}, #{costoTotal}, #{estatus}
+        #{idCliente}, #{idColaborador}, #{nombreDestinatario}, #{apellidoPaternoDest}, #{apellidoMaternoDest},
+        #{idSucursalOrigen}, #{calleDestino}, #{numeroDestino}, #{coloniaDestino}, #{cpDestino},
+        #{ciudadDestino}, #{estadoDestino}, #{numeroGuia},
+        #{distanciaKm}, #{costoKm}, #{costoPaquetes}, #{costoTotal}, #{estatus}
         );
     </insert>
 
@@ -45,19 +56,19 @@
     <update id="editar" parameterType="pojo.Envio">
         UPDATE Envio
         SET nombreDestinatario = #{nombreDestinatario},
-            apellidoPaternoDest = #{apellidoPaternoDest},
-            apellidoMaternoDest = #{apellidoMaternoDest},
-            calleDestino = #{calleDestino},
-            numeroDestino = #{numeroDestino},
-            coloniaDestino = #{coloniaDestino},
-            cpDestino = #{cpDestino},
-            ciudadDestino = #{ciudadDestino},
-            estadoDestino = #{estadoDestino},
-            distanciaKm = #{distanciaKm},
-            costoKm = #{costoKm},
-            costoPaquetes = #{costoPaquetes},
-            costoTotal = #{costoTotal},
-            idColaborador = #{idColaborador}
+        apellidoPaternoDest = #{apellidoPaternoDest},
+        apellidoMaternoDest = #{apellidoMaternoDest},
+        calleDestino = #{calleDestino},
+        numeroDestino = #{numeroDestino},
+        coloniaDestino = #{coloniaDestino},
+        cpDestino = #{cpDestino},
+        ciudadDestino = #{ciudadDestino},
+        estadoDestino = #{estadoDestino},
+        distanciaKm = #{distanciaKm},
+        costoKm = #{costoKm},
+        costoPaquetes = #{costoPaquetes},
+        costoTotal = #{costoTotal},
+        idColaborador = #{idColaborador}
         WHERE idEnvio = #{idEnvio};
     </update>
 

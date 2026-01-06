@@ -228,7 +228,7 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
 
     private void cerrarVentana() {
         AnchorPane contenerdorPrincipal = (AnchorPane) tfPeso.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLPaquetes.fxml", contenerdorPrincipal);
+        Funciones.cargarVista("/packetworldescritorio/FXMLPaquetes.fxml", contenerdorPrincipal);
     }
 
     private void cargarEnvios() {

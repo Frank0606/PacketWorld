@@ -8,11 +8,11 @@ import javax.ws.rs.core.MediaType;
 import pojo.Mensaje;
 import pojo.TipoUnidad;
 
-@Path("tipounidad")
+@Path("tipoUnidad")
 public class WSTipoUnidad {
 
     @GET
-    @Path("obtener-Todos")
+    @Path("obtener-todos")
     @Produces(MediaType.APPLICATION_JSON)
     public List<TipoUnidad> obtenerTodos() {
         return ImpTipoUnidad.obtenerTodos();

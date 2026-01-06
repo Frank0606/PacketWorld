@@ -2,9 +2,7 @@
 --   BASE DE DATOS PACKETWORLD
 
 DROP DATABASE IF EXISTS packetworld;
-CREATE DATABASE packetworld
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE packetworld;
 USE packetworld;
 
 --   ROLES
@@ -231,18 +229,20 @@ INSERT INTO Envio (
  'GUIA002', 88.41, 353.64, 0.00, 353.64);
 
 -- HISTORIAL DE ENVÍO
-INSERT INTO EnvioHistorial (idEnvio, estatus, comentario, idColaborador)
+INSERT INTO EnvioHistorial (idEnvio, estatus, comentario, idColaborador, fechaCambio)
 VALUES
-(1,'En tránsito','Paquete en camino',1),
-(1,'Entregado','Recibido por el cliente',2),
-(2,'En tránsito','Salida de sucursal',3);
+(1,'En tránsito','Paquete en camino',1, NOW()),
+(1,'Entregado','Recibido por el cliente',2, NOW()),
+(2,'En tránsito','Salida de sucursal',3, NOW());
+
+-- Añadir un atributo de fecha y hora para la actulizacion de los estatus
 
 -- PAQUETES (ahora con numeroGuia)
-INSERT INTO Paquete (idEnvio, numeroGuia, descripcion, peso, alto, ancho, profundidad, costo)
+INSERT INTO Paquete (idEnvio, numeroGuia, descripcion, peso, alto, ancho, profundidad)
 VALUES
-(1,'GUIA001','Caja mediana con ropa',5.5,40,30,20,50.00),
-(1,'GUIA001','Sobre con documentos',0.2,30,20,1,10.00),
-(2,'GUIA002','Caja grande con electrónicos',12.0,60,50,40,120.00);
+(1,'GUIA001','Caja mediana con ropa',5.5,40,30,20),
+(1,'GUIA001','Sobre con documentos',0.2,30,20,1),
+(2,'GUIA002','Caja grande con electrónicos',12.0,60,50,40);
 
 -- ASIGNACIÓN ENVÍO - CONDUCTOR
 INSERT INTO EnvioConductor (idEnvio, idConductor)

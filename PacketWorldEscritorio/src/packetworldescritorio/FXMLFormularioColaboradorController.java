@@ -9,6 +9,8 @@ import packetworldescritorio.utilidades.Alertas;
 import packetworldescritorio.utilidades.ControladorPrincipal;
 import packetworldescritorio.utilidades.Funciones;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
@@ -25,6 +27,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.SucursalDAO;
+import packetworldescritorio.pojo.Sucursal;
 
 public class FXMLFormularioColaboradorController implements Initializable, ControladorPrincipal<Colaborador> {
 
@@ -51,6 +55,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
 
     private Colaborador colaborador;
     private ObservableList<Rol> listaObservableRoles;
+    private ObservableList<Sucursal> listaObservableSucursales;
 
     @FXML
     private Label labelErrorNombreColaborador;
@@ -74,16 +79,44 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
     private TextField tfVIM;
     @FXML
     private Label txNumeroLicencia;
+    @FXML
+    private Label labelErrorSucursal;
+    @FXML
+    private ComboBox<Sucursal> cbSucursal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTiposUsuario();
+        cargarSucursales();
         configurarTextField(tfCURP, Pattern.compile("[a-zA-Z0-9]{0,18}"));
+        tfCURP.textProperty().addListener((obs, old, neu) -> tfCURP.setText(neu.toUpperCase()));
         configurarTextField(tfVIM, Pattern.compile("[a-zA-Z0-9]{0,9}"));
-        configurarTextField(tfNombreColaborador, Pattern.compile("[a-zA-Z]{1,25}(\\s[a-zA-Z]{1,24})?"));
-        configurarTextField(tfApellidoPaterno, Pattern.compile("[a-zA-Z]{0,50}"));
-        configurarTextField(tfApellidoMaterno, Pattern.compile("[a-zA-Z]{0,50}"));
-        //configurarTextField(tfCorreoElectronico, Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2}$"));
+        tfVIM.textProperty().addListener((obs, old, neu) -> tfVIM.setText(neu.toUpperCase()));
+        configurarTextField(tfNombreColaborador, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,25}"));
+        tfNombreColaborador.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfNombreColaborador.setText(primerCaracter + resto);
+            }
+        });
+        configurarTextField(tfApellidoPaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,50}"));
+        tfApellidoPaterno.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfApellidoPaterno.setText(primerCaracter + resto);
+            }
+        });
+        configurarTextField(tfApellidoMaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,50}"));
+        tfApellidoMaterno.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfApellidoMaterno.setText(primerCaracter + resto);
+            }
+        });
+        configurarTextField(tfCorreoElectronico, Pattern.compile("[a-zA-Z0-9._%+-@]{0,50}"));
         configurarTextField(tfContrasenia, Pattern.compile(".{0,50}"));
     }
 
@@ -111,6 +144,8 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         tfVIM.setText(this.colaborador.getNumeroLicencia());
         int posicion = buscarIdRol(this.colaborador.getIdRol());
         cbRol.getSelectionModel().select(posicion);
+        posicion = buscarIdSucursal(this.colaborador.getIdSucursal());
+        cbSucursal.getSelectionModel().select(posicion);
     }
 
     @FXML
@@ -120,7 +155,13 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
                 this.colaborador = new Colaborador();
             }
 
-            Integer idRol = ((cbRol.getSelectionModel().getSelectedItem() != null) ? cbRol.getSelectionModel().getSelectedItem().getIdRol() : null);
+            Integer idRol = ((cbRol.getSelectionModel().getSelectedItem() != null)
+                    ? cbRol.getSelectionModel().getSelectedItem().getIdRol()
+                    : null);
+
+            Integer idSucursal = ((cbSucursal.getSelectionModel().getSelectedItem() != null)
+                    ? cbSucursal.getSelectionModel().getSelectedItem().getIdSucursal()
+                    : null);
 
             colaborador.setNombre(tfNombreColaborador.getText());
             colaborador.setApellidoPaterno(tfApellidoPaterno.getText());
@@ -130,12 +171,18 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
             colaborador.setNumeroPersonal(tfNoPersonal.getText());
             colaborador.setContrasena(tfContrasenia.getText());
             colaborador.setIdRol(idRol);
+            colaborador.setIdSucursal(idSucursal);
+
             if (tfVIM.getText() != null && !tfVIM.getText().isEmpty()) {
                 colaborador.setNumeroLicencia(tfVIM.getText().toUpperCase());
             } else {
                 colaborador.setNumeroLicencia(tfVIM.getText());
             }
-            colaborador.setIdRol(idRol);
+
+            LocalDateTime ahora = LocalDateTime.now();
+            DateTimeFormatter formatoMySQL = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String fechaHora = ahora.format(formatoMySQL);
+            colaborador.setFechaAlta(fechaHora);
 
             if (btnAgregar.getText().equals("Editar")) {
                 editarDatosColaborador();
@@ -143,7 +190,8 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
                 guardarDatosColaborador();
             }
         } else {
-            Alertas.mostrarAlertaSimple("Problema con los datos", "Tiene datos incorrectos, revise e intente de nuevo.",
+            Alertas.mostrarAlertaSimple("Problema con los datos",
+                    "Tiene datos incorrectos, revise e intente de nuevo.",
                     Alert.AlertType.ERROR);
         }
     }
@@ -168,30 +216,38 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         labelErrorCURP.setText("");
         labelErrorLicencia.setText("");
         labelErrorRol.setText("");
+        labelErrorSucursal.setText("");
 
         // Validar nombre del colaborador
         if (tfNombreColaborador.getText() == null || tfNombreColaborador.getText().trim().isEmpty()
-                || tfNombreColaborador.getText().length() > 50) {
+                || (tfNombreColaborador.getText().length() < 3 || tfNombreColaborador.getText().length() > 50)) {
             labelErrorNombreColaborador.setText("Nombre inválido");
             valid = false;
         }
 
-        // Validar apellido paterno
-        if (tfApellidoPaterno.getText() == null || tfApellidoPaterno.getText().trim().isEmpty()
-                || tfApellidoPaterno.getText().length() > 50) {
-            labelErrorApellidoP.setText("Apellido Paterno inválido");
-            valid = false;
-        }
+        // Validar apellidos: al menos uno debe estar lleno
+        String apellidoP = tfApellidoPaterno.getText() != null ? tfApellidoPaterno.getText().trim() : "";
+        String apellidoM = tfApellidoMaterno.getText() != null ? tfApellidoMaterno.getText().trim() : "";
 
-        // Validar apellido materno
-        if (tfApellidoMaterno.getText() == null || tfApellidoMaterno.getText().trim().isEmpty()
-                || tfApellidoMaterno.getText().length() > 50) {
-            labelErrorApellidoM.setText("Apellido Materno inválido");
+        if (apellidoP.isEmpty() && apellidoM.isEmpty()) {
+            labelErrorApellidoP.setText("Debe ingresar al menos un apellido");
+            labelErrorApellidoM.setText("Debe ingresar al menos un apellido");
             valid = false;
+        } else {
+            // Validar apellido paterno si está lleno
+            if (!apellidoP.isEmpty() && (apellidoP.length() < 2 || apellidoP.length() > 50)) {
+                labelErrorApellidoP.setText("Apellido Paterno inválido (mínimo 2 letras)");
+                valid = false;
+            }
+            // Validar apellido materno si está lleno
+            if (!apellidoM.isEmpty() && (apellidoM.length() < 2 || apellidoM.length() > 50)) {
+                labelErrorApellidoM.setText("Apellido Materno inválido (mínimo 2 letras)");
+                valid = false;
+            }
         }
 
         // Validar correo electrónico
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,3}$";
+        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$";
         if (tfCorreoElectronico.getText() == null || tfCorreoElectronico.getText().trim().isEmpty()
                 || tfCorreoElectronico.getText().length() > 50
                 || !tfCorreoElectronico.getText().matches(emailPattern)) {
@@ -206,18 +262,19 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
             valid = false;
         }
 
-        // Validar CURP
+        // Validar CURP: exactamente 17 caracteres
         if (tfCURP.getText() == null || tfCURP.getText().trim().isEmpty()
-                || tfCURP.getText().length() > 18) {
-            labelErrorCURP.setText("CURP inválido");
+                || tfCURP.getText().length() != 18) {
+            labelErrorCURP.setText("CURP inválido (debe tener exactamente 17 caracteres)");
             valid = false;
         }
 
-        // Validar VIM si Rol.idRol == 3
+        // Validar VIM si Rol.idRol == 3: exactamente 9 caracteres
         if (cbRol.getValue() != null) {
             if (cbRol.getValue().getIdRol() == 3) {
-                if (tfVIM.getText() == null || tfVIM.getText().trim().isEmpty() || tfVIM.getText().length() > 9) {
-                    labelErrorLicencia.setText("Número de licencia inválido");
+                if (tfVIM.getText() == null || tfVIM.getText().trim().isEmpty()
+                        || tfVIM.getText().length() != 9) {
+                    labelErrorLicencia.setText("Número de licencia inválido (debe tener exactamente 9 caracteres)");
                     valid = false;
                 }
             } else {
@@ -227,6 +284,19 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         } else {
             valid = false;
             labelErrorRol.setText("Seleccione un rol");
+        }
+
+        // Validar sucursal
+        if (cbSucursal.getValue() != null) {
+            if (cbSucursal.getValue().getIdSucursal() <= 0) {
+                labelErrorSucursal.setText("Sucursal inválida");
+                valid = false;
+            } else {
+                labelErrorSucursal.setText("");
+            }
+        } else {
+            valid = false;
+            labelErrorSucursal.setText("Seleccione una sucursal");
         }
 
         return valid;
@@ -244,7 +314,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
 
     private void cerrarVentana() {
         AnchorPane contenerdorPrincipal = (AnchorPane) tfContrasenia.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLColaboradores.fxml", contenerdorPrincipal);
+        Funciones.cargarVista("/packetworldescritorio/FXMLColaboradores.fxml", contenerdorPrincipal);
     }
 
     @FXML
@@ -272,9 +342,30 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         return 0;
     }
 
+    private void cargarSucursales() {
+        List<Sucursal> sucursales = SucursalDAO.obtenerSucursales();
+        if (sucursales != null && !sucursales.isEmpty()) {
+            listaObservableSucursales = FXCollections.observableArrayList(sucursales);
+            cbSucursal.setItems(listaObservableSucursales);
+        } else {
+            Alertas.mostrarAlertaSimple("Error al cargar",
+                    "Lo sentimos, no se pudo obtener la información de Sucursales",
+                    Alert.AlertType.ERROR);
+        }
+    }
+
+    private int buscarIdSucursal(int idSucursal) {
+        for (int i = 0; i < listaObservableSucursales.size(); i++) {
+            if (listaObservableSucursales.get(i).getIdSucursal() == idSucursal) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
     private void crearNoPersonal() {
         List<Colaborador> colaboradores = ColaboradoresDAO.obtenerColaborador();
-        String maxNoPersonal = "C000";
+        String maxNoPersonal = "EMP000";
 
         for (Colaborador colaborador : colaboradores) {
             String noPersonal = colaborador.getNumeroPersonal();
@@ -283,9 +374,9 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
             }
         }
 
-        int numeroMax = Integer.parseInt(maxNoPersonal.substring(1));
+        int numeroMax = Integer.parseInt(maxNoPersonal.substring(3));
         int nuevoNumero = numeroMax + 1;
-        String nuevoNoPersonal = "C" + String.format("%03d", nuevoNumero);
+        String nuevoNoPersonal = "EMP" + String.format("%03d", nuevoNumero);
         tfNoPersonal.setText(nuevoNoPersonal);
     }
 

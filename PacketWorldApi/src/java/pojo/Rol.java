@@ -2,14 +2,14 @@ package pojo;
 
 public class Rol {
     private Integer idRol;
-    private String nombreR;
+    private String nombre;
 
     public Rol() {
     }
 
-    public Rol(Integer idRol, String NombreR) {
+    public Rol(Integer idRol, String nombre) {
         this.idRol = idRol;
-        this.nombreR = NombreR;
+        this.nombre = nombre;
     }
 
     public Integer getIdRol() {
@@ -20,11 +20,16 @@ public class Rol {
         this.idRol = idRol;
     }
 
-    public String getNombreR() {
-        return nombreR;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreR(String NombreR) {
-        this.nombreR = NombreR;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return idRol + " - " + nombre;
     }
 }

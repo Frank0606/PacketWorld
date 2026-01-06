@@ -14,7 +14,7 @@ public class Colaborador {
     private String nombreRol;
     private int idSucursal;
     private String nombreSucursal;
-    private int idUnidad;
+    private Integer idUnidad;
     private byte[] fotografia;
     private String numeroLicencia;
     private String fechaAlta;
@@ -22,7 +22,10 @@ public class Colaborador {
     public Colaborador() {
     }
 
-    public Colaborador(int idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, String curp, String correo, String numeroPersonal, String contrasena, int idRol, String nombreRol, int idSucursal, String nombreSucursal, int idUnidad, byte[] fotografia, String numeroLicencia, String fechaAlta) {
+    public Colaborador(int idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, 
+            String curp, String correo, String numeroPersonal, String contrasena, int idRol, 
+            String nombreRol, Integer idSucursal, String nombreSucursal, int idUnidad, byte[] fotografia, 
+            String numeroLicencia, String fechaAlta) {
         this.idColaborador = idColaborador;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -137,11 +140,11 @@ public class Colaborador {
         this.nombreSucursal = nombreSucursal;
     }
 
-    public int getIdUnidad() {
+    public Integer getIdUnidad() {
         return idUnidad;
     }
 
-    public void setIdUnidad(int idUnidad) {
+    public void setIdUnidad(Integer idUnidad) {
         this.idUnidad = idUnidad;
     }
 

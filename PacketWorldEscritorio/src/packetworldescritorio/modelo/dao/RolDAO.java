@@ -13,7 +13,7 @@ import java.util.List;
 public class RolDAO {
     public static List<Rol> obtenerRol(){
         List<Rol> roles = null;
-        String url = Constantes.URL_WS + "roles/obtener-todos";
+        String url = Constantes.URL_WS + "rol/obtener-todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
         
         if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){

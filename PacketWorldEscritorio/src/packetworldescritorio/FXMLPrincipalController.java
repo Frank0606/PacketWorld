@@ -42,7 +42,7 @@ public class FXMLPrincipalController implements Initializable {
 
     private void cerrarSesion() {
         Alertas.mostrarAlertaSimple("Cerrar sesión", "¿Estas seguro de cerrar sesión y salir?", Alert.AlertType.CONFIRMATION);
-        Funciones.cargarStage("/clienteescritorio/FXMLInicioSesion.fxml", (Stage) btnPaquetes.getScene().getWindow());
+        Funciones.cargarStage("/packetworldescritorio/FXMLInicioSesion.fxml", (Stage) btnPaquetes.getScene().getWindow());
     }
 
     public void setNoPersonal(String noPersonal) {

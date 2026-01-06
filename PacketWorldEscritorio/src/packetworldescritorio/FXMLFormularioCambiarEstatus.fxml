@@ -28,17 +28,17 @@
             </font>
         </Label>
         <ComboBox fx:id="cbEstadoNuevo" layoutX="620.0" layoutY="251.0" prefWidth="200.0" />
-        <Label fx:id="labelErrorEstadoNuevo" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="620.0" layoutY="291.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#850303">
+        <Label fx:id="labelErrorEstadoNuevo" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="620.0" layoutY="291.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Label>
-        <Button fx:id="btnAsignar" layoutX="348.0" layoutY="340.0" onAction="#btnCambiar" style="-fx-background-color: #850303; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cambiar" textFill="WHITE">
+        <Button fx:id="btnAsignar" layoutX="348.0" layoutY="340.0" onAction="#btnCambiar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cambiar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-      <Button fx:id="btnCancelar" layoutX="465.0" layoutY="340.0" onAction="#btnCancelar" style="-fx-background-color: #850303; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
+      <Button fx:id="btnCancelar" layoutX="465.0" layoutY="340.0" onAction="#btnCancelar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>

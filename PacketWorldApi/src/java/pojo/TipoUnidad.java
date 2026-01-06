@@ -4,7 +4,6 @@ public class TipoUnidad {
 
     private int idTipoUnidad;
     private String nombre;
-    private String descripcion;
 
     public TipoUnidad() {
     }
@@ -23,13 +22,5 @@ public class TipoUnidad {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 }

@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="packetworldescritorio.FXMLPrincipalController">
    <children>
-      <HBox prefHeight="120.0" prefWidth="1200.0" style="-fx-background-color: #850303;">
+      <HBox prefHeight="120.0" prefWidth="1200.0" style="-fx-background-color: #BC9E82;">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="120.0" prefWidth="491.0" style="-fx-background-color: #BC9E82;" text="PacketWorld" textAlignment="CENTER" textFill="WHITE">
                <font>

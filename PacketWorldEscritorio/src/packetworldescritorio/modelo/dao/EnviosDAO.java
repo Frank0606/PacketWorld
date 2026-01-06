@@ -14,7 +14,7 @@ public class EnviosDAO {
 
     public static List<Envio> obtenerEnvios() {
         List<Envio> envios = null;
-        String url = Constantes.URL_WS + "envio/todos";
+        String url = Constantes.URL_WS + "envio/obtener-todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
@@ -32,7 +32,7 @@ public class EnviosDAO {
 
     public static Mensaje agregarEnvio(Envio envio) {
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "envio/agregar";
+        String url = Constantes.URL_WS + "envio/registrar";
         Gson gson = new Gson();
         try {
             String parametros = gson.toJson(envio);
@@ -52,7 +52,7 @@ public class EnviosDAO {
 
     public static Mensaje actualizarEnvio(Envio envio) {
         Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "envio/actualizar";
+        String url = Constantes.URL_WS + "envio/editar";
         Gson gson = new Gson();
         try {
             String parametros = gson.toJson(envio);

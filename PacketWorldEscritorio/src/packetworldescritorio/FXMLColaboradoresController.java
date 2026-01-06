@@ -10,6 +10,7 @@ import packetworldescritorio.utilidades.Funciones;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import static packetworldescritorio.utilidades.Alertas.mostrarAlertaConfirmacion;
 
 public class FXMLColaboradoresController implements Initializable {
 
@@ -46,9 +48,9 @@ public class FXMLColaboradoresController implements Initializable {
     @FXML
     private TableColumn colNoPersonal;
     @FXML
-    private TableColumn colNombre;
+    private TableColumn<Colaborador, String> colNombre;
     @FXML
-    private TableColumn colApellidoPaterno;
+    private TableColumn colNombreSucursal;
     @FXML
     private TableColumn colCurp;
     @FXML
@@ -72,33 +74,41 @@ public class FXMLColaboradoresController implements Initializable {
     }
 
     private void eliminarColaborador(Colaborador colaborador) {
-        if (colaborador.getIdRol() == 3) { // Solo verificar si es un conductor
-            if (colaborador.getIdUnidad() == 0) {
-                for (Envio envio : envios) {
-                    if (envio.getIdColaborador() == colaborador.getIdColaborador()) {
+        boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                "¿Está seguro de que desea eliminar este colaborador?");
+        if (confirmado) {
+            confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                    "¿Realmente está seguro de que desea eliminar este colaborador?");
+            if (confirmado) {
+                if (colaborador.getIdRol() == 3) {
+                    if (colaborador.getIdUnidad() == null || colaborador.getIdUnidad() == 0) {
+                        for (Envio envio : envios) {
+                            if (envio.getIdColaborador() == colaborador.getIdColaborador()) {
+                                Alertas.mostrarAlertaSimple("Error al eliminar", "No se puede eliminar a un conductor que "
+                                        + "tenga envíos asignados. Elimine los envíos primero.", Alert.AlertType.ERROR);
+                                return;
+                            }
+                        }
+                        Mensaje msj = ColaboradoresDAO.eliminarColaborador(colaborador.getNumeroPersonal());
+                        if (!msj.isError()) {
+                            Alertas.mostrarAlertaSimple("Colaborador eliminado", "El colaborador ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
+                            cargarInformacion();
+                        } else {
+                            Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el colaborador, intente nuevamente.", Alert.AlertType.WARNING);
+                        }
+                    } else {
                         Alertas.mostrarAlertaSimple("Error al eliminar", "No se puede eliminar a un conductor que "
-                                + "tenga envíos asignados. Elimine los envíos primero.", Alert.AlertType.ERROR);
-                        return;
+                                + "tenga una unidad asignada. Libere la unidad primero.", Alert.AlertType.ERROR);
+                    }
+                } else {
+                    Mensaje msj = ColaboradoresDAO.eliminarColaborador(colaborador.getNumeroPersonal());
+                    if (!msj.isError()) {
+                        Alertas.mostrarAlertaSimple("Colaborador eliminado", "El colaborador ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
+                        cargarInformacion();
+                    } else {
+                        Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el colaborador, intente nuevamente.", Alert.AlertType.WARNING);
                     }
                 }
-                Mensaje msj = ColaboradoresDAO.eliminarColaborador(colaborador.getNumeroPersonal());
-                if (!msj.isError()) {
-                    Alertas.mostrarAlertaSimple("Colaborador eliminado", "El colaborador ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
-                    cargarInformacion();
-                } else {
-                    Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el colaborador, intente nuevamente.", Alert.AlertType.WARNING);
-                }
-            } else {
-                Alertas.mostrarAlertaSimple("Error al eliminar", "No se puede eliminar a un conductor que "
-                        + "tenga una unidad asignada. Libere la unidad primero.", Alert.AlertType.ERROR);
-            }
-        } else {
-            Mensaje msj = ColaboradoresDAO.eliminarColaborador(colaborador.getNumeroPersonal());
-            if (!msj.isError()) {
-                Alertas.mostrarAlertaSimple("Colaborador eliminado", "El colaborador ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
-                cargarInformacion();
-            } else {
-                Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el colaborador, intente nuevamente.", Alert.AlertType.WARNING);
             }
         }
     }
@@ -108,7 +118,7 @@ public class FXMLColaboradoresController implements Initializable {
         if (envios != null && !envios.isEmpty()) {
             this.envios = FXCollections.observableArrayList(envios);
         } else {
-            Alertas.mostrarAlertaSimple("Error al cargar", "Lo sentiento, no se pudo obtener la informacion de Roles",
+            Alertas.mostrarAlertaSimple("Error al cargar", "Lo sentiento, no se pudo obtener la informacion de Envios",
                     Alert.AlertType.ERROR);
         }
     }
@@ -134,9 +144,14 @@ public class FXMLColaboradoresController implements Initializable {
     }
 
     private void configurarTabla() {
-        colNoPersonal.setCellValueFactory(new PropertyValueFactory("noPersonal"));
-        colApellidoPaterno.setCellValueFactory(new PropertyValueFactory("apellidoPaterno"));
-        colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+        colNoPersonal.setCellValueFactory(new PropertyValueFactory("numeroPersonal"));
+        colNombreSucursal.setCellValueFactory(new PropertyValueFactory("nombreSucursal"));
+        colNombre.setCellValueFactory(cellData -> {
+            Colaborador c = cellData.getValue();
+            String nombreCompleto = c.getNombre() + " " + c.getApellidoPaterno() + " " + c.getApellidoMaterno();
+            return new SimpleStringProperty(nombreCompleto);
+        });
+
         colCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
         colCurp.setCellValueFactory(new PropertyValueFactory("curp"));
         colRol.setCellValueFactory(new PropertyValueFactory("nombreRol"));
@@ -152,49 +167,35 @@ public class FXMLColaboradoresController implements Initializable {
             Alertas.mostrarAlertaSimple("Error al cargar.",
                     "Lo sentimos, por el momento no se puede cargar la información de los colaboradores, por favor, intentalo más tarde.", Alert.AlertType.ERROR);
         }
+        barraBusqueda.setText("");
     }
 
     @FXML
     private void btnBuscar(ActionEvent event) {
         if (!barraBusqueda.getText().trim().isEmpty()) {
             ObservableList<Colaborador> resultadosBusqueda = FXCollections.observableArrayList();
-            String textoBusqueda = barraBusqueda.getText().trim().toUpperCase();
+            String barraBusquedaTexto = barraBusqueda.getText().trim().toUpperCase();
+
             for (Colaborador colaborador : colaboradores) {
-                String noPersonal = colaborador.getNumeroPersonal().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
+                String noPersonal = colaborador.getNumeroPersonal().toUpperCase();
+                String nombre = colaborador.getNombre().toUpperCase();
+                String rol = colaborador.getNombreRol().toUpperCase();
+                String nombreSucursal = colaborador.getNombreSucursal().toUpperCase();
 
-                String nombre = colaborador.getNombre().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
-
-                String rol = colaborador.getNombreRol().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
-
-                String barraBusquedaTexto = barraBusqueda.getText().trim().chars().mapToObj(c -> Character.isLetter(c)
-                        ? Character.toUpperCase((char) c) : (char) c).collect(StringBuilder::new, StringBuilder::append,
-                        StringBuilder::append).toString();
-
-                if (noPersonal.startsWith(barraBusquedaTexto)) {
+                if (noPersonal.contains(barraBusquedaTexto)
+                        || nombre.contains(barraBusquedaTexto)
+                        || rol.contains(barraBusquedaTexto)
+                        || nombreSucursal.contains(barraBusquedaTexto)) {
                     resultadosBusqueda.add(colaborador);
-                } else {
-                    if (nombre.startsWith(barraBusquedaTexto)) {
-                        resultadosBusqueda.add(colaborador);
-                    } else {
-                        if (rol.startsWith(barraBusquedaTexto)) {
-                            resultadosBusqueda.add(colaborador);
-                        }
-                    }
                 }
             }
+
             if (!resultadosBusqueda.isEmpty()) {
                 tablaColaboradores.setItems(resultadosBusqueda);
             } else {
-                Alertas.mostrarAlertaSimple("No encontrado", "No se encontró ningún colaborador con el número de personal proporcionado.", Alert.AlertType.INFORMATION);
+                Alertas.mostrarAlertaSimple("No encontrado",
+                        "No se encontró ningún colaborador con el criterio proporcionado.",
+                        Alert.AlertType.INFORMATION);
                 tablaColaboradores.setItems(null);
             }
         } else {

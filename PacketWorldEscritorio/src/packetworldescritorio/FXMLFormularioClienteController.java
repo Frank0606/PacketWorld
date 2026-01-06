@@ -73,14 +73,58 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTextField(tfNumeroCasa, Pattern.compile("[a-zA-Z0-9]{0,10}"));
-        configurarTextField(tfCalle, Pattern.compile("[a-zA-Z0-9]{0,25}"));
-        configurarTextField(tfColonia, Pattern.compile("[a-zA-Z0-9]{0,25}"));
+
+        configurarTextField(tfCalle, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{0,25}"));
+        tfCalle.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfCalle.setText(primerCaracter + resto);
+            }
+        });
+
+        configurarTextField(tfColonia, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
+        tfColonia.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfColonia.setText(primerCaracter + resto);
+            }
+        });
+
         configurarTextField(tfTelefono, Pattern.compile("[0-9]{0,10}"));
+
         configurarTextField(tfCodigoPostal, Pattern.compile("[0-9]{0,5}"));
-        configurarTextField(tfNombreCliente, Pattern.compile("[a-zA-Z]{1,25}(\\s[a-zA-Z]{1,24})?"));
-        configurarTextField(tfApellidoPaterno, Pattern.compile("[a-zA-Z]{0,50}"));
-        configurarTextField(tfApellidoMaterno, Pattern.compile("[a-zA-Z]{0,50}"));
-        //configurarTextField(tfCorreoElectronico, Pattern.compile("^[a-zA-Z0-9._-]{1,25}@[a-zA-Z0-9.-]{1,25}\\.[a-zA-Z]{2,3}$"));
+
+        configurarTextField(tfNombreCliente, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
+        tfNombreCliente.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfNombreCliente.setText(primerCaracter + resto);
+            }
+        });
+
+        configurarTextField(tfApellidoPaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
+        tfApellidoPaterno.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfApellidoPaterno.setText(primerCaracter + resto);
+            }
+        });
+
+        configurarTextField(tfApellidoMaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
+        tfApellidoMaterno.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfApellidoMaterno.setText(primerCaracter + resto);
+            }
+        });
+
+        configurarTextField(tfCorreoElectronico, Pattern.compile("[a-zA-Z0-9._%+-@]{0,50}"));
+
         configurarTextField(tfContrasenia, Pattern.compile(".{0,50}"));
     }
 
@@ -159,7 +203,7 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
 
     private void cerrarVentana() {
         AnchorPane contenerdorPrincipal = (AnchorPane) tfContrasenia.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLClientes.fxml", contenerdorPrincipal);
+        Funciones.cargarVista("/packetworldescritorio/FXMLClientes.fxml", contenerdorPrincipal);
     }
 
     @FXML
@@ -180,29 +224,31 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
         labelErrorCalle.setText("");
         labelErrorNumeroCasa.setText("");
 
-        // Validar nombre del cliente
         if (tfNombreCliente.getText() == null || tfNombreCliente.getText().trim().isEmpty()
-                || tfNombreCliente.getText().length() > 50) {
-            labelErrorNombreCliente.setText("Nombre inválido");
+                || tfNombreCliente.getText().length() < 3 || tfNombreCliente.getText().length() > 50) {
+            labelErrorNombreCliente.setText("Nombre inválido (mínimo 3 letras)");
             valid = false;
         }
 
-        // Validar apellido paterno
-        if (tfApellidoPaterno.getText() == null || tfApellidoPaterno.getText().trim().isEmpty()
-                || tfApellidoPaterno.getText().length() > 50) {
-            labelErrorApellidoP.setText("Apellido Paterno inválido");
+        String apellidoP = tfApellidoPaterno.getText() != null ? tfApellidoPaterno.getText().trim() : "";
+        String apellidoM = tfApellidoMaterno.getText() != null ? tfApellidoMaterno.getText().trim() : "";
+
+        if (apellidoP.isEmpty() && apellidoM.isEmpty()) {
+            labelErrorApellidoP.setText("Debe ingresar al menos un apellido");
+            labelErrorApellidoM.setText("Debe ingresar al menos un apellido");
             valid = false;
+        } else {
+            if (!apellidoP.isEmpty() && (apellidoP.length() < 2 || apellidoP.length() > 50)) {
+                labelErrorApellidoP.setText("Apellido Paterno inválido (mínimo 2 letras)");
+                valid = false;
+            }
+            if (!apellidoM.isEmpty() && (apellidoM.length() < 2 || apellidoM.length() > 50)) {
+                labelErrorApellidoM.setText("Apellido Materno inválido (mínimo 2 letras)");
+                valid = false;
+            }
         }
 
-        // Validar apellido materno
-        if (tfApellidoMaterno.getText() == null || tfApellidoMaterno.getText().trim().isEmpty()
-                || tfApellidoMaterno.getText().length() > 50) {
-            labelErrorApellidoM.setText("Apellido Materno inválido");
-            valid = false;
-        }
-
-        // Validar correo electrónico
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,3}$";
+        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$";
         if (tfCorreoElectronico.getText() == null || tfCorreoElectronico.getText().trim().isEmpty()
                 || tfCorreoElectronico.getText().length() > 50
                 || !tfCorreoElectronico.getText().matches(emailPattern)) {
@@ -210,42 +256,36 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
             valid = false;
         }
 
-        // Validar contraseña
         if (tfContrasenia.getText() == null || tfContrasenia.getText().trim().isEmpty()
                 || tfContrasenia.getText().length() > 50) {
             labelErrorContrasenia.setText("Contraseña inválida");
             valid = false;
         }
 
-        // Validar colonia
         if (tfColonia.getText() == null || tfColonia.getText().trim().isEmpty()
-                || tfColonia.getText().length() > 25) {
-            labelErrorColonia.setText("Colonia inválida");
+                || tfColonia.getText().length() < 2 || tfColonia.getText().length() > 25) {
+            labelErrorColonia.setText("Colonia inválida (mínimo 2 letras)");
             valid = false;
         }
 
-        // Validar teléfono
         if (tfTelefono.getText() == null || tfTelefono.getText().trim().isEmpty()
                 || tfTelefono.getText().length() != 10) {
-            labelErrorTelefono.setText("Teléfono inválido");
+            labelErrorTelefono.setText("Teléfono inválido (debe tener 10 dígitos)");
             valid = false;
         }
 
-        // Validar código postal
         if (tfCodigoPostal.getText() == null || tfCodigoPostal.getText().trim().isEmpty()
                 || tfCodigoPostal.getText().length() != 5) {
-            labelErrorCP.setText("Código Postal inválido");
+            labelErrorCP.setText("Código Postal inválido (debe tener 5 dígitos)");
             valid = false;
         }
 
-        // Validar calle
         if (tfCalle.getText() == null || tfCalle.getText().trim().isEmpty()
-                || tfCalle.getText().length() > 25) {
-            labelErrorCalle.setText("Calle inválida");
+                || tfCalle.getText().length() < 2 || tfCalle.getText().length() > 25) {
+            labelErrorCalle.setText("Calle inválida (mínimo 2 letras)");
             valid = false;
         }
 
-        // Validar número de casa
         if (tfNumeroCasa.getText() == null || tfNumeroCasa.getText().trim().isEmpty()
                 || tfNumeroCasa.getText().length() > 10) {
             labelErrorNumeroCasa.setText("Número de casa inválido");

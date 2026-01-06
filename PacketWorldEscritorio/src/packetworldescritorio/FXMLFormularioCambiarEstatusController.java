@@ -115,7 +115,7 @@ public class FXMLFormularioCambiarEstatusController implements Initializable, Co
 
     private void cerrarVentana() {
         AnchorPane contenerdorPrincipal = (AnchorPane) cbEstadoNuevo.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLEnvios.fxml", contenerdorPrincipal);
+        Funciones.cargarVista("/packetworldescritorio/FXMLEnvios.fxml", contenerdorPrincipal);
     }
 
     @Override

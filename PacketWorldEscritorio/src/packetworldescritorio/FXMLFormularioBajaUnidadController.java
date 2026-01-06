@@ -107,7 +107,7 @@ public class FXMLFormularioBajaUnidadController implements Initializable, Contro
 
     private void cerrarVentana() {
         AnchorPane contenerdorPrincipal = (AnchorPane) labelID.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLUnidades.fxml", contenerdorPrincipal);
+        Funciones.cargarVista("/packetworldescritorio/FXMLUnidades.fxml", contenerdorPrincipal);
     }
 
     @Override

@@ -37,8 +37,9 @@ public class FXMLInicioSesionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarTextField(tfNoPersonal, Pattern.compile("[EMP0-9]{0,6}"));
-        configurarTextField(tfContrasena, Pattern.compile(".{0,100}"));
+        configurarTextField(tfNoPersonal, Pattern.compile("[empEMP0-9]{0,6}"));
+        tfNoPersonal.textProperty().addListener((obs, old, neu) -> tfNoPersonal.setText(neu.toUpperCase()));
+        configurarTextField(tfContrasena, Pattern.compile(".{0,50}"));
     }
 
     private void configurarTextField(TextField textField, Pattern pattern) {

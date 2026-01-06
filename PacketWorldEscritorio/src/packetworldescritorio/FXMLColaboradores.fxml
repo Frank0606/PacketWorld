@@ -18,7 +18,7 @@
          <columns>
             <TableColumn fx:id="colNoPersonal" prefWidth="75.0" text="No. de personal" />
             <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
-            <TableColumn fx:id="colApellidoPaterno" prefWidth="75.0" text="Apellido Paterno " />
+            <TableColumn fx:id="colNombreSucursal" prefWidth="75.0" text="Sucursal" />
             <TableColumn fx:id="colCorreo" prefWidth="75.0" text="Correo electrónico" />
             <TableColumn fx:id="colCurp" prefWidth="75.0" text="CURP" />
             <TableColumn fx:id="colRol" prefWidth="75.0" text="Rol" />

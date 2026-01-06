@@ -57,12 +57,12 @@
                   <Font name="Candara Bold" size="18.0" />
                </font>
             </Button>
-            <Label fx:id="labelErrorNoPersonal" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="188.0" layoutY="364.0" prefHeight="21.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#850303" underline="true">
+            <Label fx:id="labelErrorNoPersonal" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="188.0" layoutY="364.0" prefHeight="21.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82" underline="true">
                <font>
                   <Font name="Candara" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="labelErrorContrasena" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="188.0" layoutY="464.0" prefHeight="21.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#850303" underline="true">
+            <Label fx:id="labelErrorContrasena" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="188.0" layoutY="464.0" prefHeight="21.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82" underline="true">
                <font>
                   <Font name="Candara" size="18.0" />
                </font>

@@ -88,7 +88,7 @@ public class FXMLFormularioAsignarUnidadController implements Initializable, Con
 
     private void cerrarVentana() {
         AnchorPane contenerdorPrincipal = (AnchorPane) cbUnidad.getScene().lookup("#contenedorPrincipal");
-        Funciones.cargarVista("/clienteescritorio/FXMLUnidades.fxml", contenerdorPrincipal);
+        Funciones.cargarVista("/packetworldescritorio/FXMLUnidades.fxml", contenerdorPrincipal);
     }
 
     private void cargarUnidades() {

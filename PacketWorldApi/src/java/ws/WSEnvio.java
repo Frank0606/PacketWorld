@@ -10,11 +10,11 @@ import pojo.Mensaje;
 
 @Path("envio")
 public class WSEnvio {
-    
+
     @GET
     @Path("obtener-todos")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Envio> obtenerTodos(){
+    public List<Envio> obtenerTodos() {
         return ImpEnvio.obtenerEnvios();
     }
 
@@ -44,11 +44,19 @@ public class WSEnvio {
         Envio envio = gson.fromJson(json, Envio.class);
         return ImpEnvio.editarEnvio(envio);
     }
-    
-    /*@GET
-    @Path("obtener-costo/{guia}")
+
+    @DELETE
+    @Path("eliminar/{guia}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Mensaje obtenerCosto(@PathParam("guia") String guia) {
-        return ImpEnvio.obtenerCosto(guia);
-    }*/
+    public Mensaje eliminar(@PathParam("guia") String guia) {
+        return ImpEnvio.eliminar(guia);
+    }
+    
+    @GET
+    @Path("guia-direccion/{guia}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Envio obtenerEnvioGuiaDireccion(@PathParam("guia") String guia) {
+        return ImpEnvio.obtenerEnvioGuiaDireccion(guia);
+    }
+
 }

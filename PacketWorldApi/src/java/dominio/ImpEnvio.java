@@ -58,8 +58,10 @@ public class ImpEnvio {
         float distancia = -1;
         Gson gson = new Gson();
 
+        String cpSucursal = ImpSucursal.obtenerPorId(idSucursal).getCodigoPostal();
+
         try {
-            String urlStr = "http://sublimas.com.mx:8080/calculadora/api/envios/distancia/" + idSucursal + "," + cpDestino;
+            String urlStr = "http://sublimas.com.mx:8080/calculadora/api/envios/distancia/" + cpSucursal + "," + cpDestino;
             URL url = new URL(urlStr);
 
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
@@ -77,7 +79,11 @@ public class ImpEnvio {
 
                 RespuestaApiKm respuesta = gson.fromJson(sb.toString(), RespuestaApiKm.class);
 
-                distancia = respuesta.getDistanciaKM();
+                if (!respuesta.isError()) {
+                    distancia = respuesta.getDistanciaKM();
+                } else {
+                    //Mostrar una alerta
+                }
             }
             conexion.disconnect();
         } catch (Exception e) {
@@ -88,7 +94,7 @@ public class ImpEnvio {
     }
 
     public static float calcularCostoKm(float distanciaKm) {
-        if(distanciaKm >= 1 && distanciaKm <= 200){
+        if (distanciaKm >= 1 && distanciaKm <= 200) {
             return distanciaKm * 4;
         } else if (distanciaKm >= 201 && distanciaKm <= 500) {
             return distanciaKm * 3;
@@ -180,23 +186,20 @@ public class ImpEnvio {
         return msj;
     }
 
-    /*public static Mensaje obtenerCosto(String guia) {
-        Mensaje msj = new Mensaje();
+    public static Envio obtenerEnvioGuiaDireccion(String guia) {
         SqlSession conn = MybatisUtil.obtenerConexion();
-
         if (conn != null) {
             try {
-                conn.update("EnvioMapper.editar", envio);
-                conn.commit();
-                msj.setError(false);
-                msj.setMensaje("Envío actualizado correctamente.");
-            } catch (Exception e) {
-                msj.setError(true);
-                msj.setMensaje(e.getMessage());
+                return conn.selectOne("EnvioMapper.obtenerEnvioGuiaDireccion", guia);
             } finally {
                 conn.close();
             }
         }
+        return null;
+    }
+
+    public static Mensaje eliminar(String numeroGuia) {
+        Mensaje msj = new Mensaje();
         return msj;
-    }*/
+    }
 }

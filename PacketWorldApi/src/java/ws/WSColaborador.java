@@ -23,14 +23,14 @@ public class WSColaborador {
 
     @GET
     @Path("obtener-todos")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Colaborador> obtenerTodos() {
         return ImpColaborador.obtenerColaboradores();
     }
 
     @GET
     @Path("buscar/numero-personal/{numeroPersonal}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Colaborador obtenerPorNumeroPersonal(@PathParam("numeroPersonal") String numeroPersonal) {
 
         if (numeroPersonal == null || numeroPersonal.trim().isEmpty()) {
@@ -48,7 +48,7 @@ public class WSColaborador {
     
     @GET
     @Path("buscar/id/{idColaborador}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Colaborador obtenerPorId(@PathParam("idColaborador") int idColaborador) {
 
         if (idColaborador == 0 || idColaborador == -1) {
@@ -66,7 +66,7 @@ public class WSColaborador {
 
     @GET
     @Path("buscar/nombre/{nombre}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Colaborador> buscarPorNombre(@PathParam("nombre") String nombre) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
@@ -78,7 +78,7 @@ public class WSColaborador {
 
     @GET
     @Path("buscar/rol/{idRol}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public List<Colaborador> buscarPorRol(@PathParam("idRol") int idRol) {
 
         if (idRol <= 0) {
@@ -91,7 +91,7 @@ public class WSColaborador {
     @POST
     @Path("registrar")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Mensaje registrar(String json) {
         try {
             Colaborador col = gson.fromJson(json, Colaborador.class);
@@ -104,7 +104,7 @@ public class WSColaborador {
     @PUT
     @Path("editar")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Mensaje editar(String json) {
         try {
             Colaborador col = gson.fromJson(json, Colaborador.class);
@@ -116,7 +116,7 @@ public class WSColaborador {
 
     @DELETE
     @Path("eliminar/{numeroPersonal}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Mensaje eliminar(@PathParam("numeroPersonal") String numeroPersonal) {
 
         if (numeroPersonal == null || numeroPersonal.trim().isEmpty()) {
