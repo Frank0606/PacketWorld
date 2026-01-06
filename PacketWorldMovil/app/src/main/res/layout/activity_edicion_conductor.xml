@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EdicionConductorActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_titulo_edicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perfil del Conductor"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Sección de Foto -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_foto"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="60dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_titulo_edicion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_foto_conductor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/ib_actualizar_foto"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_background_white"
+            android:src="@mipmap/ic_action_editar"
+            android:padding="8dp"
+            android:elevation="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/cv_foto"
+            app:layout_constraintEnd_toEndOf="@id/cv_foto" />
+
+        <!-- Campos No Editables -->
+        <LinearLayout
+            android:id="@+id/ll_info_fija"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/cv_foto">
+
+            <TextView
+                android:id="@+id/tv_numero_personal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Número Personal: "
+                android:textStyle="bold"
+                android:padding="4dp" />
+
+            <TextView
+                android:id="@+id/tv_rol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rol: "
+                android:textStyle="bold"
+                android:padding="4dp" />
+
+            <TextView
+                android:id="@+id/tv_sucursal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sucursal: "
+                android:textStyle="bold"
+                android:padding="4dp" />
+        </LinearLayout>
+
+        <!-- Campos Editables -->
+        <EditText
+            android:id="@+id/et_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/ll_info_fija" />
+
+        <EditText
+            android:id="@+id/et_apellido_paterno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Apellido Paterno"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/et_nombre" />
+
+        <EditText
+            android:id="@+id/et_apellido_materno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Apellido Materno"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/et_apellido_paterno" />
+
+        <EditText
+            android:id="@+id/et_curp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="CURP"
+            android:inputType="textCapCharacters"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/et_apellido_materno" />
+
+        <EditText
+            android:id="@+id/et_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo Electrónico"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/et_curp" />
+
+        <EditText
+            android:id="@+id/et_licencia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Número de Licencia"
+            android:inputType="text"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/et_correo" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edit_text"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/et_licencia" />
+
+        <Button
+            android:id="@+id/btn_actualizar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actualizar Perfil"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/color_boton_fondo"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/et_password"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
