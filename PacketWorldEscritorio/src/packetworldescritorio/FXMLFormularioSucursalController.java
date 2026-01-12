@@ -91,7 +91,7 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
                 tfCalle.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfNombreCorto, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{0,50}"));
+        configurarTextField(tfNombreCorto, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{9,50}"));
         tfNombreCorto.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -314,6 +314,7 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
             cbEstatus.setVisible(false);
             tfEstatus.setDisable(false);
             tfEstatus.setText("Activa");
+            tfNombreCorto.setText("Sucursal ");
             crearCodigo();
         }
     }
