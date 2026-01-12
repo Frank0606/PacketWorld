@@ -16,7 +16,6 @@
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </padding>
          <columns>
-            <TableColumn fx:id="colIdPaquete" prefWidth="75.0" text="ID Paquete" />
             <TableColumn fx:id="colDescripcion" prefWidth="75.0" text="Descripción" />
             <TableColumn fx:id="colPeso" prefWidth="75.0" text="Peso" />
             <TableColumn fx:id="colProfundidad" prefWidth="75.0" text="Profundidad" />

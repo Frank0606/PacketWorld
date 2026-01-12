@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.ConductorUnidadDAO;
 
 public class FXMLFormularioAsignarUnidadController implements Initializable, ControladorPrincipal<Unidad> {
 
@@ -52,6 +53,7 @@ public class FXMLFormularioAsignarUnidadController implements Initializable, Con
 
     @FXML
     private void btnAsignar(ActionEvent event) {
+        Mensaje msj = new Mensaje();
         if (verificarCampos()) {
             if (this.unidad == null) {
                 this.unidad = new Unidad();
@@ -61,15 +63,21 @@ public class FXMLFormularioAsignarUnidadController implements Initializable, Con
                 this.colaborador = new Colaborador();
             }
 
-            String noPersonalColaborador = cbColaborador.getSelectionModel().getSelectedItem().getNumeroPersonal();
+            Colaborador seleccionado = cbColaborador.getSelectionModel().getSelectedItem();
             Integer idUnidad = cbUnidad.getSelectionModel().getSelectedItem().getIdUnidad();
 
-            this.colaborador.setNumeroPersonal(noPersonalColaborador);
-            this.colaborador.setIdUnidad(idUnidad);
+            if (seleccionado.getNumeroPersonal().equalsIgnoreCase("Liberar")) {
+                Colaborador col = ColaboradoresDAO.obtenerColaboradorNumeroPersonal(unidad.getNumeroPersonal());
+                msj = ConductorUnidadDAO.liberarUnidad(col.getIdColaborador());
+            } else {
+                this.colaborador.setIdColaborador(seleccionado.getIdColaborador());
+                this.colaborador.setIdUnidad(idUnidad);
+                this.colaborador.setNumeroPersonal(seleccionado.getNumeroPersonal());
+                msj = ConductorUnidadDAO.asignarUnidad(this.colaborador);
+            }
 
-            Mensaje msj = ColaboradoresDAO.asignarUnidad(this.colaborador);
             if (!msj.isError()) {
-                Alertas.mostrarAlertaSimple("Asignación exitosa.", msj.getMensaje(), Alert.AlertType.INFORMATION);
+                Alertas.mostrarAlertaSimple("Operación exitosa.", msj.getMensaje(), Alert.AlertType.INFORMATION);
                 cerrarVentana();
             } else {
                 Alertas.mostrarAlertaSimple("Datos incorrectos", "Ocurrió un error con los datos. " + msj.getMensaje(), Alert.AlertType.WARNING);
@@ -110,7 +118,8 @@ public class FXMLFormularioAsignarUnidadController implements Initializable, Con
             Colaborador liberar = new Colaborador();
             liberar.setNumeroPersonal("Liberar");
             liberar.setNombre("Liberar");
-            liberar.setApellidoPaterno("Unidad");
+            liberar.setApellidoPaterno("Liberar");
+            liberar.setApellidoMaterno("Unidad");
             conductores.add(liberar);
 
             for (Colaborador colaborador : colaboradores) {

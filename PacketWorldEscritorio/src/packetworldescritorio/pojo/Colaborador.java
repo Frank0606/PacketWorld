@@ -24,7 +24,7 @@ public class Colaborador {
 
     public Colaborador(int idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, 
             String curp, String correo, String numeroPersonal, String contrasena, int idRol, 
-            String nombreRol, Integer idSucursal, String nombreSucursal, int idUnidad, byte[] fotografia, 
+            String nombreRol, Integer idSucursal, String nombreSucursal, Integer idUnidad, byte[] fotografia, 
             String numeroLicencia, String fechaAlta) {
         this.idColaborador = idColaborador;
         this.nombre = nombre;
@@ -174,6 +174,6 @@ public class Colaborador {
 
     @Override
     public String toString() {
-        return "(" + idRol + ") " + nombreRol;
+        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
     }
 }

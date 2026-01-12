@@ -21,14 +21,27 @@
 
     <!-- Registrar asignación -->
     <insert id="registrarAsignacion" parameterType="pojo.ConductorUnidad">
-        INSERT INTO ConductorUnidad(idConductor, idUnidad)
-        VALUES(#{idConductor}, #{idUnidad});
+        INSERT INTO ConductorUnidad(idConductor, idUnidad, numeroPersonal)
+        VALUES(#{idConductor}, #{idUnidad}, #{numeroPersonal});
     </insert>
+    <update id="actualizarUnidadConductor" parameterType="pojo.ConductorUnidad">
+        UPDATE Unidad
+        SET numeroPersonal = #{numeroPersonal}
+        WHERE idUnidad = #{idUnidad};
+    </update>
+
 
     <!-- Eliminar asignación (liberar unidad) -->
     <delete id="eliminarAsignacion" parameterType="int">
         DELETE FROM ConductorUnidad
         WHERE idConductor = #{idConductor};
     </delete>
-
+    <update id="limpiarNumeroPersonalUnidad" parameterType="int">
+        UPDATE Unidad
+        SET numeroPersonal = NULL
+        WHERE idUnidad = (
+            SELECT idUnidad FROM ConductorUnidad WHERE idConductor = #{idConductor}
+        );
+    </update>
+    
 </mapper>

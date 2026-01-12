@@ -75,8 +75,7 @@ public class UnidadesDAO {
         String url = Constantes.URL_WS + "unidad/eliminar/" + vin;
         Gson gson = new Gson();
         try {
-            String parametros = gson.toJson(vin);
-            RespuestaHTTP respuesta = ConexionWS.peticionDELETEJSON(url, parametros);
+            RespuestaHTTP respuesta = ConexionWS.peticionDELETE(url);
             if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
                 msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
             } else {

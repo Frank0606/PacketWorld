@@ -11,16 +11,16 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 public class BajasUnidadDAO {
-    
+
     public static List<BajaUnidad> obtenerBajaUnidads() {
         List<BajaUnidad> bajaUnidad = null;
         String url = Constantes.URL_WS + "baja-unidad/todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
-        
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             try {
-                Type tipoListaBajaUnidad = new TypeToken<List<BajaUnidad>>(){
+                Type tipoListaBajaUnidad = new TypeToken<List<BajaUnidad>>() {
                 }.getType();
                 bajaUnidad = gson.fromJson(respuesta.getContenido(), tipoListaBajaUnidad);
             } catch (Exception e) {
@@ -29,8 +29,8 @@ public class BajasUnidadDAO {
         }
         return bajaUnidad;
     }
-    
-     public static Mensaje agregarBajaUnidad(BajaUnidad bajaUnidad) {
+
+    public static Mensaje agregarBajaUnidad(BajaUnidad bajaUnidad) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "baja-unidad/registrar";
         Gson gson = new Gson();

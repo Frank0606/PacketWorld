@@ -69,6 +69,14 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
     private TextField tfNumeroCasa;
     @FXML
     private Label labelErrorNumeroCasa;
+    @FXML
+    private Label labelErrorCiudad;
+    @FXML
+    private TextField tfCiudad;
+    @FXML
+    private Label labelErrorEstado;
+    @FXML
+    private TextField tfEstado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -122,6 +130,24 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
                 tfApellidoMaterno.setText(primerCaracter + resto);
             }
         });
+        
+        configurarTextField(tfCiudad, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
+        tfCiudad.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfCiudad.setText(primerCaracter + resto);
+            }
+        });
+        
+        configurarTextField(tfEstado, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
+        tfEstado.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfEstado.setText(primerCaracter + resto);
+            }
+        });
 
         configurarTextField(tfCorreoElectronico, Pattern.compile("[a-zA-Z0-9._%+-@]{0,50}"));
 
@@ -150,6 +176,8 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
         tfColonia.setText(this.cliente.getColonia());
         tfTelefono.setText(this.cliente.getTelefono());
         tfCodigoPostal.setText(this.cliente.getCodigoPostal());
+        tfCiudad.setText(this.cliente.getCiudad());
+        tfEstado.setText(this.cliente.getEstado());
         tfCalle.setText(this.cliente.getCalle());
         tfNumeroCasa.setText(this.cliente.getNumero());
     }
@@ -168,6 +196,8 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
             cliente.setColonia(tfColonia.getText());
             cliente.setTelefono(tfTelefono.getText());
             cliente.setCodigoPostal(tfCodigoPostal.getText());
+            cliente.setCiudad(tfCiudad.getText());
+            cliente.setEstado(tfEstado.getText());
             cliente.setCalle(tfCalle.getText());
             cliente.setNumero(tfNumeroCasa.getText());
             if (btnAgregar.getText().equals("Editar")) {
@@ -221,12 +251,14 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
         labelErrorColonia.setText("");
         labelErrorTelefono.setText("");
         labelErrorCP.setText("");
+        labelErrorCiudad.setText("");
+        labelErrorEstado.setText("");
         labelErrorCalle.setText("");
         labelErrorNumeroCasa.setText("");
 
         if (tfNombreCliente.getText() == null || tfNombreCliente.getText().trim().isEmpty()
                 || tfNombreCliente.getText().length() < 3 || tfNombreCliente.getText().length() > 50) {
-            labelErrorNombreCliente.setText("Nombre inválido (mínimo 3 letras)");
+            labelErrorNombreCliente.setText("Nombre inválido");
             valid = false;
         }
 
@@ -239,11 +271,11 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
             valid = false;
         } else {
             if (!apellidoP.isEmpty() && (apellidoP.length() < 2 || apellidoP.length() > 50)) {
-                labelErrorApellidoP.setText("Apellido Paterno inválido (mínimo 2 letras)");
+                labelErrorApellidoP.setText("Apellido Paterno inválido");
                 valid = false;
             }
             if (!apellidoM.isEmpty() && (apellidoM.length() < 2 || apellidoM.length() > 50)) {
-                labelErrorApellidoM.setText("Apellido Materno inválido (mínimo 2 letras)");
+                labelErrorApellidoM.setText("Apellido Materno inválido");
                 valid = false;
             }
         }
@@ -264,25 +296,37 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
 
         if (tfColonia.getText() == null || tfColonia.getText().trim().isEmpty()
                 || tfColonia.getText().length() < 2 || tfColonia.getText().length() > 25) {
-            labelErrorColonia.setText("Colonia inválida (mínimo 2 letras)");
+            labelErrorColonia.setText("Colonia inválida");
             valid = false;
         }
 
         if (tfTelefono.getText() == null || tfTelefono.getText().trim().isEmpty()
                 || tfTelefono.getText().length() != 10) {
-            labelErrorTelefono.setText("Teléfono inválido (debe tener 10 dígitos)");
+            labelErrorTelefono.setText("Teléfono inválido");
             valid = false;
         }
 
         if (tfCodigoPostal.getText() == null || tfCodigoPostal.getText().trim().isEmpty()
                 || tfCodigoPostal.getText().length() != 5) {
-            labelErrorCP.setText("Código Postal inválido (debe tener 5 dígitos)");
+            labelErrorCP.setText("Código Postal inválido");
+            valid = false;
+        }
+        
+        if (tfCiudad.getText() == null || tfCiudad.getText().trim().isEmpty()
+                || tfCiudad.getText().length() < 3 || tfColonia.getText().length() > 25) {
+            labelErrorCiudad.setText("Ciudad inválida");
+            valid = false;
+        }
+        
+        if (tfEstado.getText() == null || tfEstado.getText().trim().isEmpty()
+                || tfEstado.getText().length() < 3 || tfEstado.getText().length() > 25) {
+            labelErrorEstado.setText("Estado inválido");
             valid = false;
         }
 
         if (tfCalle.getText() == null || tfCalle.getText().trim().isEmpty()
                 || tfCalle.getText().length() < 2 || tfCalle.getText().length() > 25) {
-            labelErrorCalle.setText("Calle inválida (mínimo 2 letras)");
+            labelErrorCalle.setText("Calle inválida");
             valid = false;
         }
 

@@ -22,13 +22,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import static packetworldescritorio.utilidades.Alertas.mostrarAlertaConfirmacion;
 
 public class FXMLPaquetesController implements Initializable {
 
     @FXML
     private TableView<Paquete> tablaPaquetes;
-    @FXML
-    private TableColumn colIdPaquete;
     @FXML
     private TableColumn colDescripcion;
     @FXML
@@ -74,7 +73,6 @@ public class FXMLPaquetesController implements Initializable {
     }
 
     private void configurarTabla() {
-        colIdPaquete.setCellValueFactory(new PropertyValueFactory<>("idPaquete"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         colPeso.setCellValueFactory(new PropertyValueFactory<>("peso"));
         colProfundidad.setCellValueFactory(new PropertyValueFactory<>("profundidad"));
@@ -157,12 +155,20 @@ public class FXMLPaquetesController implements Initializable {
     }
 
     private void eliminarPaquete(int idPaquete) {
-        Mensaje msj = PaquetesDAO.eliminarPaquete(idPaquete);
-        if (!msj.isError()) {
-            Alertas.mostrarAlertaSimple("Paquete eliminado", "El paquete ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
-            cargarInformacion();
-        } else {
-            Alertas.mostrarAlertaSimple("Error al eliminar.", msj.getMensaje(), Alert.AlertType.WARNING);
+        boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                "¿Está seguro de que desea eliminar este paquete?");
+        if (confirmado) {
+            confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                    "¿Realmente está seguro de que desea eliminar este paquete?");
+            if (confirmado) {
+                Mensaje msj = PaquetesDAO.eliminarPaquete(idPaquete);
+                if (!msj.isError()) {
+                    Alertas.mostrarAlertaSimple("Paquete eliminado", "El paquete ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
+                    cargarInformacion();
+                } else {
+                    Alertas.mostrarAlertaSimple("Error al eliminar.", msj.getMensaje(), Alert.AlertType.WARNING);
+                }
+            }
         }
     }
 }

@@ -177,5 +177,35 @@
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Label>
+      <Label fx:id="labelErrorCiudad" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="63.0" layoutY="458.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="63.0" layoutY="407.0" text="Ciudad:">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfCiudad" layoutX="63.0" layoutY="429.0">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </TextField>
+      <Label fx:id="labelErrorEstado" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="652.0" layoutY="458.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="652.0" layoutY="407.0" text="Estado:">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfEstado" layoutX="652.0" layoutY="429.0">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </TextField>
     </children>
 </AnchorPane>

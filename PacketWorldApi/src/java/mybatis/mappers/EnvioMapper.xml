@@ -71,5 +71,22 @@
         idColaborador = #{idColaborador}
         WHERE idEnvio = #{idEnvio};
     </update>
+    
+    <update id="completarCostos" parameterType="pojo.Envio">
+        UPDATE Envio
+        SET 
+        distanciaKm = #{distanciaKm},
+        costoKm = #{costoKm},
+        costoPaquetes = #{costoPaquetes},
+        costoTotal = #{costoTotal},
+        estatus = "En tránsito"
+        WHERE idEnvio = #{idEnvio};
+    </update>
+    
+    <!-- Eliminar envío por número de guía -->
+    <delete id="eliminarPorGuia" parameterType="string">
+        DELETE FROM Envio
+        WHERE numeroGuia = #{numeroGuia};
+    </delete>
 
 </mapper>

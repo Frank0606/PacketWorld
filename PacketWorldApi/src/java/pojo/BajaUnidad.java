@@ -1,4 +1,4 @@
-package packetworldescritorio.pojo;
+package pojo;
 
 public class BajaUnidad {
 

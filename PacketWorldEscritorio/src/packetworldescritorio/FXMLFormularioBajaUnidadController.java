@@ -9,6 +9,8 @@ import packetworldescritorio.utilidades.Alertas;
 import packetworldescritorio.utilidades.ControladorPrincipal;
 import packetworldescritorio.utilidades.Funciones;
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -58,8 +60,9 @@ public class FXMLFormularioBajaUnidadController implements Initializable, Contro
     private void btnContinuar(ActionEvent event) {
         if (verificarCampo()) {
             BajaUnidad baja = new BajaUnidad();
-            baja.setVin(unidad.getVin());
+            baja.setIdUnidad(unidad.getIdUnidad());
             baja.setMotivo(tfDescripcion.getText());
+            baja.setFechaBaja(LocalDate.now().toString());
             registrarBaja(baja);
         }
     }

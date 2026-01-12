@@ -34,6 +34,8 @@
             numero,
             colonia,
             codigoPostal,
+            ciudad, 
+            estado, 
             telefono,
             correo,
             contrasena
@@ -52,7 +54,9 @@
             calle,
             numero,
             colonia,
-            codigoPostal,
+            codigoPostal, 
+            ciudad, 
+            estado, 
             telefono,
             correo,
             contrasena
@@ -101,7 +105,9 @@
             calle,
             numero,
             colonia,
-            codigoPostal,
+            codigoPostal, 
+            ciudad, 
+            estado, 
             telefono,
             correo,
             contrasena
@@ -113,7 +119,9 @@
             #{calle},
             #{numero},
             #{colonia},
-            #{codigoPostal},
+            #{codigoPostal}, 
+            #{ciudad}, 
+            #{estado}, 
             #{telefono},
             #{correo},
             #{contrasena}
@@ -131,7 +139,9 @@
             calle = #{calle},
             numero = #{numero},
             colonia = #{colonia},
-            codigoPostal = #{codigoPostal},
+            codigoPostal = #{codigoPostal}, 
+            ciudad = #{ciudad}, 
+            estado = #{estado}, 
             telefono = #{telefono},
             correo = #{correo},
             contrasena = #{contrasena}

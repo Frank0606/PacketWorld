@@ -10,14 +10,14 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="packetworldescritorio.FXMLFormularioCambiarEstatusController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="packetworldescritorio.FXMLFormularioCambiarEstatusController">
     <children>
         <ImageView fitHeight="680.0" fitWidth="900.0" opacity="0.05" pickOnBounds="true">
             <image>
                 <Image url="@recursos/fondo_paquetes.png" />
             </image>
         </ImageView>
-        <Label layoutX="104.0" layoutY="221.0" text="Envio">
+        <Label layoutX="429.0" layoutY="118.0" text="Envio:">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
@@ -33,30 +33,40 @@
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Label>
-        <Button fx:id="btnAsignar" layoutX="348.0" layoutY="340.0" onAction="#btnCambiar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cambiar" textFill="WHITE">
+        <Button fx:id="btnAsignar" layoutX="344.0" layoutY="409.0" onAction="#btnCambiar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cambiar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-      <Button fx:id="btnCancelar" layoutX="465.0" layoutY="340.0" onAction="#btnCancelar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Button>
-      <TextField fx:id="tfEnvio" layoutX="104.0" layoutY="251.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </TextField>
-      <Label layoutX="397.0" layoutY="221.0" text="Estado actual:">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelEstadoActual" layoutX="397.0" layoutY="267.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
+        <Button fx:id="btnCancelar" layoutX="461.0" layoutY="409.0" onAction="#btnCancelar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
+        </Button>
+        <Label fx:id="tfEnvio" layoutX="344.0" layoutY="147.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="397.0" layoutY="221.0" text="Estado actual:">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelEstadoActual" layoutX="397.0" layoutY="267.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="150.0" layoutY="222.0" text="Comentario:" >
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <TextArea fx:id="taComentario" layoutX="66.0" layoutY="251.0" prefHeight="200.0" prefWidth="249.0" >
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </TextArea>
     </children>
 </AnchorPane>

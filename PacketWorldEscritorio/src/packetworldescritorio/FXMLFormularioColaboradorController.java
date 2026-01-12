@@ -57,6 +57,8 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
     private ObservableList<Rol> listaObservableRoles;
     private ObservableList<Sucursal> listaObservableSucursales;
 
+    List<Rol> roles;
+
     @FXML
     private Label labelErrorNombreColaborador;
     @FXML
@@ -92,7 +94,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         tfCURP.textProperty().addListener((obs, old, neu) -> tfCURP.setText(neu.toUpperCase()));
         configurarTextField(tfVIM, Pattern.compile("[a-zA-Z0-9]{0,9}"));
         tfVIM.textProperty().addListener((obs, old, neu) -> tfVIM.setText(neu.toUpperCase()));
-        configurarTextField(tfNombreColaborador, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,25}"));
+        configurarTextField(tfNombreColaborador, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
         tfNombreColaborador.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -172,7 +174,13 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
             colaborador.setContrasena(tfContrasenia.getText());
             colaborador.setIdRol(idRol);
             colaborador.setIdSucursal(idSucursal);
-
+            for (Rol rol : roles) {
+                if (rol.getIdRol().equals(idRol)) {
+                    colaborador.setNombreRol(rol.getNombre());
+                    break;
+                }
+            }
+            
             if (tfVIM.getText() != null && !tfVIM.getText().isEmpty()) {
                 colaborador.setNumeroLicencia(tfVIM.getText().toUpperCase());
             } else {
@@ -257,7 +265,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
 
         // Validar contraseña
         if (tfContrasenia.getText() == null || tfContrasenia.getText().trim().isEmpty()
-                || tfContrasenia.getText().length() > 50) {
+                || tfContrasenia.getText().length() > 50 || tfContrasenia.getText().length() < 8) {
             labelErrorContrasenia.setText("Contraseña inválida");
             valid = false;
         }
@@ -323,7 +331,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
     }
 
     private void cargarTiposUsuario() {
-        List<Rol> roles = RolDAO.obtenerRol();
+        roles = RolDAO.obtenerRol();
         if (roles != null && !roles.isEmpty()) {
             listaObservableRoles = FXCollections.observableArrayList(roles);
             cbRol.setItems(listaObservableRoles);

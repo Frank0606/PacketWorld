@@ -18,6 +18,7 @@
     </environments>
 
     <mappers>
+        <mapper resource="mybatis/mappers/BajaUnidadMapper.xml" />
         <mapper resource="mybatis/mappers/ClienteMapper.xml" />
         <mapper resource="mybatis/mappers/ColaboradorMapper.xml" />
         <mapper resource="mybatis/mappers/ConductorUnidadMapper.xml" />

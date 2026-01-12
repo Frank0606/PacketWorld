@@ -29,6 +29,8 @@ public class FXMLPrincipalController implements Initializable {
     private AnchorPane contenedorPrincipal;
 
     private String noPersonalColaborador;
+    @FXML
+    private Button btnSucursal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -37,6 +39,7 @@ public class FXMLPrincipalController implements Initializable {
         btnUnidades.setOnAction(e -> Funciones.cargarVista("/packetworldescritorio/FXMLUnidades.fxml", contenedorPrincipal));
         btnEnvios.setOnAction(e -> Funciones.cargarVista("/packetworldescritorio/FXMLEnvios.fxml", contenedorPrincipal, noPersonalColaborador));
         btnPaquetes.setOnAction(e -> Funciones.cargarVista("/packetworldescritorio/FXMLPaquetes.fxml", contenedorPrincipal));
+        btnSucursal.setOnAction(e -> Funciones.cargarVista("/packetworldescritorio/FXMLSucursal.fxml", contenedorPrincipal));
         btnCerrarSesion.setOnAction(e -> cerrarSesion());
     }
 

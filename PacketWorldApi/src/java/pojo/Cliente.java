@@ -10,6 +10,8 @@ public class Cliente {
     private String numero;
     private String colonia;
     private String codigoPostal;
+    private String ciudad;
+    private String estado;
     private String telefono;
     private String correo;
     private String contrasena;
@@ -18,7 +20,7 @@ public class Cliente {
     }
 
     public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno,
-            String calle, String numero, String colonia, String codigoPostal,
+            String calle, String numero, String colonia, String codigoPostal, String ciudad, String estado, 
             String telefono, String correo, String contrasena) {
         this.idCliente = idCliente;
         this.nombre = nombre;
@@ -28,12 +30,13 @@ public class Cliente {
         this.numero = numero;
         this.colonia = colonia;
         this.codigoPostal = codigoPostal;
+        this.ciudad = ciudad;
+        this.estado = estado;
         this.telefono = telefono;
         this.correo = correo;
         this.contrasena = contrasena;
     }
 
-    // getters y setters
     public Integer getIdCliente() {
         return idCliente;
     }
@@ -120,6 +123,22 @@ public class Cliente {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @Override

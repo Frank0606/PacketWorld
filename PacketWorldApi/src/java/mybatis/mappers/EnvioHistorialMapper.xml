@@ -15,5 +15,12 @@
         INSERT INTO EnvioHistorial(idEnvio, estatus, comentario, idColaborador)
         VALUES (#{idEnvio}, #{estatus}, #{comentario}, #{idColaborador});
     </insert>
+    
+    <update id="actualizarEstatusEnvio" parameterType="pojo.Envio">
+        UPDATE Envio
+        SET 
+        estatus = #{estatus}
+        WHERE idEnvio = #{idEnvio};
+    </update>
 
 </mapper>

@@ -11,16 +11,16 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 public class ClientesDAO {
-    
+
     public static List<Cliente> obtenerClientes() {
         List<Cliente> cliente = null;
         String url = Constantes.URL_WS + "cliente/obtener-todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
-        
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             try {
-                Type tipoListaCliente = new TypeToken<List<Cliente>>(){
+                Type tipoListaCliente = new TypeToken<List<Cliente>>() {
                 }.getType();
                 cliente = gson.fromJson(respuesta.getContenido(), tipoListaCliente);
             } catch (Exception e) {
@@ -29,8 +29,24 @@ public class ClientesDAO {
         }
         return cliente;
     }
-    
-     public static Mensaje agregarCliente(Cliente cliente) {
+
+    public static Cliente obtenerClientesId(int idColaborador) {
+        Cliente cliente = null;
+        String url = Constantes.URL_WS + "cliente/obtener-id/" + idColaborador;
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            try {
+                cliente = gson.fromJson(respuesta.getContenido(), Cliente.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return cliente;
+    }
+
+    public static Mensaje agregarCliente(Cliente cliente) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "cliente/registrar";
         Gson gson = new Gson();
@@ -49,7 +65,7 @@ public class ClientesDAO {
         }
         return msj;
     }
-    
+
     public static Mensaje actualizarCliente(Cliente cliente) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "cliente/editar";
@@ -69,7 +85,7 @@ public class ClientesDAO {
         }
         return msj;
     }
-    
+
     public static Mensaje eliminarCliente(String correoElectronico) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "cliente/eliminar/" + correoElectronico;

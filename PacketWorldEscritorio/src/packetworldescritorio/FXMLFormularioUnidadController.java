@@ -64,9 +64,24 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
     public void initialize(URL url, ResourceBundle rb) {
         cargarTipoUnidad();
         configurarTextField(tfMarca, Pattern.compile("[a-zA-Z]{0,25}"));
+        tfMarca.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfMarca.setText(primerCaracter + resto);
+            }
+        });
         configurarTextField(tfModelo, Pattern.compile("[a-zA-Z0-9]{0,25}"));
+        tfModelo.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null && !newValue.isEmpty()) {
+                String primerCaracter = newValue.substring(0, 1).toUpperCase();
+                String resto = newValue.substring(1);
+                tfModelo.setText(primerCaracter + resto);
+            }
+        });
         configurarTextField(tfAnio, Pattern.compile("[0-9]{0,4}"));
         configurarTextField(tfVin, Pattern.compile("[a-zA-Z0-9]{0,17}"));
+        tfVin.textProperty().addListener((obs, old, neu) -> tfVin.setText(neu.toUpperCase()));
     }
 
     private void configurarTextField(TextField textField, Pattern pattern) {
@@ -98,7 +113,9 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
             unidad.setVin(tfVin.getText().toUpperCase());
             unidad.setNoIdentificacion(noIdentificacion.toUpperCase());
             unidad.setIdTipoUnidad(idTipoUnidad);
-
+            unidad.setNumeroInterno(unidad.getAnio() + unidad.getVin().substring(0, 4));
+            unidad.setEstatus("Activa");
+            
             if (btnGuardar.getText().equals("Editar")) {
                 editarDatosUnidad();
             } else {

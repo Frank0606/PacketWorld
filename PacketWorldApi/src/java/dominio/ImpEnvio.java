@@ -35,7 +35,7 @@ public class ImpEnvio {
         return null;
     }
 
-    public static String generarGuia(List<Envio> envios) {
+    /*public static String generarGuia(List<Envio> envios) {
         int max = 0;
         for (Envio e : envios) {
             String guia = e.getNumeroGuia();
@@ -52,8 +52,7 @@ public class ImpEnvio {
 
         int siguiente = max + 1;
         return String.format("GUIA%03d", siguiente);
-    }
-
+    }*/
     public static float obtenerDistancia(int idSucursal, String cpDestino) {
         float distancia = -1;
         Gson gson = new Gson();
@@ -66,7 +65,6 @@ public class ImpEnvio {
 
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("GET");
-            conexion.setRequestProperty("Accept", "application/json");
 
             if (conexion.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(conexion.getInputStream()));
@@ -82,7 +80,7 @@ public class ImpEnvio {
                 if (!respuesta.isError()) {
                     distancia = respuesta.getDistanciaKM();
                 } else {
-                    //Mostrar una alerta
+                    distancia = -1;
                 }
             }
             conexion.disconnect();
@@ -94,7 +92,9 @@ public class ImpEnvio {
     }
 
     public static float calcularCostoKm(float distanciaKm) {
-        if (distanciaKm >= 1 && distanciaKm <= 200) {
+        if (distanciaKm < 1) {
+            return -1;
+        } else if (distanciaKm >= 1 && distanciaKm <= 200) {
             return distanciaKm * 4;
         } else if (distanciaKm >= 201 && distanciaKm <= 500) {
             return distanciaKm * 3;
@@ -110,7 +110,9 @@ public class ImpEnvio {
     public static float obtenerCostoPaquetes(int idEnvio) {
         List<Paquete> paquetes = new ArrayList<>();
         paquetes = ImpPaquete.obtenerPaquetesPorEnvio(idEnvio);
-        if (paquetes.size() == 1) {
+        if (paquetes.size() == 0) {
+            return -1;
+        } else if (paquetes.size() == 1) {
             return 0;
         } else if (paquetes.size() == 2) {
             return 50;
@@ -127,15 +129,7 @@ public class ImpEnvio {
         Mensaje msj = new Mensaje();
         SqlSession conn = MybatisUtil.obtenerConexion();
 
-        List<Envio> envios = new ArrayList<>();
-        envios = obtenerEnvios();
-
-        envio.setNumeroGuia(generarGuia(envios));
-        envio.setEstatus("En tránsito");
-        envio.setDistanciaKm(obtenerDistancia(envio.getIdSucursalOrigen(), envio.getCpDestino()));
-        envio.setCostoKm(calcularCostoKm(envio.getDistanciaKm()));
-        envio.setCostoPaquetes(obtenerCostoPaquetes(envio.getIdEnvio()));
-        envio.setCostoTotal(envio.getCostoKm() + envio.getCostoPaquetes());
+        envio.setEstatus("Pendiente");
         envio.setFechaCreacion(LocalDateTime.now().toString());
 
         if (conn != null) {
@@ -186,6 +180,53 @@ public class ImpEnvio {
         return msj;
     }
 
+    public static Mensaje completarCostos(Envio envio) {
+        Mensaje msj = new Mensaje();
+        SqlSession conn = MybatisUtil.obtenerConexion();
+
+        float distancia = obtenerDistancia(envio.getIdSucursalOrigen(), envio.getCpDestino());
+        float costoKm = calcularCostoKm(distancia);
+        float costoPaquetes = obtenerCostoPaquetes(envio.getIdEnvio());
+
+        if (costoPaquetes != -1) {
+            envio.setCostoPaquetes(costoPaquetes);
+            if (distancia != -1) {
+                envio.setDistanciaKm(distancia);
+                if (costoKm != -1) {
+                    envio.setCostoKm(costoKm);
+                } else {
+                    msj.setError(true);
+                    msj.setMensaje("Costo de distancia incorrecto.");
+                    return msj;
+                }
+            } else {
+                msj.setError(true);
+                msj.setMensaje("Distancia incorrecta.");
+                return msj;
+            }
+        } else {
+            msj.setError(true);
+            msj.setMensaje("No tiene paquetes asignados el envio.");
+            return msj;
+        }
+        envio.setCostoTotal(envio.getCostoKm() + envio.getCostoPaquetes());
+
+        if (conn != null) {
+            try {
+                conn.update("EnvioMapper.completarCostos", envio);
+                conn.commit();
+                msj.setError(false);
+                msj.setMensaje("Costos agregados correctamente.");
+            } catch (Exception e) {
+                msj.setError(true);
+                msj.setMensaje(e.getMessage());
+            } finally {
+                conn.close();
+            }
+        }
+        return msj;
+    }
+
     public static Envio obtenerEnvioGuiaDireccion(String guia) {
         SqlSession conn = MybatisUtil.obtenerConexion();
         if (conn != null) {
@@ -200,6 +241,20 @@ public class ImpEnvio {
 
     public static Mensaje eliminar(String numeroGuia) {
         Mensaje msj = new Mensaje();
+        SqlSession conn = MybatisUtil.obtenerConexion();
+        if (conn != null) {
+            try {
+                conn.delete("EnvioMapper.eliminarPorGuia", numeroGuia);
+                conn.commit();
+                msj.setError(false);
+                msj.setMensaje("Envío eliminado correctamente.");
+            } catch (Exception e) {
+                msj.setError(true);
+                msj.setMensaje("Problemas para eliminar el envio.");
+            } finally {
+                conn.close();
+            }
+        }
         return msj;
     }
 }

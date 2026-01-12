@@ -151,7 +151,6 @@ public class FXMLColaboradoresController implements Initializable {
             String nombreCompleto = c.getNombre() + " " + c.getApellidoPaterno() + " " + c.getApellidoMaterno();
             return new SimpleStringProperty(nombreCompleto);
         });
-
         colCorreo.setCellValueFactory(new PropertyValueFactory("correo"));
         colCurp.setCellValueFactory(new PropertyValueFactory("curp"));
         colRol.setCellValueFactory(new PropertyValueFactory("nombreRol"));

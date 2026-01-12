@@ -11,16 +11,16 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class ColaboradoresDAO {
-        
+
     public static List<Colaborador> obtenerColaborador() {
         List<Colaborador> colaboradores = null;
         String url = Constantes.URL_WS + "colaborador/obtener-todos";
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
-        
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             try {
-                Type tipoListaColaborador = new TypeToken<List<Colaborador>>(){
+                Type tipoListaColaborador = new TypeToken<List<Colaborador>>() {
                 }.getType();
                 colaboradores = gson.fromJson(respuesta.getContenido(), tipoListaColaborador);
             } catch (Exception e) {
@@ -29,13 +29,13 @@ public class ColaboradoresDAO {
         }
         return colaboradores;
     }
-    
+
     public static Colaborador obtenerColaboradorId(int idColaborador) {
         Colaborador colaborador = null;
         String url = Constantes.URL_WS + "colaborador/buscar/id/" + idColaborador;
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
-        
-        if(respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK){
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
             Gson gson = new Gson();
             try {
                 colaborador = gson.fromJson(respuesta.getContenido(), Colaborador.class);
@@ -46,7 +46,23 @@ public class ColaboradoresDAO {
         return colaborador;
     }
     
-     public static Mensaje agregarColaborador(Colaborador colaborador) {
+    public static Colaborador obtenerColaboradorNumeroPersonal(String numeroPersonal) {
+        Colaborador colaborador = null;
+        String url = Constantes.URL_WS + "colaborador/buscar/numero-personal/" + numeroPersonal;
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            try {
+                colaborador = gson.fromJson(respuesta.getContenido(), Colaborador.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return colaborador;
+    }
+
+    public static Mensaje agregarColaborador(Colaborador colaborador) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "colaborador/registrar";
         Gson gson = new Gson();
@@ -65,7 +81,7 @@ public class ColaboradoresDAO {
         }
         return msj;
     }
-    
+
     public static Mensaje actualizarColaborador(Colaborador colaborador) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "colaborador/editar";
@@ -85,7 +101,7 @@ public class ColaboradoresDAO {
         }
         return msj;
     }
-    
+
     public static Mensaje eliminarColaborador(String noPersonal) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "colaborador/eliminar/" + noPersonal;
@@ -105,25 +121,4 @@ public class ColaboradoresDAO {
         }
         return msj;
     }
-    
-    public static Mensaje asignarUnidad(Colaborador colaborador) {
-        Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "colaborador/asignar";
-        Gson gson = new Gson();
-        try {
-            String parametros = gson.toJson(colaborador);
-            RespuestaHTTP respuesta = ConexionWS.peticionPOSTJSON(url, parametros);
-            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
-                msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-            } else {
-                msj.setError(true);
-                msj.setMensaje(respuesta.getContenido());
-            }
-        } catch (Exception e) {
-            msj.setError(true);
-            msj.setMensaje(e.getMessage());
-        }
-        return msj;
-    }
-    
 }

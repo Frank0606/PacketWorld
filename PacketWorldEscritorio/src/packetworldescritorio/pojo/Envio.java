@@ -208,4 +208,11 @@ public class Envio {
     public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+    @Override
+    public String toString() {
+        return numeroGuia;
+    }
+    
+    
 }

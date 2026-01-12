@@ -18,11 +18,10 @@
          <columns>
             <TableColumn fx:id="colVin" prefWidth="75.0" text="VIN" />
             <TableColumn fx:id="colNoIdentificacion" prefWidth="75.0" text="No. de identificacion" />
-            <TableColumn fx:id="colMarca" prefWidth="75.0" text="Marca" />
-            <TableColumn fx:id="colModelo" prefWidth="75.0" text="Modelo" />
-            <TableColumn fx:id="colAnio" prefWidth="75.0" text="Año" />
+            <TableColumn fx:id="colDescripcion" prefWidth="75.0" text="Descripcion" />
             <TableColumn fx:id="colTipoUnidad" prefWidth="75.0" text="Tipo de unidad" />
             <TableColumn fx:id="colColaborador" prefWidth="75.0" text="Conductor" />
+            <TableColumn fx:id="colEstatus" prefWidth="75.0" text="Estado" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -22,6 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
@@ -29,7 +30,7 @@ import javafx.scene.layout.AnchorPane;
 public class FXMLFormularioPaquetesController implements Initializable, ControladorPrincipal<Paquete> {
 
     @FXML
-    private TextField tfDescripcion;
+    private TextArea tfDescripcion;
     @FXML
     private TextField tfPeso;
     @FXML
@@ -42,8 +43,6 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
     private Button btnGuardar;
     @FXML
     private Button btnCancelar;
-    @FXML
-    private Label labelErrorIdPaquete;
     @FXML
     private Label labelErrorDescripcion;
     @FXML
@@ -62,10 +61,13 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
 
     @FXML
     private ComboBox<Envio> cbIdEnvios;
+    @FXML
+    private Label lblDetallesEnvio;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarEnvios();
+        cargarEventosCb();
         configurarTextField(tfDescripcion, Pattern.compile("[a-zA-Z0-9\\.,;:!?()\\- ]{0,255}"));
         configurarTextField(tfPeso, Pattern.compile("\\d{0,10}([\\.]\\d{0,2})?"));
         configurarTextField(tfProfundidad, Pattern.compile("\\d{0,10}([\\.]\\d{0,2})?"));
@@ -85,6 +87,31 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
         textField.setTextFormatter(formatter);
     }
 
+    private void configurarTextField(TextArea textField, Pattern pattern) {
+        TextFormatter<String> formatter = new TextFormatter<>((UnaryOperator<TextFormatter.Change>) change -> {
+            String newText = change.getControlNewText();
+            if (pattern.matcher(newText).matches()) {
+                return change;
+            } else {
+                return null;
+            }
+        });
+        textField.setTextFormatter(formatter);
+    }
+
+    private void cargarEventosCb() {
+        cbIdEnvios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                lblDetallesEnvio.setText(
+                        "Cliente: " + newVal.getNombreDestinatario() + "\nDestino: "
+                        + newVal.getCalleDestino() + " #" + newVal.getNumeroDestino() + "\n"
+                        + newVal.getColoniaDestino() + " " + newVal.getCpDestino() + "\n"
+                        + newVal.getCiudadDestino() + ", " + newVal.getEstadoDestino()
+                );
+            }
+        });
+    }
+
     @FXML
     private void btnGuardar(ActionEvent event) {
         if (validarCampos()) {
@@ -99,6 +126,7 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
             paquete.setProfundidad(Float.parseFloat(tfProfundidad.getText()));
             paquete.setAlto(Float.parseFloat(tfAlto.getText()));
             paquete.setAncho(Float.parseFloat(tfAncho.getText()));
+            paquete.setNumeroGuia(cbIdEnvios.getSelectionModel().getSelectedItem().getNumeroGuia());
             paquete.setIdEnvio(idEnvio);
 
             if (btnGuardar.getText().equals("Editar")) {
@@ -233,12 +261,10 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
 
     private void cargarEnvios() {
         List<Envio> envios = EnviosDAO.obtenerEnvios();
+        envios.removeIf(envio -> !envio.getEstatus().equals("Pendiente"));
         if (envios != null && !envios.isEmpty()) {
             listaObservableEnvios = FXCollections.observableArrayList(envios);
             cbIdEnvios.setItems(listaObservableEnvios);
-        } else {
-            Alertas.mostrarAlertaSimple("Error al cargar", "Lo sentiento, no se pudo obtener la informacion de Roles",
-                    Alert.AlertType.ERROR);
         }
     }
 

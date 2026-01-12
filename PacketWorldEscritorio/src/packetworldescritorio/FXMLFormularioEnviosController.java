@@ -11,13 +11,9 @@ import packetworldescritorio.utilidades.Alertas;
 import packetworldescritorio.utilidades.ControladorPrincipal;
 import packetworldescritorio.utilidades.Funciones;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +24,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import packetworldescritorio.modelo.dao.SucursalDAO;
 import packetworldescritorio.pojo.Sucursal;
@@ -47,14 +42,14 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
     private Label labelErrorIdCliente;
     @FXML
     private Label labelErrorIdSucursal;
-    
+
     private String noPersonalColaborador;
     private ObservableList<Cliente> listaObservableClientes;
     private ObservableList<Colaborador> listaObservableColaboradores;
     private ObservableList<Sucursal> listaObservableSucursales;
-    
+
     private Envio envio;
-    
+
     @FXML
     private ComboBox<Colaborador> cbColaborador;
     @FXML
@@ -71,18 +66,7 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
         cargarClientes();
         cargarConductores();
         cargarSucursales();
-    }
-
-    private void configurarTextField(TextField textField, Pattern pattern) {
-        TextFormatter<String> formatter = new TextFormatter<>((UnaryOperator<TextFormatter.Change>) change -> {
-            String newText = change.getControlNewText();
-            if (pattern.matcher(newText).matches()) {
-                return change;
-            } else {
-                return null;
-            }
-        });
-        textField.setTextFormatter(formatter);
+        cargarEventosCb();
     }
 
     @FXML
@@ -92,31 +76,33 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
                 this.envio = new Envio();
             }
 
-            Integer idCliente = ((cbCliente.getSelectionModel().getSelectedItem() != null)
-                    ? cbCliente.getSelectionModel().getSelectedItem().getIdCliente() : null);
+            Cliente cliente = ((cbCliente.getSelectionModel().getSelectedItem() != null)
+                    ? cbCliente.getSelectionModel().getSelectedItem() : null);
 
-            Integer idColaborador = ((cbColaborador.getSelectionModel().getSelectedItem() != null)
-                    ? cbColaborador.getSelectionModel().getSelectedItem().getIdColaborador() : null);
-            
-            Integer idSucursal = ((cbSucursal.getSelectionModel().getSelectedItem() != null)
-                    ? cbSucursal.getSelectionModel().getSelectedItem().getIdSucursal() : null);
+            Colaborador colaborador = ((cbColaborador.getSelectionModel().getSelectedItem() != null)
+                    ? cbColaborador.getSelectionModel().getSelectedItem() : null);
 
-            envio.setIdCliente(idCliente);
-            envio.setIdColaborador(idColaborador);
-            envio.setIdSucursalOrigen(idSucursal);
+            Sucursal sucursal = ((cbSucursal.getSelectionModel().getSelectedItem() != null)
+                    ? cbSucursal.getSelectionModel().getSelectedItem() : null);
+
+            envio.setIdCliente(cliente.getIdCliente());
+            envio.setIdColaborador(colaborador.getIdColaborador());
+            envio.setIdSucursalOrigen(sucursal.getIdSucursal());
+
+            envio.setNombreDestinatario(cliente.getNombre());
+            envio.setApellidoPaternoDest(cliente.getApellidoPaterno());
+            envio.setApellidoMaternoDest(cliente.getApellidoMaterno());
+            envio.setCalleDestino(cliente.getCalle());
+            envio.setNumeroDestino(cliente.getNumero());
+            envio.setColoniaDestino(cliente.getColonia());
+            envio.setCpDestino(cliente.getCodigoPostal());
+            envio.setNumeroGuia(tfNumeroGuia.getText());
+            envio.setCiudadDestino(cliente.getCiudad());
+            envio.setEstadoDestino(cliente.getEstado());
 
             if (btnGuardar.getText().equals("Editar")) {
-                
                 editarDatosEnvio();
             } else {
-                envio.setEstatus("PENDIENTE");
-
-                LocalDateTime ahora = LocalDateTime.now();
-                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm");
-                String fecha = ahora.format(formato);
-
-                //envio.setHistorialEstados(envio.getEstatus() + "_" + fecha + "_" + noPersonalColaborador + ":");
-                
                 guardarDatosEnvio();
             }
         } else {
@@ -128,6 +114,28 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
     @FXML
     private void btnCancelar(ActionEvent event) {
         cerrarVentana();
+    }
+
+    private void cargarEventosCb() {
+        cbCliente.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                lblDireccionDestino.setText(
+                        newVal.getCalle() + " #" + newVal.getNumero() + "\n"
+                        + newVal.getColonia() + " " + newVal.getCodigoPostal() + "\n"
+                        + newVal.getCiudad() + ", " + newVal.getEstado() + "\nTelefono: "
+                        + newVal.getTelefono() + "\nCorreo: " + newVal.getCorreo()
+                );
+            }
+        });
+        cbSucursal.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                lblDireccionOrigen.setText(
+                        newVal.getCalle() + " #" + newVal.getNumero() + "\n"
+                        + newVal.getColonia() + " " + newVal.getCodigoPostal() + "\n"
+                        + newVal.getCiudad() + ", " + newVal.getEstado()
+                );
+            }
+        });
     }
 
     private void editarDatosEnvio() {
@@ -143,7 +151,7 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
 
     private boolean validarCampos() {
         boolean valid = true;
-        
+
         labelErrorIdCliente.setText("");
         labelErrorIdColaborador.setText("");
         labelErrorIdSucursal.setText("");
@@ -159,7 +167,7 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
             labelErrorIdColaborador.setText("Seleccione un conductor válido");
             valid = false;
         }
-        
+
         // Validar colaborador
         if (cbSucursal.getValue() == null) {
             labelErrorIdSucursal.setText("Seleccione un conductor válido");
@@ -173,6 +181,8 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
         Mensaje msj = EnviosDAO.agregarEnvio(envio);
         if (!msj.isError()) {
             Alertas.mostrarAlertaSimple("Registro exitoso.", "La información del envio fue registrada correctamente",
+                    Alert.AlertType.INFORMATION);
+            Alertas.mostrarAlertaSimple("Atencion", "Recuerde crear y agregar los paquetes al envio recien creado en la seccion Paquetes.\nDespues, regrese a esta seccion y confirme el envio en el boton COnfirmar para obtener su costo total y comenzar el recorrido.", 
                     Alert.AlertType.INFORMATION);
             cerrarVentana();
         } else {
@@ -210,7 +220,7 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
         List<Colaborador> conductores = new ArrayList();
         if (colaboradores != null && !colaboradores.isEmpty()) {
             for (Colaborador colaborador : colaboradores) {
-                if (colaborador.getIdRol() == 3 && (colaborador.getIdUnidad() != null || colaborador.getIdUnidad() != 0)) {
+                if (colaborador.getIdRol() == 3 && (colaborador.getIdUnidad() != null || colaborador.getIdUnidad() != null)) {
                     conductores.add(colaborador);
                 }
             }
@@ -221,7 +231,7 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
                     Alert.AlertType.ERROR);
         }
     }
-    
+
     private void cargarSucursales() {
         List<Sucursal> sucursales = SucursalDAO.obtenerSucursales();
         if (sucursales != null && !sucursales.isEmpty()) {
@@ -250,7 +260,7 @@ public class FXMLFormularioEnviosController implements Initializable, Controlado
         }
         return 0;
     }
-    
+
     private int buscarSucursal(Integer idSucursal) {
         for (int i = 0; i < listaObservableSucursales.size(); i++) {
             if (listaObservableSucursales.get(i).getIdSucursal() == idSucursal) {

@@ -65,6 +65,7 @@
             nombreCorto = #{nombreCorto},
             calle = #{calle},
             numero = #{numero},
+            estatus = #{estatus},
             colonia = #{colonia},
             codigoPostal = #{codigoPostal},
             ciudad = #{ciudad},

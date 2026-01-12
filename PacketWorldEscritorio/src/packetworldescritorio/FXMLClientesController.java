@@ -118,7 +118,8 @@ public class FXMLClientesController implements Initializable {
         colDestino.setCellValueFactory(cellData -> {
             Cliente cliente = cellData.getValue();
             String direccionCompleta = cliente.getCalle() + " " + cliente.getNumero() + ", "
-                    + cliente.getColonia() + ", " + cliente.getCodigoPostal();
+                    + cliente.getColonia() + ", " + cliente.getCodigoPostal() + ", " + 
+                    cliente.getCiudad() + ", " + cliente.getEstado();
             return new SimpleStringProperty(direccionCompleta);
         });
         colTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));

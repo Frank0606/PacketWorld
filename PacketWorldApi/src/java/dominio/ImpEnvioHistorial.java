@@ -3,6 +3,7 @@ package dominio;
 import java.util.List;
 import mybatis.MybatisUtil;
 import org.apache.ibatis.session.SqlSession;
+import pojo.Envio;
 import pojo.EnvioHistorial;
 import pojo.Mensaje;
 
@@ -27,6 +28,10 @@ public class ImpEnvioHistorial {
         if (conn != null) {
             try {
                 conn.insert("EnvioHistorialMapper.registrar", h);
+                Envio envio = new Envio();
+                envio.setEstatus(h.getEstatus());
+                envio.setIdEnvio(h.getIdEnvio());
+                conn.update("EnvioHistorialMapper.actualizarEstatusEnvio", envio);
                 conn.commit();
                 msj.setError(false);
                 msj.setMensaje("Estatus registrado correctamente.");

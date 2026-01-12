@@ -10,12 +10,12 @@ public class Paquete {
     private float alto;
     private float ancho;
     private float profundidad;
-    private float costo;
 
     public Paquete() {
     }
 
-    public Paquete(int idPaquete, int idEnvio, String numeroGuia, String descripcion, float peso, float alto, float ancho, float profundidad, float costo) {
+    public Paquete(int idPaquete, int idEnvio, String numeroGuia, String descripcion, float peso, 
+            float alto, float ancho, float profundidad) {
         this.idPaquete = idPaquete;
         this.idEnvio = idEnvio;
         this.numeroGuia = numeroGuia;
@@ -24,7 +24,6 @@ public class Paquete {
         this.alto = alto;
         this.ancho = ancho;
         this.profundidad = profundidad;
-        this.costo = costo;
     }
 
     public int getIdPaquete() {
@@ -89,13 +88,5 @@ public class Paquete {
 
     public void setProfundidad(float profundidad) {
         this.profundidad = profundidad;
-    }
-
-    public float getCosto() {
-        return costo;
-    }
-
-    public void setCosto(float costo) {
-        this.costo = costo;
     }
 }

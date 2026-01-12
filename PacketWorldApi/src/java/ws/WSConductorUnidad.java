@@ -9,12 +9,13 @@ import pojo.Mensaje;
 public class WSConductorUnidad {
 
     @POST
-    @Path("asignar/{idConductor}/{idUnidad}")
+    @Path("asignar/{idConductor}/{idUnidad}/{numeroPersonal}")
     @Produces(MediaType.APPLICATION_JSON)
     public Mensaje asignarUnidad(
             @PathParam("idConductor") int idConductor,
-            @PathParam("idUnidad") int idUnidad) {
-        return ImpConductorUnidad.asignarUnidad(idConductor, idUnidad);
+            @PathParam("idUnidad") int idUnidad, 
+            @PathParam("numeroPersonal") String numeroPersonal) {
+        return ImpConductorUnidad.asignarUnidad(idConductor, idUnidad, numeroPersonal);
     }
 
     @DELETE

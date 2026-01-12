@@ -29,6 +29,22 @@ public class EnviosDAO {
         }
         return envios;
     }
+    
+    public static Envio obtenerEnvioGuia(String guia) {
+        Envio envio = null;
+        String url = Constantes.URL_WS + "envio/obtener/" + guia;
+        RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
+
+        if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+            Gson gson = new Gson();
+            try {
+                envio = gson.fromJson(respuesta.getContenido(), Envio.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return envio;
+    }
 
     public static Mensaje agregarEnvio(Envio envio) {
         Mensaje msj = new Mensaje();
@@ -53,6 +69,26 @@ public class EnviosDAO {
     public static Mensaje actualizarEnvio(Envio envio) {
         Mensaje msj = new Mensaje();
         String url = Constantes.URL_WS + "envio/editar";
+        Gson gson = new Gson();
+        try {
+            String parametros = gson.toJson(envio);
+            RespuestaHTTP respuesta = ConexionWS.peticionPUTJSON(url, parametros);
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+                msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+            } else {
+                msj.setError(true);
+                msj.setMensaje(respuesta.getContenido());
+            }
+        } catch (Exception e) {
+            msj.setError(true);
+            msj.setMensaje(e.getMessage());
+        }
+        return msj;
+    }
+    
+    public static Mensaje completarCostos(Envio envio) {
+        Mensaje msj = new Mensaje();
+        String url = Constantes.URL_WS + "envio/completar-costos";
         Gson gson = new Gson();
         try {
             String parametros = gson.toJson(envio);

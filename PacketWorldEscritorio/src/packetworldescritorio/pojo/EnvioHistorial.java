@@ -59,4 +59,10 @@ public class EnvioHistorial {
     public void setIdColaborador(int idColaborador) {
         this.idColaborador = idColaborador;
     }
+
+    @Override
+    public String toString() {
+        return "EnvioHistorial{" + "idHistorial=" + idHistorial + ", idEnvio=" + idEnvio + ", estatus=" + estatus + ", comentario=" + comentario + ", fechaCambio=" + fechaCambio + ", idColaborador=" + idColaborador + '}';
+    }
+    
 }

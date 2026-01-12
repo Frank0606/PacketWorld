@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BajaUnidadMapper">
+
+    <!-- Insertar baja de unidad -->
+    <insert id="registrarBajaUnidad" parameterType="pojo.BajaUnidad">
+        INSERT INTO UnidadBaja (idUnidad, motivo, fechaBaja)
+        VALUES (#{idUnidad}, #{motivo}, #{fechaBaja});
+    </insert>
+    
+    <update id="cambiarEstatusUnidad" parameterType="int">
+        UPDATE Unidad
+        SET estatus = 'Baja'
+        WHERE idUnidad = #{idUnidad};
+    </update>
+
+
+    <!-- Consultar bajas por unidad -->
+    <select id="obtenerBajasPorUnidad" parameterType="int" resultType="pojo.BajaUnidad">
+        SELECT idBaja, idUnidad, motivo, fechaBaja
+        FROM UnidadBaja
+        WHERE idUnidad = #{idUnidad};
+    </select>
+
+</mapper>

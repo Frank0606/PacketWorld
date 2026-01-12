@@ -3,7 +3,7 @@ package pojo;
 public class ConductorUnidad {
     private int idConductor;
     private int idUnidad;
-    private String fechaAsignacion;
+    private String numeroPersonal;
 
     public ConductorUnidad() {
     }
@@ -24,11 +24,13 @@ public class ConductorUnidad {
         this.idUnidad = idUnidad;
     }
 
-    public String getFechaAsignacion() {
-        return fechaAsignacion;
+    public String getNumeroPersonal() {
+        return numeroPersonal;
     }
 
-    public void setFechaAsignacion(String fechaAsignacion) {
-        this.fechaAsignacion = fechaAsignacion;
+    public void setNumeroPersonal(String numeroPersonal) {
+        this.numeroPersonal = numeroPersonal;
     }
+    
+    
 }

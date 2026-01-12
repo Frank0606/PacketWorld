@@ -44,6 +44,16 @@ public class WSEnvio {
         Envio envio = gson.fromJson(json, Envio.class);
         return ImpEnvio.editarEnvio(envio);
     }
+    
+    @PUT
+    @Path("completar-costos")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje completarCostos(String json) {
+        Gson gson = new Gson();
+        Envio envio = gson.fromJson(json, Envio.class);
+        return ImpEnvio.completarCostos(envio);
+    }
 
     @DELETE
     @Path("eliminar/{guia}")

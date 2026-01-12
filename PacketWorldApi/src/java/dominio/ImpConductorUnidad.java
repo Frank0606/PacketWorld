@@ -7,13 +7,12 @@ import pojo.Mensaje;
 
 public class ImpConductorUnidad {
 
-    public static Mensaje asignarUnidad(int idConductor, int idUnidad) {
+    public static Mensaje asignarUnidad(int idConductor, int idUnidad, String numeroPersonal) {
         Mensaje msj = new Mensaje();
         SqlSession con = MybatisUtil.obtenerConexion();
 
         if (con != null) {
             try {
-                // validar si conductor ya tiene unidad
                 ConductorUnidad existente = con.selectOne(
                         "ConductorUnidadMapper.obtenerAsignacionPorConductor",
                         idConductor);
@@ -24,7 +23,6 @@ public class ImpConductorUnidad {
                     return msj;
                 }
 
-                // validar si unidad ya está asignada a otro conductor
                 ConductorUnidad unidadOcupada = con.selectOne(
                         "ConductorUnidadMapper.obtenerAsignacionPorUnidad",
                         idUnidad);
@@ -38,8 +36,12 @@ public class ImpConductorUnidad {
                 ConductorUnidad nueva = new ConductorUnidad();
                 nueva.setIdConductor(idConductor);
                 nueva.setIdUnidad(idUnidad);
+                nueva.setNumeroPersonal(numeroPersonal);
 
                 int insert = con.insert("ConductorUnidadMapper.registrarAsignacion", nueva);
+
+                con.update("ConductorUnidadMapper.actualizarUnidadConductor", nueva);
+
                 con.commit();
 
                 msj.setError(insert <= 0);
@@ -59,12 +61,11 @@ public class ImpConductorUnidad {
     public static Mensaje eliminarAsignacion(int idConductor) {
         Mensaje msj = new Mensaje();
         SqlSession con = MybatisUtil.obtenerConexion();
-
         if (con != null) {
             try {
+                con.update("ConductorUnidadMapper.limpiarNumeroPersonalUnidad", idConductor);
                 int eliminado = con.delete("ConductorUnidadMapper.eliminarAsignacion", idConductor);
                 con.commit();
-
                 msj.setError(eliminado <= 0);
                 msj.setMensaje(eliminado > 0 ? "Unidad liberada." : "No existe asignación para eliminar.");
             } catch (Exception e) {
@@ -75,7 +76,6 @@ public class ImpConductorUnidad {
                 con.close();
             }
         }
-
         return msj;
     }
 }

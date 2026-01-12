@@ -25,8 +25,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.ClientesDAO;
 import packetworldescritorio.modelo.dao.SucursalDAO;
+import packetworldescritorio.pojo.Cliente;
 import packetworldescritorio.pojo.Sucursal;
+import static packetworldescritorio.utilidades.Alertas.mostrarAlertaConfirmacion;
 
 public class FXMLEnviosController implements Initializable {
 
@@ -63,6 +66,8 @@ public class FXMLEnviosController implements Initializable {
     private TableColumn<Envio, String> colConductor;
     @FXML
     private Button btnEstatus;
+    @FXML
+    private Button btnConfirmar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -87,7 +92,7 @@ public class FXMLEnviosController implements Initializable {
 
             return new SimpleStringProperty(nombreColaborador);
         });
-        colDestino.setCellValueFactory(cellData -> {
+        colOrigen.setCellValueFactory(cellData -> {
             Envio envio = cellData.getValue();
             Sucursal sucursalDestino = SucursalDAO.obtenerPorId(envio.getIdSucursalOrigen());
             if (sucursalDestino != null) {
@@ -99,10 +104,12 @@ public class FXMLEnviosController implements Initializable {
                 return new SimpleStringProperty("Sucursal no encontrada");
             }
         });
-        colOrigen.setCellValueFactory(cellData -> {
+        colDestino.setCellValueFactory(cellData -> {
             Envio envio = cellData.getValue();
-            String direccionCompleta = envio.getCalleDestino() + " " + envio.getNumeroDestino() + ", "
-                    + envio.getColoniaDestino() + ", " + envio.getCpDestino();
+            Cliente cliente = ClientesDAO.obtenerClientesId(envio.getIdCliente());
+            String direccionCompleta = cliente.getCalle() + " " + cliente.getNumero() + ", "
+                    + cliente.getColonia() + ", " + cliente.getCodigoPostal() + ", "
+                    + cliente.getCiudad() + ", " + cliente.getEstado();
             return new SimpleStringProperty(direccionCompleta);
         });
         colNumeroGuia.setCellValueFactory(new PropertyValueFactory<>("numeroGuia"));
@@ -181,21 +188,27 @@ public class FXMLEnviosController implements Initializable {
     }
 
     private void eliminarEnvio(String numeroGuia) {
-        Mensaje msj = EnviosDAO.eliminarEnvio(numeroGuia);
-        for (Paquete paquete : paquetes) {
-            if (paquete.getNumeroGuia().equals(numeroGuia)) {
-                Alertas.mostrarAlertaSimple("Error al eliminar.",
-                        "El envío tiene paquetes asociados. Elimínalos primero.", Alert.AlertType.WARNING);
-                return;
+        boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                "¿Está seguro de que desea eliminar este envio?");
+        if (confirmado) {
+            confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
+                    "¿Realmente está seguro de que desea eliminar este envio?");
+            if (confirmado) {
+                Mensaje msj = EnviosDAO.eliminarEnvio(numeroGuia);
+                for (Paquete paquete : paquetes) {
+                    if (paquete.getNumeroGuia().equals(numeroGuia)) {
+                        Alertas.mostrarAlertaSimple("Error al eliminar.",
+                                "El envío tiene paquetes asociados. Elimínalos primero.", Alert.AlertType.WARNING);
+                        return;
+                    }
+                }
+                if (!msj.isError()) {
+                    Alertas.mostrarAlertaSimple("Envío eliminado", "El envío ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
+                    cargarInformacion();
+                } else {
+                    Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el envio. Intente de nuevo mas tarde.", Alert.AlertType.WARNING);
+                }
             }
-        }
-
-        if (!msj.isError()) {
-            System.out.println("No hay errores");
-            Alertas.mostrarAlertaSimple("Envío eliminado", "El envío ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
-            cargarInformacion();
-        } else {
-            Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el envio. Intente de nuevo mas tarde.", Alert.AlertType.WARNING);
         }
     }
 
@@ -213,10 +226,14 @@ public class FXMLEnviosController implements Initializable {
     private void btnEstatus(ActionEvent event) {
         Envio envio = tablaEnvios.getSelectionModel().getSelectedItem();
         if (envio != null) {
-            envio.setCalleDestino(noPersonalColaborador);
-            Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioCambiarEstatus.fxml",
-                    (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), envio,
-                    new FXMLFormularioCambiarEstatusController());
+            if (!envio.getEstatus().equals("Pendiente")) {
+                envio.setCalleDestino(noPersonalColaborador);
+                Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioCambiarEstatus.fxml",
+                        (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), envio,
+                        new FXMLFormularioCambiarEstatusController());
+            } else {
+                Alertas.mostrarAlertaSimple("Acción incorrecta", "No se puede cambiar el estado del envio a un envio que no ha sido confirmado.", Alert.AlertType.WARNING);
+            }
         } else {
             Alertas.mostrarAlertaSimple("Seleccionar envío.", "Para editar debes seleccionar un envío de la tabla.", Alert.AlertType.WARNING);
         }
@@ -224,5 +241,30 @@ public class FXMLEnviosController implements Initializable {
 
     public void setNoPersonal(String noPersonal) {
         this.noPersonalColaborador = noPersonal;
+    }
+
+    @FXML
+    private void btnCompletarCostos(ActionEvent event) {
+        Envio envio = tablaEnvios.getSelectionModel().getSelectedItem();
+        Mensaje msj = new Mensaje();
+        if (envio != null) {
+            if (envio.getEstatus().equals("Pendiente")) {
+                boolean confirmado = mostrarAlertaConfirmacion("Confirmar paquetes",
+                        "¿Está seguro de continuar con la asignacion de costos del envio?\nAsegurese de tener todos lo paquetes correspondientes asignados a este envio");
+                if (confirmado) {
+                    msj = EnviosDAO.completarCostos(envio);
+                    if (!msj.isError()) {
+                        Alertas.mostrarAlertaSimple("Envío completado", "El costo total del envio es de: $" + EnviosDAO.obtenerEnvioGuia(envio.getNumeroGuia()).getCostoTotal() + "\nSu envio ya comenzo.", Alert.AlertType.INFORMATION);
+                        cargarInformacion();
+                    } else {
+                        Alertas.mostrarAlertaSimple("Error al comfirmar.", "No se pudo confirmar el envio. Intente de nuevo mas tarde.\n" + msj.getMensaje(), Alert.AlertType.WARNING);
+                    }
+                }
+            } else {
+                Alertas.mostrarAlertaSimple("Envio ya confirmado", "El envio seleccionado ya fue confirmado y cuenta con costos. Seleccione uno sin confirmar.", Alert.AlertType.WARNING);
+            }
+        } else {
+            Alertas.mostrarAlertaSimple("Seleccionar envío.", "Para confirmar un envio debes seleccionar uno de la tabla.", Alert.AlertType.WARNING);
+        }
     }
 }

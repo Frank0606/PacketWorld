@@ -9,6 +9,7 @@ import packetworldescritorio.utilidades.Funciones;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,12 +30,6 @@ public class FXMLUnidadesController implements Initializable {
     @FXML
     private TableColumn colNoIdentificacion;
     @FXML
-    private TableColumn colMarca;
-    @FXML
-    private TableColumn colModelo;
-    @FXML
-    private TableColumn colAnio;
-    @FXML
     private TableColumn<TipoUnidad, String> colTipoUnidad;
     @FXML
     private Button btnBuscar;
@@ -54,6 +49,10 @@ public class FXMLUnidadesController implements Initializable {
     private ObservableList<Unidad> unidades;
     @FXML
     private TableColumn<Colaborador, String> colColaborador;
+    @FXML
+    private TableColumn<Unidad, String> colDescripcion;
+    @FXML
+    private TableColumn colEstatus;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -134,9 +133,33 @@ public class FXMLUnidadesController implements Initializable {
     private void btnEliminar(ActionEvent event) {
         Unidad unidad = tablaUnidades.getSelectionModel().getSelectedItem();
         if (unidad != null) {
+            // Validar si la unidad está asignada a un conductor
+            if (unidad.getNumeroPersonal() != null && !unidad.getNumeroPersonal().isEmpty()) {
+                Alertas.mostrarAlertaSimple(
+                        "Unidad asignada",
+                        "No puedes eliminar una unidad que está asignada a un conductor.",
+                        Alert.AlertType.WARNING
+                );
+                return;
+            }
+
+            // Validar si la unidad ya está dada de baja
+            if ("Baja".equalsIgnoreCase(unidad.getEstatus())) {
+                Alertas.mostrarAlertaSimple(
+                        "Unidad en baja",
+                        "No puedes eliminar una unidad que ya está dada de baja.",
+                        Alert.AlertType.WARNING
+                );
+                return;
+            }
+            
             eliminarUnidad(unidad.getVin());
         } else {
-            Alertas.mostrarAlertaSimple("Seleccionar unidad.", "Para eliminar debes seleccionar un unidad de la tabla.", Alert.AlertType.WARNING);
+            Alertas.mostrarAlertaSimple(
+                    "Seleccionar unidad.",
+                    "Para eliminar debes seleccionar una unidad de la tabla.",
+                    Alert.AlertType.WARNING
+            );
         }
     }
 
@@ -194,10 +217,13 @@ public class FXMLUnidadesController implements Initializable {
     private void configurarTabla() {
         colVin.setCellValueFactory(new PropertyValueFactory("vin"));
         colNoIdentificacion.setCellValueFactory(new PropertyValueFactory("noIdentificacion"));
-        colMarca.setCellValueFactory(new PropertyValueFactory("marca"));
-        colModelo.setCellValueFactory(new PropertyValueFactory("modelo"));
-        colAnio.setCellValueFactory(new PropertyValueFactory("anio"));
+        colDescripcion.setCellValueFactory(cellData -> {
+            Unidad c = cellData.getValue();
+            String nombreCompleto = c.getMarca() + " " + c.getModelo() + " " + c.getAnio();
+            return new SimpleStringProperty(nombreCompleto);
+        });
         colTipoUnidad.setCellValueFactory(new PropertyValueFactory("tipoUnidad"));
         colColaborador.setCellValueFactory(new PropertyValueFactory("numeroPersonal"));
+        colEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
     }
 }
