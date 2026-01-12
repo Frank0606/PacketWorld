@@ -103,4 +103,24 @@ public class ImpSucursal {
         }
         return m;
     }
+    
+    public static Mensaje eliminarSucursal(int idSucursal) {
+        Mensaje m = new Mensaje();
+        SqlSession conn = MybatisUtil.obtenerConexion();
+
+        if (conn != null) {
+            try {
+                int resultado = conn.delete("SucursalMapper.eliminarSucursal", idSucursal);
+                conn.commit();
+                m.setError(resultado == 0);
+                m.setMensaje(resultado > 0 ? "Sucursal dada de baja" : "No se pudo dar de baja");
+            } catch (Exception e) {
+                m.setError(true);
+                m.setMensaje(e.getMessage());
+            } finally {
+                conn.close();
+            }
+        }
+        return m;
+    }
 }

@@ -9,7 +9,6 @@ import packetworldescritorio.utilidades.Alertas;
 import packetworldescritorio.utilidades.ControladorPrincipal;
 import packetworldescritorio.utilidades.Funciones;
 import java.net.URL;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;

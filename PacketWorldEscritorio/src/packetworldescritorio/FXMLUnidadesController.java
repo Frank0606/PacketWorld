@@ -133,7 +133,6 @@ public class FXMLUnidadesController implements Initializable {
     private void btnEliminar(ActionEvent event) {
         Unidad unidad = tablaUnidades.getSelectionModel().getSelectedItem();
         if (unidad != null) {
-            // Validar si la unidad está asignada a un conductor
             if (unidad.getNumeroPersonal() != null && !unidad.getNumeroPersonal().isEmpty()) {
                 Alertas.mostrarAlertaSimple(
                         "Unidad asignada",
@@ -143,7 +142,6 @@ public class FXMLUnidadesController implements Initializable {
                 return;
             }
 
-            // Validar si la unidad ya está dada de baja
             if ("Baja".equalsIgnoreCase(unidad.getEstatus())) {
                 Alertas.mostrarAlertaSimple(
                         "Unidad en baja",

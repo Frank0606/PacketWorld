@@ -120,4 +120,23 @@ public class SucursalDAO {
         }
         return msj;
     }
+    
+    public static Mensaje eliminarSucursal(int idSucursal) {
+        Mensaje msj = new Mensaje();
+        String url = Constantes.URL_WS + "sucursal/eliminar/" + idSucursal;
+        Gson gson = new Gson();
+        try {
+            RespuestaHTTP respuesta = ConexionWS.peticionDELETE(url);
+            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
+                msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
+            } else {
+                msj.setError(true);
+                msj.setMensaje(respuesta.getContenido());
+            }
+        } catch (Exception e) {
+            msj.setError(true);
+            msj.setMensaje(e.getMessage());
+        }
+        return msj;
+    }
 }

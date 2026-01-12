@@ -85,10 +85,15 @@ public class FXMLInicioSesionController implements Initializable {
     private void verificarCredenciales(String noPersonal, String contrasenia) {
         IniciarSesion respuestaIniciarSesion = IniciarSesionDAO.iniciarSesion(noPersonal, contrasenia);
         if (!respuestaIniciarSesion.getError()) {
-            Alertas.mostrarAlertaSimple("¡Credenciales correctas!",
-                    "Bienvenido " + respuestaIniciarSesion.getColaborador().getNombre(),
-                    Alert.AlertType.INFORMATION);
-            cambiarPantallaPrincipal(noPersonal);
+            if (respuestaIniciarSesion.getColaborador().getIdRol() == 1
+                    || respuestaIniciarSesion.getColaborador().getIdRol() == 2) {
+                Alertas.mostrarAlertaSimple("¡Credenciales correctas!",
+                        "Bienvenido " + respuestaIniciarSesion.getColaborador().getNombre(),
+                        Alert.AlertType.INFORMATION);
+                cambiarPantallaPrincipal(noPersonal);
+            } else {
+                Alertas.mostrarAlertaSimple("Aviso", "No eres un colaborador autorizado.\nSolo los administradores y los ejecutivos de tienda pueden hacer uso del software.", Alert.AlertType.WARNING);
+            }
         } else {
             Alertas.mostrarAlertaSimple("Problema", respuestaIniciarSesion.getMensaje(), Alert.AlertType.ERROR);
         }

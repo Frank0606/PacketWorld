@@ -81,5 +81,10 @@
         SET estatus = 'INACTIVA'
         WHERE idSucursal = #{idSucursal};
     </update>
+    
+    <delete id="eliminarSucursal" parameterType="int">
+        DELETE FROM Sucursal 
+        WHERE idSucursal = #{idSucursal}
+    </delete>
 
 </mapper>

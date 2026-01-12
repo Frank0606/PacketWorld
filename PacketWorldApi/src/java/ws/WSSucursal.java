@@ -58,4 +58,11 @@ public class WSSucursal {
     public Mensaje darBaja(@PathParam("id") int id) {
         return ImpSucursal.darBaja(id);
     }
+    
+    @DELETE
+    @Path("eliminar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Mensaje eliminarSucursal(@PathParam("id") int id) {
+        return ImpSucursal.eliminarSucursal(id);
+    }
 }
