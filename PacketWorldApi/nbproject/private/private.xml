@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documentos%20(D)/PacketWorld/PacketWorldApi/src/java/ws/WSEstado.java</file>
-            <file>file:/D:/Documentos%20(D)/PacketWorld/PacketWorldApi/src/java/pojo/Estado.java</file>
+            <file>file:/D:/Documentos%20(D)/PacketWorld/PacketWorldApi/src/java/dominio/ImpEnvioHistorial.java</file>
+            <file>file:/D:/Documentos%20(D)/PacketWorld/PacketWorldApi/src/java/mybatis/mappers/EnvioHistorialMapper.xml</file>
+            <file>file:/D:/Documentos%20(D)/PacketWorld/PacketWorldApi/src/java/ws/WSEnvio.java</file>
+            <file>file:/D:/Documentos%20(D)/PacketWorld/PacketWorldApi/src/java/ws/WSEnvioHistorial.java</file>
         </group>
     </open-files>
 </project-private>
