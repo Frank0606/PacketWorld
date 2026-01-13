@@ -41,6 +41,7 @@
 
             <!-- Optional: no intent-filter needed if not launched directly -->
         </activity>
+        <activity android:name="uv.tc.controlescolarmt.PerfilConductorActivity" />
     </application>
 
 </manifest>

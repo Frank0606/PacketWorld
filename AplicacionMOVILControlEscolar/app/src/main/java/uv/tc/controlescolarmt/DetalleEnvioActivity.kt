@@ -1,13 +1,11 @@
 package uv.tc.controlescolarmt
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,13 +14,11 @@ import com.koushikdutta.ion.Ion
 import uv.tc.controlescolarmt.adapters.PaqueteAdapter
 import uv.tc.controlescolarmt.databinding.ActivityDetalleEnvioBinding
 import uv.tc.controlescolarmt.listener.PaqueteListener
-import uv.tc.controlescolarmt.poko.Cliente
-import uv.tc.controlescolarmt.poko.Envio
-import uv.tc.controlescolarmt.poko.EstatusEnvio
-import uv.tc.controlescolarmt.poko.Paquete
-import uv.tc.controlescolarmt.poko.Sucursal
+import uv.tc.controlescolarmt.poko.*
 import uv.tc.controlescolarmt.util.Constantes
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
 
@@ -34,6 +30,7 @@ class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
     private lateinit var runnable: Runnable
     private val handler = android.os.Handler(Looper.getMainLooper())
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleEnvioBinding.inflate(layoutInflater)
@@ -41,7 +38,7 @@ class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
 
         runnable = object : Runnable {
             override fun run() {
-                refrescar()
+                cargarEnvio()
                 handler.postDelayed(this, 5000)
             }
         }
@@ -53,70 +50,13 @@ class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
         cargarEnvio()
 
         binding.imgRegresar.setOnClickListener {
-            finish()
-        }
-        binding.btnCambiarEstatus.setOnClickListener {
-            val dialogView = layoutInflater.inflate(R.layout.dialog_actualizar_estatus, null)
-
-            val tvEstadoActual = dialogView.findViewById<TextView>(R.id.tv_estado_actual_valor)
-            val spinnerEstado = dialogView.findViewById<Spinner>(R.id.sp_estado_nuevo)
-            val etComentario = dialogView.findViewById<EditText>(R.id.et_comentario)
-            val btnCancelar = dialogView.findViewById<Button>(R.id.btn_cancelar1)
-            val btnActualizar = dialogView.findViewById<Button>(R.id.btn_actualizar_dialogo)
-
-            val opciones = listOf("Pendiente", "En tránsito", "Entregado")
-            tvEstadoActual.text = envio.estatus
-            val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, opciones)
-            adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinnerEstado.adapter = adapterSpinner
-
-            val dialog = AlertDialog.Builder(this)
-                .setView(dialogView)
-                .create()
-
-            btnCancelar.setOnClickListener {
-                dialog.dismiss()
+            Intent(this, MainActivity::class.java).apply {
+                startActivity(this)
+                finish()
             }
-
-            btnActualizar.setOnClickListener {
-                val estadoNuevo = spinnerEstado.selectedItem.toString()
-                val comentario = etComentario.text.toString()
-
-                val estatusEnvio = EstatusEnvio(
-                    idEnvio = envio.idEnvio,
-                    estatus = estadoNuevo,
-                    comentario = comentario,
-                    fechaCambio = LocalTime.now().toString(),
-                    idColaborador = envio.idColaborador,
-                    idHistorial = null
-                )
-
-                val gson = Gson()
-                val estatusJson = gson.toJson(estatusEnvio)
-
-                Ion.with(this)
-                    .load("POST", "${Constantes.URL_API}envio-historial/registrar")
-                    .setHeader("Content-Type", "application/json; charset=UTF-8")
-                    .setHeader("Accept", "application/json; charset=UTF-8")
-                    .setStringBody(estatusJson)
-                    .asString(Charsets.UTF_8)
-                    .setCallback { e, result ->
-                        if (e != null || result.isNullOrBlank()) {
-                            Toast.makeText(this, "Error al actualizar estatus", Toast.LENGTH_SHORT).show()
-                            return@setCallback
-                        }
-                        try {
-                            Toast.makeText(this, "Estatus actualizado correctamente", Toast.LENGTH_SHORT).show()
-                        } catch (_: Exception) {
-                            Toast.makeText(this, "Error al procesar respuesta", Toast.LENGTH_SHORT).show()
-                        }
-
-                    }
-                dialog.dismiss()
-            }
-
-            dialog.show()
         }
+
+        binding.btnCambiarEstatus.setOnClickListener { mostrarDialogoCambioEstatus() }
     }
 
     override fun onPause() {
@@ -124,13 +64,9 @@ class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
         handler.removeCallbacks(runnable)
     }
 
-    override fun onResume(){
+    override fun onResume() {
         super.onResume()
         handler.post(runnable)
-    }
-
-    private fun refrescar() {
-        cargarEnvio()
     }
 
     private fun cargarEnvio() {
@@ -145,68 +81,94 @@ class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
         envio = gson.fromJson(envioJson, Envio::class.java)
 
         Ion.with(this)
-            .load("GET", "${Constantes.URL_API}envio/obtener/${envio.numeroGuia}")
+            .load("${Constantes.URL_API}envio/obtener/${envio.numeroGuia}")
             .asString(Charsets.UTF_8)
             .setCallback { e, result ->
                 if (e != null || result.isNullOrBlank()) {
                     Toast.makeText(this, "Error al cargar envío", Toast.LENGTH_LONG).show()
                     return@setCallback
                 }
-                try {
-                    envio = gson.fromJson(result, Envio::class.java)
-                    binding.tvGuia.text = "Guía: ${envio.numeroGuia}"
-                    binding.tvEstatusActual.text = "Estatus: ${envio.estatus}"
-                    binding.tvDestino.text =
-                        "Destino: ${envio.calleDestino}, ${envio.numeroDestino}, ${envio.coloniaDestino}"
 
-                    cargarSucursal(envio.idSucursalOrigen)
-                    cargarCliente(envio.idCliente)
-                    cargarPaquetes(envio.idEnvio)
+                envio = gson.fromJson(result, Envio::class.java)
 
-                } catch (_: Exception) {
-                    Toast.makeText(this, "Error al procesar envío", Toast.LENGTH_LONG).show()
-                }
+                binding.tvGuia.text = "Guía: ${envio.numeroGuia}"
+                binding.tvDestino.text =
+                    "Destino: ${envio.calleDestino}, ${envio.numeroDestino}, ${envio.coloniaDestino}"
+
+                cargarEstadoDestino(envio.idEstadoDestino)
+                cargarEstatus(envio.idEstadosEnvio)
+                cargarSucursal(envio.idSucursalOrigen)
+                cargarCliente(envio.idCliente)
+                cargarPaquetes(envio.idEnvio)
+            }
+    }
+
+    private fun cargarEstatus(idEstatus: Int) {
+        Ion.with(this)
+            .load("${Constantes.URL_API}estados-envio/obtener/$idEstatus")
+            .asString(Charsets.UTF_8)
+            .setCallback { e, result ->
+                binding.tvEstatusActual.text =
+                    if (e != null || result.isNullOrBlank()) {
+                        "Estatus: No disponible"
+                    } else {
+                        try {
+                            val estatus = gson.fromJson(result, Estatus::class.java)
+                            "Estatus: ${estatus.estadoEnvio}"
+                        } catch (_: Exception) {
+                            "Estatus: No disponible"
+                        }
+                    }
+            }
+    }
+
+    private fun cargarEstadoDestino(idEstado: Int) {
+        Ion.with(this)
+            .load("${Constantes.URL_API}estado/obtener-id/$idEstado")
+            .asString(Charsets.UTF_8)
+            .setCallback { e, result ->
+                val textoEstado =
+                    if (e != null || result.isNullOrBlank()) {
+                        "Estado: No disponible"
+                    } else {
+                        try {
+                            val estado = gson.fromJson(result, Estado::class.java)
+                            "Estado: ${estado.estadoMexico}"
+                        } catch (_: Exception) {
+                            "Estado: No disponible"
+                        }
+                    }
+
+                binding.tvDestino.append("\n$textoEstado")
             }
     }
 
     private fun cargarSucursal(idSucursal: Int) {
         Ion.with(this)
-            .load("GET", "${Constantes.URL_API}sucursal/obtener/$idSucursal")
+            .load("${Constantes.URL_API}sucursal/obtener/$idSucursal")
             .asString(Charsets.UTF_8)
-            .setCallback { e, result ->
-                if (e != null || result.isNullOrBlank()) {
-                    binding.tvOrigen.text = "Sucursal Origen: No disponible"
-                    return@setCallback
-                }
-
-                try {
-                    val sucursal = gson.fromJson(result, Sucursal::class.java)
-                    binding.tvOrigen.text =
+            .setCallback { _, result ->
+                binding.tvOrigen.text =
+                    try {
+                        val sucursal = gson.fromJson(result, Sucursal::class.java)
                         "Sucursal Origen: ${sucursal.nombreCorto}"
-                } catch (_: Exception) {
-                    binding.tvOrigen.text = "Sucursal Origen: No disponible"
-                }
+                    } catch (_: Exception) {
+                        "Sucursal Origen: No disponible"
+                    }
             }
     }
 
     private fun cargarCliente(idCliente: Int) {
         Ion.with(this)
-            .load("GET", "${Constantes.URL_API}cliente/obtener-id/$idCliente")
+            .load("${Constantes.URL_API}cliente/obtener-id/$idCliente")
             .asString(Charsets.UTF_8)
-            .setCallback { e, result ->
-                if (e != null || result.isNullOrBlank()) {
-                    mostrarClienteNoDisponible()
-                    return@setCallback
-                }
-
+            .setCallback { _, result ->
                 try {
                     val cliente = gson.fromJson(result, Cliente::class.java)
                     binding.tvClienteNombre.text =
                         "Cliente: ${cliente.nombre} ${cliente.apellidoPaterno} ${cliente.apellidoMaterno}"
-                    binding.tvClienteTelefono.text =
-                        "Teléfono: ${cliente.telefono}"
-                    binding.tvClienteCorreo.text =
-                        "Correo: ${cliente.correo}"
+                    binding.tvClienteTelefono.text = "Teléfono: ${cliente.telefono}"
+                    binding.tvClienteCorreo.text = "Correo: ${cliente.correo}"
                 } catch (_: Exception) {
                     mostrarClienteNoDisponible()
                 }
@@ -221,22 +183,153 @@ class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
 
     private fun cargarPaquetes(idEnvio: Int) {
         Ion.with(this)
-            .load("GET", "${Constantes.URL_API}paquete/obtener-por-envio/$idEnvio")
+            .load("${Constantes.URL_API}paquete/obtener-por-envio/$idEnvio")
             .asString()
-            .setCallback { e, result ->
-                if (e != null || result.isNullOrBlank()) {
-                    Toast.makeText(this, "Error al cargar paquetes", Toast.LENGTH_LONG).show()
-                    return@setCallback
-                }
-
+            .setCallback { _, result ->
                 try {
                     val lista = gson.fromJson(result, Array<Paquete>::class.java)
                     paquetes.clear()
                     paquetes.addAll(lista)
                     adapter.notifyDataSetChanged()
                 } catch (_: Exception) {
-                    Toast.makeText(this, "Error al procesar paquetes", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Error al cargar paquetes", Toast.LENGTH_LONG).show()
                 }
+            }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun mostrarDialogoCambioEstatus() {
+
+        val view = layoutInflater.inflate(R.layout.dialog_actualizar_estatus, null)
+
+        val spinner = view.findViewById<Spinner>(R.id.sp_estado_nuevo)
+        val etComentario = view.findViewById<EditText>(R.id.et_comentario)
+        val tvErrorEstado = view.findViewById<TextView>(R.id.tv_error_estado)
+        val tvErrorComentario = view.findViewById<TextView>(R.id.tv_error_comentario)
+
+        tvErrorEstado.text = ""
+        tvErrorComentario.text = ""
+
+        // 1️⃣ Cargar estados desde API
+        Ion.with(this)
+            .load("${Constantes.URL_API}estados-envio/obtener-todos")
+            .asString(Charsets.UTF_8)
+            .setCallback { e, result ->
+
+                if (e != null || result.isNullOrBlank()) {
+                    Toast.makeText(this, "Error al cargar estados", Toast.LENGTH_LONG).show()
+                    return@setCallback
+                }
+
+                val todos = gson.fromJson(result, Array<Estatus>::class.java)
+
+                // 2️⃣ Filtrar EXACTAMENTE como en escritorio
+                val estadosFiltrados = todos.filter {
+                    val nombre = it.estadoEnvio.lowercase()
+                    nombre != "procesado" &&
+                            nombre != "recibido en sucursal"
+                }
+
+                val adapterSpinner = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    estadosFiltrados.map { it.estadoEnvio }
+                )
+
+                spinner.adapter = adapterSpinner
+
+                // 3️⃣ Mostrar diálogo solo cuando el spinner ya está listo
+                AlertDialog.Builder(this)
+                    .setView(view)
+                    .setPositiveButton("Actualizar", null)
+                    .setNegativeButton("Cancelar", null)
+                    .create()
+                    .also { dialog ->
+
+                        dialog.setOnShowListener {
+
+                            val btnActualizar =
+                                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+                            btnActualizar.setOnClickListener {
+
+                                tvErrorEstado.text = ""
+                                tvErrorComentario.text = ""
+
+                                val pos = spinner.selectedItemPosition
+                                if (pos == AdapterView.INVALID_POSITION) {
+                                    tvErrorEstado.text = "Selecciona un estado."
+                                    return@setOnClickListener
+                                }
+
+                                val estadoSeleccionado = estadosFiltrados[pos]
+                                val nombreEstado =
+                                    estadoSeleccionado.estadoEnvio.lowercase()
+
+                                val comentario = etComentario.text.toString().trim()
+
+                                // 4️⃣ Validación EXACTA de escritorio
+                                if ((nombreEstado == "detenido" || nombreEstado == "cancelado")
+                                    && comentario.isEmpty()
+                                ) {
+                                    tvErrorComentario.text =
+                                        "El comentario es obligatorio para estados detenidos o cancelados."
+                                    return@setOnClickListener
+                                }
+
+                                val fechaCambio = LocalDateTime.now()
+                                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
+                                // 5️⃣ Construcción del objeto
+                                val estatusEnvio = EstatusEnvio(
+                                    idEnvio = envio.idEnvio,
+                                    idEstadosEnvio = estadoSeleccionado.idEstadosEnvio,
+                                    comentario = comentario,
+                                    fechaCambio = fechaCambio,
+                                    idColaborador = envio.idColaborador,
+                                    idHistorial = null
+                                )
+
+                                // 6️⃣ Envío
+                                Ion.with(this@DetalleEnvioActivity)
+                                    .load(
+                                        "POST",
+                                        "${Constantes.URL_API}envio-historial/registrar"
+                                    )
+                                    .setHeader(
+                                        "Content-Type",
+                                        "application/json; charset=UTF-8"
+                                    )
+                                    .setStringBody(gson.toJson(estatusEnvio))
+                                    .asString()
+                                    .setCallback { ex, _ ->
+
+                                        if (ex != null) {
+                                            Toast.makeText(
+                                                this@DetalleEnvioActivity,
+                                                "No se pudo actualizar el estatus",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            return@setCallback
+                                        }
+
+                                        Toast.makeText(
+                                            this@DetalleEnvioActivity,
+                                            "Estatus actualizado correctamente",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+
+                                        dialog.dismiss()
+                                        cargarEnvio()
+                                    }
+                            }
+
+                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                                .setOnClickListener { dialog.dismiss() }
+                        }
+
+                        dialog.show()
+                    }
             }
     }
 
@@ -244,7 +337,5 @@ class DetalleEnvioActivity : AppCompatActivity(), PaqueteListener {
         Toast.makeText(this, paquete.descripcion, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onCambiarEstatus(paquete: Paquete) {
-
-    }
+    override fun onCambiarEstatus(paquete: Paquete) {}
 }

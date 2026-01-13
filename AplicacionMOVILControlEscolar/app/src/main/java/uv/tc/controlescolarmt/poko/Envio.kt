@@ -3,44 +3,58 @@ package uv.tc.controlescolarmt.poko
 import com.google.gson.annotations.SerializedName
 
 data class Envio(
+
     @SerializedName("idEnvio")
-    val idEnvio: Int,
+    var idEnvio: Int = 0,
+
     @SerializedName("idCliente")
-    val idCliente: Int,
+    var idCliente: Int = 0,
+
     @SerializedName("idColaborador")
-    val idColaborador: Int,
+    var idColaborador: Int = 0,
+
     @SerializedName("nombreDestinatario")
-    val nombreDestinatario: String,
-    @SerializedName("apellidoPaternoDest")
-    val apellidoPaternoDest: String,
-    @SerializedName("apellidoMaternoDest")
-    val apellidoMaternoDest: String,
+    var nombreDestinatario: String? = null,
+
     @SerializedName("idSucursalOrigen")
-    val idSucursalOrigen: Int,
+    var idSucursalOrigen: Int = 0,
+
     @SerializedName("calleDestino")
-    val calleDestino: String,
+    var calleDestino: String? = null,
+
     @SerializedName("numeroDestino")
-    val numeroDestino: String,
+    var numeroDestino: String? = null,
+
     @SerializedName("coloniaDestino")
-    val coloniaDestino: String,
+    var coloniaDestino: String? = null,
+
     @SerializedName("cpDestino")
-    val cpDestino: String,
+    var cpDestino: String? = null,
+
     @SerializedName("ciudadDestino")
-    val ciudadDestino: String,
-    @SerializedName("estadoDestino")
-    val estadoDestino: String,
+    var ciudadDestino: String? = null,
+
+    @SerializedName("idEstadoDestino")
+    var idEstadoDestino: Int = 0,
+
+    @SerializedName("idEstadosEnvio")
+    var idEstadosEnvio: Int = 0,
+
     @SerializedName("numeroGuia")
-    val numeroGuia: String,
+    var numeroGuia: String? = null,
+
     @SerializedName("distanciaKm")
-    val distanciaKm: Float,
+    var distanciaKm: Float = 0f,
+
     @SerializedName("costoKm")
-    val costoKm: Float,
+    var costoKm: Float = 0f,
+
     @SerializedName("costoPaquetes")
-    val costoPaquetes: Float,
+    var costoPaquetes: Float = 0f,
+
     @SerializedName("costoTotal")
-    val costoTotal: Float,
-    @SerializedName("estatus")
-    var estatus: String,
+    var costoTotal: Float = 0f,
+
     @SerializedName("fechaCreacion")
-    val fechaCreacion: String
+    var fechaCreacion: String = ""
 )

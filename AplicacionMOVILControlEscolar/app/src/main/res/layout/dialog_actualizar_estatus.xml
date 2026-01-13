@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:padding="20dp">
 
+            <!-- Estado actual -->
             <TextView
                 android:id="@+id/tv_label_estado_actual"
                 android:layout_width="wrap_content"
@@ -41,6 +42,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_label_estado_actual"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <!-- Estado nuevo -->
             <TextView
                 android:id="@+id/tv_label_estado_nuevo"
                 android:layout_width="wrap_content"
@@ -63,6 +65,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- ERROR ESTADO -->
+            <TextView
+                android:id="@+id/tv_error_estado"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                android:text=""
+                app:layout_constraintTop_toBottomOf="@id/sp_estado_nuevo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Comentario -->
             <TextView
                 android:id="@+id/tv_label_comentario"
                 android:layout_width="wrap_content"
@@ -71,7 +87,7 @@
                 android:text="Comentario:"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@id/sp_estado_nuevo"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_estado"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
@@ -88,13 +104,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- ERROR COMENTARIO -->
+            <TextView
+                android:id="@+id/tv_error_comentario"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp"
+                android:text=""
+                app:layout_constraintTop_toBottomOf="@id/et_comentario"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Botones -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:orientation="horizontal"
                 android:gravity="end"
-                app:layout_constraintTop_toBottomOf="@id/et_comentario"
+                app:layout_constraintTop_toBottomOf="@id/tv_error_comentario"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 

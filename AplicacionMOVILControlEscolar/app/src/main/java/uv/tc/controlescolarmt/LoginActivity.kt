@@ -9,6 +9,9 @@ import com.koushikdutta.ion.Ion
 import uv.tc.controlescolarmt.databinding.ActivityLoginBinding
 import uv.tc.controlescolarmt.dto.RSAutenticacionConductor
 import uv.tc.controlescolarmt.util.Constantes
+import android.text.Editable
+import android.text.TextWatcher
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,6 +21,23 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.etNumeroPersonal.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    val textoMayusculas = it.toString().uppercase()
+                    if (it.toString() != textoMayusculas) {
+                        binding.etNumeroPersonal.setText(textoMayusculas)
+                        binding.etNumeroPersonal.setSelection(textoMayusculas.length)
+                    }
+                }
+            }
+        })
+
 
         binding.btnLogin.setOnClickListener {
             iniciarSesion()

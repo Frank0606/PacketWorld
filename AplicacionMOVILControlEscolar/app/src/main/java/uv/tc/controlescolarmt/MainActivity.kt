@@ -14,43 +14,53 @@ import uv.tc.controlescolarmt.databinding.ActivityMainBinding
 import uv.tc.controlescolarmt.listener.EnvioListener
 import uv.tc.controlescolarmt.poko.Colaborador
 import uv.tc.controlescolarmt.poko.Envio
+import uv.tc.controlescolarmt.poko.Estado
+import uv.tc.controlescolarmt.poko.Estatus
 import uv.tc.controlescolarmt.util.Constantes
-import kotlin.jvm.java
 
 class MainActivity : AppCompatActivity(), EnvioListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var colaborador: Colaborador
-    private val envios = mutableListOf<Envio>()
     private lateinit var adapter: EnvioAdapter
-    private lateinit var runnable: Runnable
+    private val envios = mutableListOf<Envio>()
+    private val mapaEstados = mutableMapOf<Int, String>()
+    private val mapaEstatus = mutableMapOf<Int, String>()
     private val handler = android.os.Handler(Looper.getMainLooper())
+    private lateinit var runnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        cargarDatosConductor()
+        configurarRecycler()
+
+        cargarCatalogos {
+            cargarEnviosAsignados()
+        }
+
         runnable = object : Runnable {
             override fun run() {
-                refrescar()
+                cargarEnviosAsignados()
                 handler.postDelayed(this, 5000)
             }
         }
 
-        cargarDatosConductor()
-        configurarRecycler()
-        cargarEnviosAsignados()
-
-        // PERFIL (ImageButton)
         binding.btnPerfil.setOnClickListener {
-            startActivity(Intent(this, perfilConductorActivity::class.java))
+            startActivity(Intent(this, PerfilConductorActivity::class.java))
+            finish()
         }
 
-        // CERRAR SESIÓN (ImageButton)
         binding.btnLogout.setOnClickListener {
             mostrarConfirmacionCerrarSesion()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handler.post(runnable)
     }
 
     override fun onPause() {
@@ -58,36 +68,17 @@ class MainActivity : AppCompatActivity(), EnvioListener {
         handler.removeCallbacks(runnable)
     }
 
-    private fun refrescar() {
-        cargarEnviosAsignados()
-    }
-
-    private fun mostrarConfirmacionCerrarSesion() {
-        AlertDialog.Builder(this)
-            .setTitle("Cerrar sesión")
-            .setMessage("¿Estás seguro de cerrar sesión?")
-            .setPositiveButton("Sí") { _, _ ->
-                cerrarSesion()
-            }
-            .setNegativeButton("No", null)
-            .show()
-    }
-
-    private fun cerrarSesion() {
-        val prefs = getSharedPreferences("sesion", MODE_PRIVATE)
-        prefs.edit().clear().apply()
-
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
+    private fun configurarRecycler() {
+        adapter = EnvioAdapter(envios, mapaEstados, mapaEstatus, this)
+        binding.rvEnvios.layoutManager = LinearLayoutManager(this)
+        binding.rvEnvios.adapter = adapter
     }
 
     private fun cargarDatosConductor() {
-        val pref = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        val json = pref.getString(Constantes.KEY_CONDUCTOR, null)
+        val json = getSharedPreferences("app_prefs", MODE_PRIVATE)
+            .getString(Constantes.KEY_CONDUCTOR, null)
 
-        if (json == null) {
+        if (json.isNullOrBlank()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
             return
@@ -97,38 +88,87 @@ class MainActivity : AppCompatActivity(), EnvioListener {
         binding.tvBienvenida.text = "Bienvenido, ${colaborador.nombre}"
     }
 
-    private fun configurarRecycler() {
-        adapter = EnvioAdapter(envios, this)
-        binding.rvEnvios.layoutManager = LinearLayoutManager(this)
-        binding.rvEnvios.adapter = adapter
+    private fun cargarCatalogos(onComplete: () -> Unit) {
+
+        Ion.with(this)
+            .load("${Constantes.URL_API}estado/obtener-todos")
+            .asString()
+            .setCallback { e1, r1 ->
+
+                if (e1 != null || r1.isNullOrBlank()) {
+                    Toast.makeText(this, "Error al cargar estados", Toast.LENGTH_LONG).show()
+                    return@setCallback
+                }
+
+                val estados = Gson().fromJson(r1, Array<Estado>::class.java)
+                mapaEstados.clear()
+                estados.forEach { mapaEstados[it.idEstado] = it.estadoMexico }
+
+                Ion.with(this)
+                    .load("${Constantes.URL_API}estados-envio/obtener-todos")
+                    .asString()
+                    .setCallback { e2, r2 ->
+                        if (e2 != null || r2.isNullOrBlank()) {
+                            Toast.makeText(this, "Error al cargar estatus", Toast.LENGTH_LONG).show()
+                            return@setCallback
+                        }
+
+                        val estatus = Gson().fromJson(r2, Array<Estatus>::class.java)
+                        mapaEstatus.clear()
+                        estatus.forEach { mapaEstatus[it.idEstadosEnvio] = it.estadoEnvio }
+
+                        onComplete()
+                    }
+            }
     }
 
     private fun cargarEnviosAsignados() {
         Ion.with(this)
             .load("${Constantes.URL_API}envio/envio-conductor/${colaborador.idColaborador}")
-            .setHeader("Accept", "application/json; charset=UTF-8")
             .asString(Charsets.UTF_8)
             .setCallback { e, result ->
 
-                if (e != null) {
-                    Toast.makeText(this, "Error de conexión", Toast.LENGTH_LONG).show()
+                if (e != null || result.isNullOrBlank()) {
+                    Toast.makeText(this, "Error al cargar envíos", Toast.LENGTH_LONG).show()
                     return@setCallback
                 }
 
                 try {
-                    val tipoListaEnvio =
+                    val tipo =
                         object : com.google.gson.reflect.TypeToken<List<Envio>>() {}.type
 
-                    val enviosAPI: List<Envio> =
-                        Gson().fromJson(result, tipoListaEnvio)
+                    val lista = Gson().fromJson<List<Envio>>(result, tipo)
 
-                    binding.tvListaTitulo.text = "Total de envíos: ${enviosAPI.size}"
-                    adapter.actualizarLista(enviosAPI)
+                    binding.tvListaTitulo.text =
+                        "Total de envíos: ${lista.size}"
 
-                } catch (ex: Exception) {
+                    adapter.actualizarLista(lista)
+
+                } catch (_: Exception) {
                     Toast.makeText(this, "Error al procesar envíos", Toast.LENGTH_LONG).show()
                 }
             }
+    }
+
+    private fun mostrarConfirmacionCerrarSesion() {
+        AlertDialog.Builder(this)
+            .setTitle("Cerrar sesión")
+            .setMessage("¿Estás seguro de cerrar sesión?")
+            .setPositiveButton("Sí") { _, _ -> cerrarSesion() }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
+    private fun cerrarSesion() {
+        getSharedPreferences("sesion", MODE_PRIVATE)
+            .edit()
+            .clear()
+            .apply()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     override fun onCambiarEstatus(envio: Envio) {
@@ -139,11 +179,5 @@ class MainActivity : AppCompatActivity(), EnvioListener {
         val intent = Intent(this, DetalleEnvioActivity::class.java)
         intent.putExtra(Constantes.KEY_ENVIO, Gson().toJson(envio))
         startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        cargarEnviosAsignados()
-        handler.post(runnable)
     }
 }

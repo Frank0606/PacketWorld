@@ -20,7 +20,7 @@ data class Sucursal(
     val codigoPostal: String,
     @SerializedName("ciudad")
     val ciudad: String,
-    @SerializedName("estado")
-    val estado: String
+    @SerializedName("idEstado")
+    val idEstado: Int
 
 )
