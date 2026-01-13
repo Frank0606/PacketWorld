@@ -4,9 +4,6 @@
 
 <mapper namespace="SucursalMapper">
 
-    <!-- =======================================================
-         RESULT MAP
-    ======================================================== -->
     <resultMap id="SucursalMap" type="pojo.Sucursal">
         <id property="idSucursal" column="idSucursal"/>
         <result property="codigo" column="codigo"/>
@@ -17,74 +14,55 @@
         <result property="colonia" column="colonia"/>
         <result property="codigoPostal" column="codigoPostal"/>
         <result property="ciudad" column="ciudad"/>
-        <result property="estado" column="estado"/>
+        <result property="idEstado" column="idEstado"/>
     </resultMap>
 
-    <!-- =======================================================
-         LISTAR TODAS
-    ======================================================== -->
     <select id="obtenerTodos" resultMap="SucursalMap">
-        SELECT *
-        FROM Sucursal;
+        SELECT * FROM Sucursal;
     </select>
 
-    <!-- =======================================================
-         OBTENER POR ID
-    ======================================================== -->
     <select id="obtenerPorId" parameterType="int" resultMap="SucursalMap">
-        SELECT *
+        SELECT * 
         FROM Sucursal
         WHERE idSucursal = #{idSucursal};
     </select>
 
-    <!-- =======================================================
-         OBTENER POR CÓDIGO
-    ======================================================== -->
     <select id="obtenerPorCodigo" parameterType="string" resultMap="SucursalMap">
-        SELECT *
+        SELECT * 
         FROM Sucursal
         WHERE codigo = #{codigo};
     </select>
 
-    <!-- =======================================================
-         REGISTRAR
-    ======================================================== -->
     <insert id="registrar" parameterType="pojo.Sucursal">
         INSERT INTO Sucursal
-        (codigo, nombreCorto, estatus, calle, numero, colonia, codigoPostal, ciudad, estado)
+        (codigo, nombreCorto, estatus, calle, numero, colonia, codigoPostal, ciudad, idEstado)
         VALUES
         (#{codigo}, #{nombreCorto}, #{estatus}, #{calle}, #{numero}, #{colonia},
-         #{codigoPostal}, #{ciudad}, #{estado});
+        #{codigoPostal}, #{ciudad}, #{idEstado});
     </insert>
 
-    <!-- =======================================================
-         EDITAR (sin código ni estatus)
-    ======================================================== -->
     <update id="editar" parameterType="pojo.Sucursal">
         UPDATE Sucursal SET
-            nombreCorto = #{nombreCorto},
-            calle = #{calle},
-            numero = #{numero},
-            estatus = #{estatus},
-            colonia = #{colonia},
-            codigoPostal = #{codigoPostal},
-            ciudad = #{ciudad},
-            estado = #{estado}
+        nombreCorto = #{nombreCorto},
+        calle = #{calle},
+        numero = #{numero},
+        estatus = #{estatus},
+        colonia = #{colonia},
+        codigoPostal = #{codigoPostal},
+        ciudad = #{ciudad},
+        idEstado = #{idEstado}
         WHERE idSucursal = #{idSucursal};
     </update>
 
-    <!-- =======================================================
-         DAR DE BAJA
-    ======================================================== -->
     <update id="darBaja" parameterType="int">
         UPDATE Sucursal
-        SET estatus = 'INACTIVA'
+        SET estatus = 'Inactiva'
         WHERE idSucursal = #{idSucursal};
     </update>
     
     <delete id="eliminarSucursal" parameterType="int">
         DELETE FROM Sucursal 
-        WHERE idSucursal = #{idSucursal}
+        WHERE idSucursal = #{idSucursal};
     </delete>
 
 </mapper>

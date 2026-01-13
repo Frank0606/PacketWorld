@@ -16,10 +16,10 @@
         WHERE numeroGuia = #{numeroGuia};
     </select>
     
-    <select id="obtenerEnvioGuiaDireccion" parameterType="string" resultType="pojo.Envio">
+    <select id="obtenerEnvioConductor" parameterType="int" resultType="pojo.Envio">
         SELECT *
         FROM Envio
-        WHERE numeroGuia = #{numeroGuia};
+        WHERE idColaborador = #{idColaborador};
     </select>
 
     <!-- Obtener por ID -->
@@ -39,35 +39,47 @@
     <!-- Registrar -->
     <insert id="registrar" parameterType="pojo.Envio">
         INSERT INTO Envio (
-        idCliente, idColaborador, nombreDestinatario, apellidoPaternoDest, apellidoMaternoDest,
-        idSucursalOrigen, calleDestino, numeroDestino, coloniaDestino, cpDestino,
-        ciudadDestino, estadoDestino, numeroGuia,
-        distanciaKm, costoKm, costoPaquetes, costoTotal, estatus
+        idCliente,
+        idColaborador,
+        nombreDestinatario,
+        idSucursalOrigen,
+        calleDestino,
+        numeroDestino,
+        coloniaDestino,
+        cpDestino,
+        ciudadDestino,
+        idEstadoDestino,
+        idEstadosEnvio,
+        numeroGuia
         )
         VALUES (
-        #{idCliente}, #{idColaborador}, #{nombreDestinatario}, #{apellidoPaternoDest}, #{apellidoMaternoDest},
-        #{idSucursalOrigen}, #{calleDestino}, #{numeroDestino}, #{coloniaDestino}, #{cpDestino},
-        #{ciudadDestino}, #{estadoDestino}, #{numeroGuia},
-        #{distanciaKm}, #{costoKm}, #{costoPaquetes}, #{costoTotal}, #{estatus}
+        #{idCliente},
+        #{idColaborador},
+        #{nombreDestinatario},
+        #{idSucursalOrigen},
+        #{calleDestino},
+        #{numeroDestino},
+        #{coloniaDestino},
+        #{cpDestino},
+        #{ciudadDestino},
+        #{idEstadoDestino},
+        #{idEstadosEnvio},
+        #{numeroGuia}
         );
     </insert>
 
     <!-- Actualizar envío (NO número guía) -->
     <update id="editar" parameterType="pojo.Envio">
         UPDATE Envio
-        SET nombreDestinatario = #{nombreDestinatario},
-        apellidoPaternoDest = #{apellidoPaternoDest},
-        apellidoMaternoDest = #{apellidoMaternoDest},
+        SET
+        nombreDestinatario = #{nombreDestinatario},
         calleDestino = #{calleDestino},
         numeroDestino = #{numeroDestino},
         coloniaDestino = #{coloniaDestino},
         cpDestino = #{cpDestino},
         ciudadDestino = #{ciudadDestino},
-        estadoDestino = #{estadoDestino},
-        distanciaKm = #{distanciaKm},
-        costoKm = #{costoKm},
-        costoPaquetes = #{costoPaquetes},
-        costoTotal = #{costoTotal},
+        idEstadoDestino = #{idEstadoDestino},
+        idEstadosEnvio = #{idEstadosEnvio},
         idColaborador = #{idColaborador}
         WHERE idEnvio = #{idEnvio};
     </update>
@@ -79,7 +91,7 @@
         costoKm = #{costoKm},
         costoPaquetes = #{costoPaquetes},
         costoTotal = #{costoTotal},
-        estatus = "En tránsito"
+        idEstadosEnvio = 2
         WHERE idEnvio = #{idEnvio};
     </update>
     
@@ -88,5 +100,11 @@
         DELETE FROM Envio
         WHERE numeroGuia = #{numeroGuia};
     </delete>
+    
+    <update id="actualizarEstadoEnvio" parameterType="pojo.Envio">
+        UPDATE Envio
+        SET idEstadosEnvio = #{idEstadosEnvio}
+        WHERE idEnvio = #{idEnvio}
+    </update>
 
 </mapper>

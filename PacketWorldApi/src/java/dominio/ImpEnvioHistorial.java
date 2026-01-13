@@ -29,9 +29,9 @@ public class ImpEnvioHistorial {
             try {
                 conn.insert("EnvioHistorialMapper.registrar", h);
                 Envio envio = new Envio();
-                envio.setEstatus(h.getEstatus());
+                envio.setIdEstadosEnvio(h.getIdEstadosEnvio());
                 envio.setIdEnvio(h.getIdEnvio());
-                conn.update("EnvioHistorialMapper.actualizarEstatusEnvio", envio);
+                conn.update("EnvioMapper.actualizarEstadoEnvio", envio);
                 conn.commit();
                 msj.setError(false);
                 msj.setMensaje("Estatus registrado correctamente.");

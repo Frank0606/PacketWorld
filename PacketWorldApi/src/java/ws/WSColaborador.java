@@ -14,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import pojo.Colaborador;
+import pojo.FotoColaboradorDTO;
 import pojo.Mensaje;
 
 @Path("colaborador")
@@ -45,7 +46,7 @@ public class WSColaborador {
 
         return col;
     }
-    
+
     @GET
     @Path("buscar/id/{idColaborador}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
@@ -126,5 +127,39 @@ public class WSColaborador {
         return ImpColaborador.eliminarColaborador(numeroPersonal);
     }
 
-}
+    @GET
+    @Path("obtener-foto/{idColaborador}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public FotoColaboradorDTO obtenerFoto(@PathParam("idColaborador") int idColaborador) {
 
+        if (idColaborador <= 0) {
+            throw new BadRequestException("ID inválido.");
+        }
+
+        FotoColaboradorDTO dto
+                = ImpColaborador.obtenerFotoBase64PorId(idColaborador);
+
+        return dto;
+    }
+
+    @PUT
+    @Path("actualizar-foto/{idColaborador}")
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public Mensaje actualizarFoto(
+            @PathParam("idColaborador") int idColaborador,
+            byte[] fotografia
+    ) {
+
+        if (idColaborador <= 0) {
+            throw new BadRequestException("ID inválido.");
+        }
+
+        if (fotografia == null || fotografia.length == 0) {
+            throw new BadRequestException("Fotografía inválida.");
+        }
+
+        return ImpColaborador.actualizarFoto(idColaborador, fotografia);
+    }
+
+}

@@ -43,7 +43,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
     @FXML
     private TextField tfCorreoElectronico;
     @FXML
-    private TextField tfNoPersonal;
+    private Label tfNoPersonal;
     @FXML
     private TextField tfContrasenia;
     @FXML
@@ -94,7 +94,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         tfCURP.textProperty().addListener((obs, old, neu) -> tfCURP.setText(neu.toUpperCase()));
         configurarTextField(tfVIM, Pattern.compile("[a-zA-Z0-9]{0,9}"));
         tfVIM.textProperty().addListener((obs, old, neu) -> tfVIM.setText(neu.toUpperCase()));
-        configurarTextField(tfNombreColaborador, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
+        configurarTextField(tfNombreColaborador, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,30}"));
         tfNombreColaborador.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -102,7 +102,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
                 tfNombreColaborador.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfApellidoPaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,50}"));
+        configurarTextField(tfApellidoPaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,30}"));
         tfApellidoPaterno.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -110,7 +110,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
                 tfApellidoPaterno.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfApellidoMaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,50}"));
+        configurarTextField(tfApellidoMaterno, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ]{0,30}"));
         tfApellidoMaterno.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -118,8 +118,10 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
                 tfApellidoMaterno.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfCorreoElectronico, Pattern.compile("[a-zA-Z0-9._%+-@]{0,50}"));
-        configurarTextField(tfContrasenia, Pattern.compile(".{0,50}"));
+        configurarTextField(tfCorreoElectronico, Pattern.compile("[a-zA-Z0-9._%+-@]{0,40}"));
+        configurarTextField(tfContrasenia, Pattern.compile(
+                "[a-zA-Z0-9._%#$,]{0,16}$"
+        ));
     }
 
     private void configurarTextField(TextField textField, Pattern pattern) {
@@ -180,7 +182,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
                     break;
                 }
             }
-            
+
             if (tfVIM.getText() != null && !tfVIM.getText().isEmpty()) {
                 colaborador.setNumeroLicencia(tfVIM.getText().toUpperCase());
             } else {
@@ -227,62 +229,108 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         labelErrorSucursal.setText("");
 
         // Validar nombre del colaborador
-        if (tfNombreColaborador.getText() == null || tfNombreColaborador.getText().trim().isEmpty()
-                || (tfNombreColaborador.getText().length() < 3 || tfNombreColaborador.getText().length() > 50)) {
-            labelErrorNombreColaborador.setText("Nombre inválido");
+        if (tfNombreColaborador.getText() == null || tfNombreColaborador.getText().trim().isEmpty()) {
+            labelErrorNombreColaborador.setText("Nombre vacío.");
+            valid = false;
+        } else if (tfNombreColaborador.getText().length() < 3) {
+            labelErrorNombreColaborador.setText("Nombre demasiado corto. (Minimo 3 letras)");
+            valid = false;
+        } else if (tfNombreColaborador.getText().length() > 30) {
+            labelErrorNombreColaborador.setText("Nombre demasiado largo (Maximo 30 letras)");
             valid = false;
         }
 
-        // Validar apellidos: al menos uno debe estar lleno
         String apellidoP = tfApellidoPaterno.getText() != null ? tfApellidoPaterno.getText().trim() : "";
         String apellidoM = tfApellidoMaterno.getText() != null ? tfApellidoMaterno.getText().trim() : "";
+
+        labelErrorApellidoP.setText("");
+        labelErrorApellidoM.setText("");
 
         if (apellidoP.isEmpty() && apellidoM.isEmpty()) {
             labelErrorApellidoP.setText("Debe ingresar al menos un apellido");
             labelErrorApellidoM.setText("Debe ingresar al menos un apellido");
             valid = false;
         } else {
-            // Validar apellido paterno si está lleno
-            if (!apellidoP.isEmpty() && (apellidoP.length() < 2 || apellidoP.length() > 50)) {
-                labelErrorApellidoP.setText("Apellido Paterno inválido (mínimo 2 letras)");
+
+            if (!apellidoP.isEmpty()) {
+                if (apellidoP.length() < 2) {
+                    labelErrorApellidoP.setText("El apellido es demasiado corto (mínimo 2 letras)");
+                    valid = false;
+                } else if (apellidoP.length() > 30) {
+                    labelErrorApellidoP.setText("El apellido es demasiado largo (máximo 30 letras)");
+                    valid = false;
+                }
+            }
+
+            if (!apellidoM.isEmpty()) {
+                if (apellidoM.length() < 2) {
+                    labelErrorApellidoM.setText("El apellido es demasiado corto (mínimo 2 letras)");
+                    valid = false;
+                } else if (apellidoM.length() > 30) {
+                    labelErrorApellidoM.setText("El apellido es demasiado largo (máximo 30 letras)");
+                    valid = false;
+                }
+            }
+
+            if (apellidoP.isEmpty()) {
+                labelErrorApellidoP.setText("El apellido paterno esta vacío.");
                 valid = false;
             }
-            // Validar apellido materno si está lleno
-            if (!apellidoM.isEmpty() && (apellidoM.length() < 2 || apellidoM.length() > 50)) {
-                labelErrorApellidoM.setText("Apellido Materno inválido (mínimo 2 letras)");
+
+            if (apellidoM.isEmpty()) {
+                labelErrorApellidoM.setText("El apellido materno esta vacío.");
                 valid = false;
             }
         }
 
         // Validar correo electrónico
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$";
-        if (tfCorreoElectronico.getText() == null || tfCorreoElectronico.getText().trim().isEmpty()
-                || tfCorreoElectronico.getText().length() > 50
-                || !tfCorreoElectronico.getText().matches(emailPattern)) {
-            labelErrorCorreo.setText("Correo electrónico inválido");
+        String correo = tfCorreoElectronico.getText() != null ? tfCorreoElectronico.getText().trim() : "";
+        if (correo.isEmpty()) {
+            labelErrorCorreo.setText("Debe ingresar un correo electrónico");
+            valid = false;
+        } else if (correo.length() > 40) {
+            labelErrorCorreo.setText("El correo electrónico es demasiado largo (máximo 40 caracteres)");
+            valid = false;
+        } else if (!correo.contains("@")) {
+            labelErrorCorreo.setText("El correo electrónico debe contener '@'");
+            valid = false;
+        } else if (!correo.matches(".*\\.[A-Za-z]{2,}$")) {
+            labelErrorCorreo.setText("El correo electrónico debe contener un dominio válido (ejemplo: .com, .mx)");
+            valid = false;
+        } else if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
+            labelErrorCorreo.setText("Formato de correo electrónico inválido");
             valid = false;
         }
 
         // Validar contraseña
-        if (tfContrasenia.getText() == null || tfContrasenia.getText().trim().isEmpty()
-                || tfContrasenia.getText().length() > 50 || tfContrasenia.getText().length() < 8) {
-            labelErrorContrasenia.setText("Contraseña inválida");
+        if (tfContrasenia.getText() == null || tfContrasenia.getText().trim().isEmpty()) {
+            labelErrorContrasenia.setText("Contraseña vacía");
+            valid = false;
+        } else if (tfContrasenia.getText().length() > 16) {
+            labelErrorContrasenia.setText("Contraseña demasiado larga.");
+            valid = false;
+        } else if (tfContrasenia.getText().length() < 8) {
+            labelErrorContrasenia.setText("Contraseña demasiado corta.");
             valid = false;
         }
 
-        // Validar CURP: exactamente 17 caracteres
-        if (tfCURP.getText() == null || tfCURP.getText().trim().isEmpty()
-                || tfCURP.getText().length() != 18) {
-            labelErrorCURP.setText("CURP inválido (debe tener exactamente 17 caracteres)");
+        // Validar CURP: exactamente 18 caracteres
+        if (tfCURP.getText().isEmpty()) {
+            labelErrorCURP.setText("Debe ingresar el CURP");
+            valid = false;
+        } else if (tfCURP.getText().length() != 18) {
+            labelErrorCURP.setText("El CURP debe tener exactamente 18 caracteres");
             valid = false;
         }
 
         // Validar VIM si Rol.idRol == 3: exactamente 9 caracteres
         if (cbRol.getValue() != null) {
             if (cbRol.getValue().getIdRol() == 3) {
-                if (tfVIM.getText() == null || tfVIM.getText().trim().isEmpty()
-                        || tfVIM.getText().length() != 9) {
-                    labelErrorLicencia.setText("Número de licencia inválido (debe tener exactamente 9 caracteres)");
+                if (tfVIM.getText() == null || tfVIM.getText().trim().isEmpty()) {
+                    labelErrorLicencia.setText("Número de licencia vacío.");
+                    valid = false;
+                } else if (tfVIM.getText().length() != 9) {
+                    labelErrorLicencia.setText("Número de licencia incorrecto (debe tener exactamente 9 caracteres)");
                     valid = false;
                 }
             } else {
@@ -297,7 +345,7 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
         // Validar sucursal
         if (cbSucursal.getValue() != null) {
             if (cbSucursal.getValue().getIdSucursal() <= 0) {
-                labelErrorSucursal.setText("Sucursal inválida");
+                labelErrorSucursal.setText("Sucursal vacía");
                 valid = false;
             } else {
                 labelErrorSucursal.setText("");
@@ -391,9 +439,6 @@ public class FXMLFormularioColaboradorController implements Initializable, Contr
     @Override
     public void setDatos(Colaborador colaborador) {
         this.colaborador = colaborador;
-        tfNoPersonal.setEditable(false);
-        tfNoPersonal.setDisable(true);
-
         txNumeroLicencia.setVisible(false);
         tfVIM.setVisible(false);
 

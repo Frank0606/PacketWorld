@@ -4,6 +4,7 @@ import java.util.List;
 import mybatis.MybatisUtil;
 import org.apache.ibatis.session.SqlSession;
 import pojo.Colaborador;
+import pojo.FotoColaboradorDTO;
 import pojo.Mensaje;
 
 public class ImpColaborador {
@@ -50,7 +51,7 @@ public class ImpColaborador {
         }
         return null;
     }
-    
+
     public static Colaborador obtenerColaboradorPorId(int idColaborador) {
         SqlSession conexionBD = MybatisUtil.obtenerConexion();
         if (conexionBD != null) {
@@ -218,6 +219,60 @@ public class ImpColaborador {
             }
         }
         return null;
+    }
+
+    public static FotoColaboradorDTO obtenerFotoBase64PorId(int idColaborador) {
+        SqlSession conexionBD = MybatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                FotoColaboradorDTO col = conexionBD.selectOne(
+                        "ColaboradorMapper.obtenerFotoBase64PorId",
+                        idColaborador);
+                return col;
+            } finally {
+                conexionBD.close();
+            }
+        }
+        return null;
+    }
+
+    public static Mensaje actualizarFoto(int idColaborador, byte[] fotografia) {
+        Mensaje msj = new Mensaje();
+        SqlSession conexionBD = MybatisUtil.obtenerConexion();
+
+        if (conexionBD != null) {
+            try {
+                Colaborador col = new Colaborador();
+                col.setIdColaborador(idColaborador);
+                col.setFotografia(fotografia);
+
+                int filas = conexionBD.update(
+                        "ColaboradorMapper.actualizarFoto",
+                        col
+                );
+                conexionBD.commit();
+
+                if (filas > 0) {
+                    msj.setError(false);
+                    msj.setMensaje("Fotografía actualizada correctamente.");
+                } else {
+                    msj.setError(true);
+                    msj.setMensaje("No se encontró el colaborador.");
+                }
+
+            } catch (Exception e) {
+                conexionBD.rollback();
+                msj.setError(true);
+                msj.setMensaje(e.getMessage());
+            } finally {
+                conexionBD.close();
+            }
+        } else {
+            msj.setError(true);
+            msj.setMensaje("No hay conexión a la base de datos.");
+        }
+        return msj;
     }
 
 }

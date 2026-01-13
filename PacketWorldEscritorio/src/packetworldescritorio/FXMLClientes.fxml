@@ -16,37 +16,37 @@
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </padding>
          <columns>
-            <TableColumn fx:id="colCorreo" prefWidth="75.0" text="Correo Electronico" />
+            <TableColumn fx:id="colCorreo" prefWidth="75.0" text="Correo Electrónico" />
             <TableColumn fx:id="colNombreCliente" prefWidth="75.0" text="Nombre" />
             <TableColumn fx:id="colApellidoPaterno" prefWidth="75.0" text="Apellido Paterno" />
             <TableColumn fx:id="colApellidoMaterno" prefWidth="75.0" text="Apellido Materno" />
-            <TableColumn fx:id="colDestino" prefWidth="75.0" text="Destino" />
-            <TableColumn fx:id="colTelefono" prefWidth="75.0" text="Telefono" />
+            <TableColumn fx:id="colDestino" prefWidth="75.0" text="Dirección" />
+            <TableColumn fx:id="colTelefono" prefWidth="75.0" text="Teléfono" />
          </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy></TableView>
-      <Button fx:id="btnBuscar" layoutX="20.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Buscar" textFill="WHITE">
+      <Button fx:id="btnBuscar" layoutX="710.0" layoutY="26.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Buscar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnAgregar" layoutX="540.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnAgregar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Agregar" textFill="WHITE">
+      <Button fx:id="btnAgregar" layoutX="286.0" layoutY="87.0" mnemonicParsing="false" onAction="#btnAgregar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Agregar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnEditar" layoutX="650.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Editar" textFill="WHITE">
+      <Button fx:id="btnEditar" layoutX="405.0" layoutY="87.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Editar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnEliminar" layoutX="750.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Eliminar" textFill="WHITE">
+      <Button fx:id="btnEliminar" layoutX="513.0" layoutY="87.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Eliminar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <TextField fx:id="barraBusqueda" layoutX="120.0" layoutY="80.0" prefHeight="40.0" prefWidth="400.0" promptText="Buscar Cliente por Correo electrónico, nombre o teléfono." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
+      <TextField fx:id="barraBusqueda" layoutX="208.0" layoutY="26.0" prefHeight="40.0" prefWidth="485.0" promptText="Buscar Cliente por Correo electrónico, nombre o teléfono." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
          <font>
             <Font name="Candara" size="18.0" />
          </font>

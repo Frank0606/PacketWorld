@@ -129,7 +129,7 @@ public class ImpEnvio {
         Mensaje msj = new Mensaje();
         SqlSession conn = MybatisUtil.obtenerConexion();
 
-        envio.setEstatus("Pendiente");
+        envio.setIdEstadosEnvio(1);
         envio.setFechaCreacion(LocalDateTime.now().toString());
 
         if (conn != null) {
@@ -227,11 +227,11 @@ public class ImpEnvio {
         return msj;
     }
 
-    public static Envio obtenerEnvioGuiaDireccion(String guia) {
+    public static List<Envio> obtenerEnvioGuiaDireccion(int idConductor) {
         SqlSession conn = MybatisUtil.obtenerConexion();
         if (conn != null) {
             try {
-                return conn.selectOne("EnvioMapper.obtenerEnvioGuiaDireccion", guia);
+                return conn.selectList("EnvioMapper.obtenerEnvioConductor", idConductor);
             } finally {
                 conn.close();
             }

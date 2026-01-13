@@ -7,18 +7,24 @@ import packetworldescritorio.utilidades.Alertas;
 import packetworldescritorio.utilidades.ControladorPrincipal;
 import packetworldescritorio.utilidades.Funciones;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.EstadosDAO;
+import packetworldescritorio.pojo.Estado;
 
 public class FXMLFormularioClienteController implements Initializable, ControladorPrincipal<Cliente> {
 
@@ -31,20 +37,17 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
     @FXML
     private TextField tfCorreoElectronico;
     @FXML
-    private TextField tfContrasenia;
-    @FXML
     private Button btnAgregar;
     @FXML
     private Button btnCancelar;
 
     private Cliente cliente;
-
+    private ObservableList<Estado> listaObservableEstados;
+    
     @FXML
     private Label labelErrorNombreCliente;
     @FXML
     private Label labelErrorApellidoM;
-    @FXML
-    private Label labelErrorContrasenia;
     @FXML
     private Label labelErrorApellidoP;
     @FXML
@@ -76,10 +79,11 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
     @FXML
     private Label labelErrorEstado;
     @FXML
-    private TextField tfEstado;
+    private ComboBox<Estado> tfEstado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cargarEstados();
         configurarTextField(tfNumeroCasa, Pattern.compile("[a-zA-Z0-9]{0,10}"));
 
         configurarTextField(tfCalle, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{0,25}"));
@@ -130,7 +134,7 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
                 tfApellidoMaterno.setText(primerCaracter + resto);
             }
         });
-        
+
         configurarTextField(tfCiudad, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
         tfCiudad.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
@@ -139,19 +143,16 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
                 tfCiudad.setText(primerCaracter + resto);
             }
         });
-        
-        configurarTextField(tfEstado, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
-        tfEstado.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (newValue != null && !newValue.isEmpty()) {
-                String primerCaracter = newValue.substring(0, 1).toUpperCase();
-                String resto = newValue.substring(1);
-                tfEstado.setText(primerCaracter + resto);
-            }
-        });
 
         configurarTextField(tfCorreoElectronico, Pattern.compile("[a-zA-Z0-9._%+-@]{0,50}"));
-
-        configurarTextField(tfContrasenia, Pattern.compile(".{0,50}"));
+    }
+    
+    private void cargarEstados() {
+        List<Estado> estados = EstadosDAO.obtenerTodos();
+        if (estados != null && !estados.isEmpty()) {
+            listaObservableEstados = FXCollections.observableArrayList(estados);
+            tfEstado.setItems(listaObservableEstados);
+        }
     }
 
     private void configurarTextField(TextField textField, Pattern pattern) {
@@ -172,14 +173,23 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
         tfApellidoMaterno.setText(this.cliente.getApellidoMaterno());
         tfCorreoElectronico.setText(this.cliente.getCorreo());
         tfCorreoElectronico.setEditable(false);
-        tfContrasenia.setText(this.cliente.getContrasena());
         tfColonia.setText(this.cliente.getColonia());
         tfTelefono.setText(this.cliente.getTelefono());
         tfCodigoPostal.setText(this.cliente.getCodigoPostal());
         tfCiudad.setText(this.cliente.getCiudad());
-        tfEstado.setText(this.cliente.getEstado());
+        int posicion = buscarEstado(this.cliente.getIdEstado());
+        tfEstado.getSelectionModel().select(posicion);
         tfCalle.setText(this.cliente.getCalle());
         tfNumeroCasa.setText(this.cliente.getNumero());
+    }
+    
+    private int buscarEstado(Integer idEstado) {
+        for (int i = 0; i < listaObservableEstados.size(); i++) {
+            if (listaObservableEstados.get(i).getIdEstado() == idEstado) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     @FXML
@@ -188,16 +198,18 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
             if (cliente == null) {
                 this.cliente = new Cliente();
             }
+            
+            Integer idEstado = ((tfEstado.getSelectionModel().getSelectedItem() != null) ? tfEstado.getSelectionModel().getSelectedItem().getIdEstado() : null);
+            
             cliente.setNombre(tfNombreCliente.getText());
             cliente.setApellidoPaterno(tfApellidoPaterno.getText());
             cliente.setApellidoMaterno(tfApellidoMaterno.getText());
             cliente.setCorreo(tfCorreoElectronico.getText());
-            cliente.setContrasena(tfContrasenia.getText());
             cliente.setColonia(tfColonia.getText());
             cliente.setTelefono(tfTelefono.getText());
             cliente.setCodigoPostal(tfCodigoPostal.getText());
             cliente.setCiudad(tfCiudad.getText());
-            cliente.setEstado(tfEstado.getText());
+            cliente.setIdEstado(idEstado);
             cliente.setCalle(tfCalle.getText());
             cliente.setNumero(tfNumeroCasa.getText());
             if (btnAgregar.getText().equals("Editar")) {
@@ -232,7 +244,7 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
     }
 
     private void cerrarVentana() {
-        AnchorPane contenerdorPrincipal = (AnchorPane) tfContrasenia.getScene().lookup("#contenedorPrincipal");
+        AnchorPane contenerdorPrincipal = (AnchorPane) tfApellidoPaterno.getScene().lookup("#contenedorPrincipal");
         Funciones.cargarVista("/packetworldescritorio/FXMLClientes.fxml", contenerdorPrincipal);
     }
 
@@ -247,7 +259,6 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
         labelErrorApellidoP.setText("");
         labelErrorApellidoM.setText("");
         labelErrorCorreo.setText("");
-        labelErrorContrasenia.setText("");
         labelErrorColonia.setText("");
         labelErrorTelefono.setText("");
         labelErrorCP.setText("");
@@ -256,83 +267,146 @@ public class FXMLFormularioClienteController implements Initializable, Controlad
         labelErrorCalle.setText("");
         labelErrorNumeroCasa.setText("");
 
-        if (tfNombreCliente.getText() == null || tfNombreCliente.getText().trim().isEmpty()
-                || tfNombreCliente.getText().length() < 3 || tfNombreCliente.getText().length() > 50) {
-            labelErrorNombreCliente.setText("Nombre inválido");
+        // Validar nombre del cliente
+        String nombre = tfNombreCliente.getText() != null ? tfNombreCliente.getText().trim() : "";
+        if (nombre.isEmpty()) {
+            labelErrorNombreCliente.setText("Nombre vacío.");
+            valid = false;
+        } else if (nombre.length() < 3) {
+            labelErrorNombreCliente.setText("Nombre demasiado corto (mínimo 3 letras).");
+            valid = false;
+        } else if (nombre.length() > 30) {
+            labelErrorNombreCliente.setText("Nombre demasiado largo (máximo 30 letras).");
             valid = false;
         }
 
+        // Validar apellidos: al menos uno debe estar lleno
         String apellidoP = tfApellidoPaterno.getText() != null ? tfApellidoPaterno.getText().trim() : "";
         String apellidoM = tfApellidoMaterno.getText() != null ? tfApellidoMaterno.getText().trim() : "";
 
         if (apellidoP.isEmpty() && apellidoM.isEmpty()) {
-            labelErrorApellidoP.setText("Debe ingresar al menos un apellido");
-            labelErrorApellidoM.setText("Debe ingresar al menos un apellido");
+            labelErrorApellidoP.setText("Debe ingresar al menos un apellido.");
+            labelErrorApellidoM.setText("Debe ingresar al menos un apellido.");
             valid = false;
         } else {
-            if (!apellidoP.isEmpty() && (apellidoP.length() < 2 || apellidoP.length() > 50)) {
-                labelErrorApellidoP.setText("Apellido Paterno inválido");
+            if (!apellidoP.isEmpty()) {
+                if (apellidoP.length() < 2) {
+                    labelErrorApellidoP.setText("El apellido paterno es demasiado corto (mínimo 2 letras).");
+                    valid = false;
+                } else if (apellidoP.length() > 30) {
+                    labelErrorApellidoP.setText("El apellido paterno es demasiado largo (máximo 30 letras).");
+                    valid = false;
+                }
+            } else {
+                labelErrorApellidoP.setText("El apellido paterno está vacío.");
                 valid = false;
             }
-            if (!apellidoM.isEmpty() && (apellidoM.length() < 2 || apellidoM.length() > 50)) {
-                labelErrorApellidoM.setText("Apellido Materno inválido");
+
+            if (!apellidoM.isEmpty()) {
+                if (apellidoM.length() < 2) {
+                    labelErrorApellidoM.setText("El apellido materno es demasiado corto (mínimo 2 letras).");
+                    valid = false;
+                } else if (apellidoM.length() > 30) {
+                    labelErrorApellidoM.setText("El apellido materno es demasiado largo (máximo 30 letras).");
+                    valid = false;
+                }
+            } else {
+                labelErrorApellidoM.setText("El apellido materno está vacío.");
                 valid = false;
             }
         }
 
-        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$";
-        if (tfCorreoElectronico.getText() == null || tfCorreoElectronico.getText().trim().isEmpty()
-                || tfCorreoElectronico.getText().length() > 50
-                || !tfCorreoElectronico.getText().matches(emailPattern)) {
-            labelErrorCorreo.setText("Correo electrónico inválido");
+        // Validar correo electrónico
+        String correo = tfCorreoElectronico.getText() != null ? tfCorreoElectronico.getText().trim() : "";
+        if (correo.isEmpty()) {
+            labelErrorCorreo.setText("Debe ingresar un correo electrónico.");
+            valid = false;
+        } else if (correo.length() > 40) {
+            labelErrorCorreo.setText("El correo electrónico es demasiado largo (máximo 40 caracteres).");
+            valid = false;
+        } else if (!correo.contains("@")) {
+            labelErrorCorreo.setText("El correo electrónico debe contener '@'.");
+            valid = false;
+        } else if (!correo.matches(".*\\.[A-Za-z]{2,}$")) {
+            labelErrorCorreo.setText("El correo electrónico debe contener un dominio válido (ejemplo: .com, .mx).");
+            valid = false;
+        } else if (!correo.matches("^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
+            labelErrorCorreo.setText("Formato de correo electrónico inválido.");
             valid = false;
         }
 
-        if (tfContrasenia.getText() == null || tfContrasenia.getText().trim().isEmpty()
-                || tfContrasenia.getText().length() > 50) {
-            labelErrorContrasenia.setText("Contraseña inválida");
+        // Validar colonia
+        String colonia = tfColonia.getText() != null ? tfColonia.getText().trim() : "";
+        if (colonia.isEmpty()) {
+            labelErrorColonia.setText("Colonia vacía.");
+            valid = false;
+        } else if (colonia.length() < 2) {
+            labelErrorColonia.setText("Colonia demasiado corta (mínimo 2 letras).");
+            valid = false;
+        } else if (colonia.length() > 25) {
+            labelErrorColonia.setText("Colonia demasiado larga (máximo 25 letras).");
             valid = false;
         }
 
-        if (tfColonia.getText() == null || tfColonia.getText().trim().isEmpty()
-                || tfColonia.getText().length() < 2 || tfColonia.getText().length() > 25) {
-            labelErrorColonia.setText("Colonia inválida");
+        // Validar teléfono
+        String telefono = tfTelefono.getText() != null ? tfTelefono.getText().trim() : "";
+        if (telefono.isEmpty()) {
+            labelErrorTelefono.setText("Teléfono vacío.");
+            valid = false;
+        } else if (telefono.length() != 10) {
+            labelErrorTelefono.setText("Teléfono inválido (debe tener exactamente 10 dígitos).");
             valid = false;
         }
 
-        if (tfTelefono.getText() == null || tfTelefono.getText().trim().isEmpty()
-                || tfTelefono.getText().length() != 10) {
-            labelErrorTelefono.setText("Teléfono inválido");
+        // Validar código postal
+        String cp = tfCodigoPostal.getText() != null ? tfCodigoPostal.getText().trim() : "";
+        if (cp.isEmpty()) {
+            labelErrorCP.setText("Código postal vacío.");
+            valid = false;
+        } else if (cp.length() != 5) {
+            labelErrorCP.setText("Código postal inválido (debe tener exactamente 5 dígitos).");
             valid = false;
         }
 
-        if (tfCodigoPostal.getText() == null || tfCodigoPostal.getText().trim().isEmpty()
-                || tfCodigoPostal.getText().length() != 5) {
-            labelErrorCP.setText("Código Postal inválido");
+        // Validar ciudad
+        String ciudad = tfCiudad.getText() != null ? tfCiudad.getText().trim() : "";
+        if (ciudad.isEmpty()) {
+            labelErrorCiudad.setText("Ciudad vacía.");
             valid = false;
-        }
-        
-        if (tfCiudad.getText() == null || tfCiudad.getText().trim().isEmpty()
-                || tfCiudad.getText().length() < 3 || tfColonia.getText().length() > 25) {
-            labelErrorCiudad.setText("Ciudad inválida");
+        } else if (ciudad.length() < 3) {
+            labelErrorCiudad.setText("Ciudad demasiado corta (mínimo 3 letras).");
             valid = false;
-        }
-        
-        if (tfEstado.getText() == null || tfEstado.getText().trim().isEmpty()
-                || tfEstado.getText().length() < 3 || tfEstado.getText().length() > 25) {
-            labelErrorEstado.setText("Estado inválido");
+        } else if (ciudad.length() > 25) {
+            labelErrorCiudad.setText("Ciudad demasiado larga (máximo 25 letras).");
             valid = false;
         }
 
-        if (tfCalle.getText() == null || tfCalle.getText().trim().isEmpty()
-                || tfCalle.getText().length() < 2 || tfCalle.getText().length() > 25) {
-            labelErrorCalle.setText("Calle inválida");
+        // Validar estado
+        if (tfEstado.getValue() == null) {
+            labelErrorEstado.setText("Seleccione un tipo de unidad válido");
             valid = false;
         }
 
-        if (tfNumeroCasa.getText() == null || tfNumeroCasa.getText().trim().isEmpty()
-                || tfNumeroCasa.getText().length() > 10) {
-            labelErrorNumeroCasa.setText("Número de casa inválido");
+        // Validar calle
+        String calle = tfCalle.getText() != null ? tfCalle.getText().trim() : "";
+        if (calle.isEmpty()) {
+            labelErrorCalle.setText("Calle vacía.");
+            valid = false;
+        } else if (calle.length() < 2) {
+            labelErrorCalle.setText("Calle demasiado corta (mínimo 2 letras).");
+            valid = false;
+        } else if (calle.length() > 25) {
+            labelErrorCalle.setText("Calle demasiado larga (máximo 25 letras).");
+            valid = false;
+        }
+
+        // Validar número de casa
+        String numeroCasa = tfNumeroCasa.getText() != null ? tfNumeroCasa.getText().trim() : "";
+        if (numeroCasa.isEmpty()) {
+            labelErrorNumeroCasa.setText("Número de casa vacío.");
+            valid = false;
+        } else if (numeroCasa.length() > 10) {
+            labelErrorNumeroCasa.setText("Número de casa demasiado largo (máximo 10 caracteres).");
             valid = false;
         }
 

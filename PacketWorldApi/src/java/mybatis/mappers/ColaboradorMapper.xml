@@ -32,22 +32,22 @@
     ======================================================== -->
     <select id="obtenerTodosColaborador" resultMap="ColaboradorMap">
         SELECT 
-            c.idColaborador,
-            c.nombre,
-            c.apellidoPaterno,
-            c.apellidoMaterno,
-            c.curp,
-            c.correo,
-            c.numeroPersonal,
-            c.contrasena,
-            c.idRol,
-            r.nombre AS nombreRol,
-            c.idSucursal,
-            s.nombreCorto AS nombreSucursal,
-            c.idUnidad,
-            c.fotografia,
-            c.numeroLicencia,
-            c.fechaAlta
+        c.idColaborador,
+        c.nombre,
+        c.apellidoPaterno,
+        c.apellidoMaterno,
+        c.curp,
+        c.correo,
+        c.numeroPersonal,
+        c.contrasena,
+        c.idRol,
+        r.nombre AS nombreRol,
+        c.idSucursal,
+        s.nombreCorto AS nombreSucursal,
+        c.idUnidad,
+        c.fotografia,
+        c.numeroLicencia,
+        c.fechaAlta
         FROM Colaborador c
         INNER JOIN Rol r     ON r.idRol = c.idRol
         INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal;
@@ -59,22 +59,22 @@
     ======================================================== -->
     <select id="obtenerPorNumeroPersonal" resultMap="ColaboradorMap">
         SELECT 
-            c.idColaborador,
-            c.nombre,
-            c.apellidoPaterno,
-            c.apellidoMaterno,
-            c.curp,
-            c.correo,
-            c.numeroPersonal,
-            c.contrasena,
-            c.idRol,
-            r.nombre AS nombreRol,
-            c.idSucursal,
-            s.nombreCorto AS nombreSucursal,
-            c.idUnidad,
-            c.fotografia,
-            c.numeroLicencia,
-            c.fechaAlta
+        c.idColaborador,
+        c.nombre,
+        c.apellidoPaterno,
+        c.apellidoMaterno,
+        c.curp,
+        c.correo,
+        c.numeroPersonal,
+        c.contrasena,
+        c.idRol,
+        r.nombre AS nombreRol,
+        c.idSucursal,
+        s.nombreCorto AS nombreSucursal,
+        c.idUnidad,
+        c.fotografia,
+        c.numeroLicencia,
+        c.fechaAlta
         FROM Colaborador c
         INNER JOIN Rol r ON r.idRol = c.idRol
         INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
@@ -84,22 +84,22 @@
     
     <select id="obtenerPorId" resultMap="ColaboradorMap">
         SELECT 
-            c.idColaborador,
-            c.nombre,
-            c.apellidoPaterno,
-            c.apellidoMaterno,
-            c.curp,
-            c.correo,
-            c.numeroPersonal,
-            c.contrasena,
-            c.idRol,
-            r.nombre AS nombreRol,
-            c.idSucursal,
-            s.nombreCorto AS nombreSucursal,
-            c.idUnidad,
-            c.fotografia,
-            c.numeroLicencia,
-            c.fechaAlta
+        c.idColaborador,
+        c.nombre,
+        c.apellidoPaterno,
+        c.apellidoMaterno,
+        c.curp,
+        c.correo,
+        c.numeroPersonal,
+        c.contrasena,
+        c.idRol,
+        r.nombre AS nombreRol,
+        c.idSucursal,
+        s.nombreCorto AS nombreSucursal,
+        c.idUnidad,
+        c.fotografia,
+        c.numeroLicencia,
+        c.fechaAlta
         FROM Colaborador c
         INNER JOIN Rol r ON r.idRol = c.idRol
         INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
@@ -112,22 +112,22 @@
     ======================================================== -->
     <select id="buscarPorNombre" resultMap="ColaboradorMap">
         SELECT 
-            c.idColaborador,
-            c.nombre,
-            c.apellidoPaterno,
-            c.apellidoMaterno,
-            c.curp,
-            c.correo,
-            c.numeroPersonal,
-            c.contrasena,
-            c.idRol,
-            r.nombre AS nombreRol,
-            c.idSucursal,
-            s.nombreCorto AS nombreSucursal,
-            c.idUnidad,
-            c.fotografia,
-            c.numeroLicencia,
-            c.fechaAlta
+        c.idColaborador,
+        c.nombre,
+        c.apellidoPaterno,
+        c.apellidoMaterno,
+        c.curp,
+        c.correo,
+        c.numeroPersonal,
+        c.contrasena,
+        c.idRol,
+        r.nombre AS nombreRol,
+        c.idSucursal,
+        s.nombreCorto AS nombreSucursal,
+        c.idUnidad,
+        c.fotografia,
+        c.numeroLicencia,
+        c.fechaAlta
         FROM Colaborador c
         INNER JOIN Rol r ON r.idRol = c.idRol
         INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
@@ -140,22 +140,22 @@
     ======================================================== -->
     <select id="buscarPorRol" resultMap="ColaboradorMap">
         SELECT 
-            c.idColaborador,
-            c.nombre,
-            c.apellidoPaterno,
-            c.apellidoMaterno,
-            c.curp,
-            c.correo,
-            c.numeroPersonal,
-            c.contrasena,
-            c.idRol,
-            r.nombre AS nombreRol,
-            c.idSucursal,
-            s.nombreCorto AS nombreSucursal,
-            c.idUnidad,
-            c.fotografia,
-            c.numeroLicencia,
-            c.fechaAlta
+        c.idColaborador,
+        c.nombre,
+        c.apellidoPaterno,
+        c.apellidoMaterno,
+        c.curp,
+        c.correo,
+        c.numeroPersonal,
+        c.contrasena,
+        c.idRol,
+        r.nombre AS nombreRol,
+        c.idSucursal,
+        s.nombreCorto AS nombreSucursal,
+        c.idUnidad,
+        c.fotografia,
+        c.numeroLicencia,
+        c.fechaAlta
         FROM Colaborador c
         INNER JOIN Rol r ON r.idRol = c.idRol
         INNER JOIN Sucursal s ON s.idSucursal = c.idSucursal
@@ -169,12 +169,12 @@
     <insert id="registrar" parameterType="pojo.Colaborador">
         INSERT INTO Colaborador
         (nombre, apellidoPaterno, apellidoMaterno, curp, correo,
-         numeroPersonal, contrasena, idRol, idSucursal, idUnidad,
-         fotografia, numeroLicencia)
+        numeroPersonal, contrasena, idRol, idSucursal, idUnidad,
+        fotografia, numeroLicencia)
         VALUES
         (#{nombre}, #{apellidoPaterno}, #{apellidoMaterno}, #{curp}, #{correo},
-         #{numeroPersonal}, #{contrasena}, #{idRol}, #{idSucursal}, #{idUnidad},
-         #{fotografia}, #{numeroLicencia});
+        #{numeroPersonal}, #{contrasena}, #{idRol}, #{idSucursal}, #{idUnidad},
+        #{fotografia}, #{numeroLicencia});
     </insert>
 
 
@@ -184,16 +184,14 @@
     ======================================================== -->
     <update id="editar" parameterType="pojo.Colaborador">
         UPDATE Colaborador SET
-            nombre = #{nombre},
-            apellidoPaterno = #{apellidoPaterno},
-            apellidoMaterno = #{apellidoMaterno},
-            curp = #{curp},
-            correo = #{correo},
-            contrasena = #{contrasena},
-            idSucursal = #{idSucursal},
-            idUnidad = #{idUnidad},
-            fotografia = #{fotografia},
-            numeroLicencia = #{numeroLicencia}
+        nombre = #{nombre},
+        apellidoPaterno = #{apellidoPaterno},
+        apellidoMaterno = #{apellidoMaterno},
+        curp = #{curp},
+        correo = #{correo},
+        contrasena = #{contrasena},
+        fotografia = #{fotografia},
+        numeroLicencia = #{numeroLicencia}
         WHERE numeroPersonal = #{numeroPersonal};
     </update>
 
@@ -205,5 +203,26 @@
         DELETE FROM Colaborador
         WHERE numeroPersonal = #{numeroPersonal};
     </delete>
+    
+    <resultMap id="FotoColaboradorMap" type="pojo.FotoColaboradorDTO">
+        <id property="idColaborador" column="idColaborador"/>
+        <result property="fotoBase64" column="fotoBase64"/>
+    </resultMap>
+
+    <select id="obtenerFotoBase64PorId"
+            parameterType="int"
+            resultMap="FotoColaboradorMap">
+        SELECT
+        idColaborador,
+        TO_BASE64(fotografia) AS fotoBase64
+        FROM Colaborador
+        WHERE idColaborador = #{idColaborador}
+    </select>
+    
+    <update id="actualizarFoto" parameterType="pojo.Colaborador">
+        UPDATE Colaborador
+        SET fotografia = #{fotografia, jdbcType=BLOB}
+        WHERE idColaborador = #{idColaborador};
+    </update>
 
 </mapper>

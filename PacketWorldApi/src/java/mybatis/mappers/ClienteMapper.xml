@@ -4,9 +4,6 @@
 
 <mapper namespace="ClienteMapper">
 
-    <!-- =======================================================
-         RESULT MAP
-    ======================================================== -->
     <resultMap id="ClienteMap" type="pojo.Cliente">
         <id property="idCliente" column="idCliente"/>
         <result property="nombre" column="nombre"/>
@@ -18,12 +15,10 @@
         <result property="codigoPostal" column="codigoPostal"/>
         <result property="telefono" column="telefono"/>
         <result property="correo" column="correo"/>
-        <result property="contrasena" column="contrasena"/>
+        <result property="ciudad" column="ciudad"/>
+        <result property="idEstado" column="idEstado"/>
     </resultMap>
 
-    <!-- =======================================================
-         LISTAR TODOS
-    ======================================================== -->
     <select id="obtenerTodos" resultMap="ClienteMap">
         SELECT
             idCliente,
@@ -35,16 +30,12 @@
             colonia,
             codigoPostal,
             ciudad, 
-            estado, 
+            idEstado, 
             telefono,
-            correo,
-            contrasena
+            correo
         FROM Cliente;
     </select>
 
-    <!-- =======================================================
-         OBTENER POR ID
-    ======================================================== -->
     <select id="obtenerPorId" parameterType="int" resultMap="ClienteMap">
         SELECT
             idCliente,
@@ -56,17 +47,13 @@
             colonia,
             codigoPostal, 
             ciudad, 
-            estado, 
+            idEstado, 
             telefono,
-            correo,
-            contrasena
+            correo
         FROM Cliente
         WHERE idCliente = #{idCliente};
     </select>
 
-    <!-- =======================================================
-         BUSCAR POR NOMBRE
-    ======================================================== -->
     <select id="buscarPorNombre" parameterType="string" resultMap="ClienteMap">
         SELECT
             *
@@ -74,9 +61,6 @@
         WHERE nombre LIKE CONCAT('%', #{nombre}, '%');
     </select>
 
-    <!-- =======================================================
-         BUSCAR POR TELÉFONO
-    ======================================================== -->
     <select id="buscarPorTelefono" parameterType="string" resultMap="ClienteMap">
         SELECT
             *
@@ -84,9 +68,6 @@
         WHERE telefono = #{telefono};
     </select>
 
-    <!-- =======================================================
-         BUSCAR POR CORREO
-    ======================================================== -->
     <select id="buscarPorCorreo" parameterType="string" resultMap="ClienteMap">
         SELECT
             *
@@ -94,9 +75,6 @@
         WHERE correo = #{correo};
     </select>
 
-    <!-- =======================================================
-         REGISTRAR
-    ======================================================== -->
     <insert id="registrar" parameterType="pojo.Cliente">
         INSERT INTO Cliente (
             nombre,
@@ -107,10 +85,9 @@
             colonia,
             codigoPostal, 
             ciudad, 
-            estado, 
+            idEstado, 
             telefono,
-            correo,
-            contrasena
+            correo
         )
         VALUES (
             #{nombre},
@@ -121,16 +98,12 @@
             #{colonia},
             #{codigoPostal}, 
             #{ciudad}, 
-            #{estado}, 
+            #{idEstado}, 
             #{telefono},
-            #{correo},
-            #{contrasena}
+            #{correo}
         );
     </insert>
 
-    <!-- =======================================================
-         EDITAR
-    ======================================================== -->
     <update id="editar" parameterType="pojo.Cliente">
         UPDATE Cliente SET
             nombre = #{nombre},
@@ -141,16 +114,12 @@
             colonia = #{colonia},
             codigoPostal = #{codigoPostal}, 
             ciudad = #{ciudad}, 
-            estado = #{estado}, 
+            idEstado = #{idEstado}, 
             telefono = #{telefono},
-            correo = #{correo},
-            contrasena = #{contrasena}
+            correo = #{correo}
         WHERE idCliente = #{idCliente};
     </update>
 
-    <!-- =======================================================
-         ELIMINAR
-    ======================================================== -->
     <delete id="eliminar" parameterType="String">
         DELETE FROM Cliente
         WHERE correo = #{correo};

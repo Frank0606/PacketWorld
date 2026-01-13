@@ -69,23 +69,4 @@ public class UnidadesDAO {
         }
         return msj;
     }
-
-    public static Mensaje eliminarUnidad(String vin) {
-        Mensaje msj = new Mensaje();
-        String url = Constantes.URL_WS + "unidad/eliminar/" + vin;
-        Gson gson = new Gson();
-        try {
-            RespuestaHTTP respuesta = ConexionWS.peticionDELETE(url);
-            if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {
-                msj = gson.fromJson(respuesta.getContenido(), Mensaje.class);
-            } else {
-                msj.setError(true);
-                msj.setMensaje(respuesta.getContenido());
-            }
-        } catch (Exception e) {
-            msj.setError(true);
-            msj.setMensaje(e.getMessage());
-        }
-        return msj;
-    }
 }

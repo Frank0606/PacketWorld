@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.EstadosDAO;
 import static packetworldescritorio.utilidades.Alertas.mostrarAlertaConfirmacion;
 
 public class FXMLClientesController implements Initializable {
@@ -41,9 +42,6 @@ public class FXMLClientesController implements Initializable {
     private TextField barraBusqueda;
     @FXML
     private TableColumn colNombreCliente;
-
-    private ObservableList<Cliente> clientes;
-
     @FXML
     private TableColumn colApellidoPaterno;
     @FXML
@@ -53,6 +51,8 @@ public class FXMLClientesController implements Initializable {
     @FXML
     private TableColumn colTelefono;
 
+    private ObservableList<Cliente> clientes;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
@@ -74,20 +74,17 @@ public class FXMLClientesController implements Initializable {
         boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
                 "¿Está seguro de que desea eliminar este colaborador?");
         if (confirmado) {
-            confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
-                    "¿Realmente está seguro de que desea eliminar este colaborador?");
-            if (confirmado) {
-                Mensaje msj = ClientesDAO.eliminarCliente(correoElectronico);
-                if (!msj.isError()) {
-                    Alertas.mostrarAlertaSimple("Cliente eliminado", "El cliente ha sido eliminado correctamente.",
-                            Alert.AlertType.INFORMATION);
-                    cargarInformacion();
-                } else {
-                    Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar al cliente. Intente de nuevo mas tarde.",
-                            Alert.AlertType.WARNING);
-                }
+            Mensaje msj = ClientesDAO.eliminarCliente(correoElectronico);
+            if (!msj.isError()) {
+                Alertas.mostrarAlertaSimple("Cliente eliminado", "El cliente ha sido eliminado correctamente.",
+                        Alert.AlertType.INFORMATION);
+                cargarInformacion();
+            } else {
+                Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar al cliente. Intente de nuevo mas tarde.",
+                        Alert.AlertType.WARNING);
             }
         }
+
     }
 
     @FXML
@@ -118,8 +115,8 @@ public class FXMLClientesController implements Initializable {
         colDestino.setCellValueFactory(cellData -> {
             Cliente cliente = cellData.getValue();
             String direccionCompleta = cliente.getCalle() + " " + cliente.getNumero() + ", "
-                    + cliente.getColonia() + ", " + cliente.getCodigoPostal() + ", " + 
-                    cliente.getCiudad() + ", " + cliente.getEstado();
+                    + cliente.getColonia() + ", " + cliente.getCodigoPostal() + ", "
+                    + cliente.getCiudad() + ", " + EstadosDAO.obtenerEstado(cliente.getIdEstado()).getEstadoMexico();
             return new SimpleStringProperty(direccionCompleta);
         });
         colTelefono.setCellValueFactory(new PropertyValueFactory("telefono"));
@@ -143,36 +140,16 @@ public class FXMLClientesController implements Initializable {
         if (!barraBusqueda.getText().trim().isEmpty()) {
             ObservableList<Cliente> resultadosBusqueda = FXCollections.observableArrayList();
             String textoBusqueda = barraBusqueda.getText().trim().toUpperCase();
+
             for (Cliente cliente : clientes) {
-                String correo = cliente.getCorreo().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
+                String correo = cliente.getCorreo().toUpperCase();
+                String nombre = cliente.getNombre().toUpperCase() + " " + cliente.getApellidoPaterno().toUpperCase() + " " + cliente.getApellidoMaterno().toUpperCase();
+                String telefono = cliente.getTelefono().toUpperCase();
 
-                String nombre = cliente.getNombre().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
-
-                String telefono = cliente.getTelefono().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
-
-                String barraBusquedaTexto = barraBusqueda.getText().trim().chars().mapToObj(c -> Character.isLetter(c)
-                        ? Character.toUpperCase((char) c) : (char) c).collect(StringBuilder::new, StringBuilder::append,
-                        StringBuilder::append).toString();
-
-                if (correo.startsWith(barraBusquedaTexto)) {
+                if (correo.contains(textoBusqueda)
+                        || nombre.contains(textoBusqueda)
+                        || telefono.contains(textoBusqueda)) {
                     resultadosBusqueda.add(cliente);
-                } else {
-                    if (nombre.startsWith(barraBusquedaTexto)) {
-                        resultadosBusqueda.add(cliente);
-                    } else {
-                        if (telefono.startsWith(barraBusquedaTexto)) {
-                            resultadosBusqueda.add(cliente);
-                        }
-                    }
                 }
             }
             if (!resultadosBusqueda.isEmpty()) {

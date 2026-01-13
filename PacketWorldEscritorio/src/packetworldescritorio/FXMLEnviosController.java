@@ -26,6 +26,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import packetworldescritorio.modelo.dao.ClientesDAO;
+import packetworldescritorio.modelo.dao.EstadosDAO;
+import packetworldescritorio.modelo.dao.EstadosEnvioDAO;
 import packetworldescritorio.modelo.dao.SucursalDAO;
 import packetworldescritorio.pojo.Cliente;
 import packetworldescritorio.pojo.Sucursal;
@@ -42,7 +44,7 @@ public class FXMLEnviosController implements Initializable {
     @FXML
     private TableColumn colCostoEnvio;
     @FXML
-    private TableColumn colEstatus;
+    private TableColumn<Envio, String> colEstatus;
     @FXML
     private Button btnBuscar;
     @FXML
@@ -61,7 +63,7 @@ public class FXMLEnviosController implements Initializable {
     @FXML
     private TableColumn<Envio, String> colDestino;
     @FXML
-    private TableColumn colNombreCliente;
+    private TableColumn<Envio, String> colNombreCliente;
     @FXML
     private TableColumn<Envio, String> colConductor;
     @FXML
@@ -98,24 +100,36 @@ public class FXMLEnviosController implements Initializable {
             if (sucursalDestino != null) {
                 String direccionCompleta = sucursalDestino.getCalle() + " " + sucursalDestino.getNumero() + ", "
                         + sucursalDestino.getColonia() + ", " + sucursalDestino.getCodigoPostal() + ", "
-                        + sucursalDestino.getCiudad() + ", " + sucursalDestino.getEstado();
+                        + sucursalDestino.getCiudad() + ", " + EstadosDAO.obtenerEstado(sucursalDestino.getIdEstado()).getEstadoMexico();
                 return new SimpleStringProperty(direccionCompleta);
             } else {
                 return new SimpleStringProperty("Sucursal no encontrada");
             }
         });
+        
+        //Esto se tiene que modificar con la nueva direccion que se le de al envio que no es el del cliente
         colDestino.setCellValueFactory(cellData -> {
             Envio envio = cellData.getValue();
-            Cliente cliente = ClientesDAO.obtenerClientesId(envio.getIdCliente());
-            String direccionCompleta = cliente.getCalle() + " " + cliente.getNumero() + ", "
-                    + cliente.getColonia() + ", " + cliente.getCodigoPostal() + ", "
-                    + cliente.getCiudad() + ", " + cliente.getEstado();
+            String direccionCompleta = envio.getCalleDestino() + " " + envio.getNumeroDestino() + ", "
+                    + envio.getColoniaDestino() + ", " + envio.getCpDestino() + ", "
+                    + envio.getCiudadDestino() + ", " + EstadosDAO.obtenerEstado(envio.getIdEstadoDestino()).getEstadoMexico();
             return new SimpleStringProperty(direccionCompleta);
         });
+        
+        
+        
         colNumeroGuia.setCellValueFactory(new PropertyValueFactory<>("numeroGuia"));
         colCostoEnvio.setCellValueFactory(new PropertyValueFactory<>("costoTotal"));
-        colEstatus.setCellValueFactory(new PropertyValueFactory<>("estatus"));
-        colNombreCliente.setCellValueFactory(new PropertyValueFactory<>("nombreDestinatario"));
+        colEstatus.setCellValueFactory(cellData -> {
+            Envio envio = cellData.getValue();
+            String estadoEnvio = EstadosEnvioDAO.obtenerPorId(envio.getIdEstadosEnvio()).getEstadoEnvio();
+            return new SimpleStringProperty(estadoEnvio);
+        });
+        colNombreCliente.setCellValueFactory(cellData -> {
+            Envio envio = cellData.getValue();
+            Cliente cliente = ClientesDAO.obtenerClientesId(envio.getIdCliente());
+            return new SimpleStringProperty(cliente.getNombre() + " " + cliente.getApellidoPaterno() + " " + cliente.getApellidoMaterno());
+        });
     }
 
     private void cargarInformacion() {
@@ -135,16 +149,12 @@ public class FXMLEnviosController implements Initializable {
     private void btnBuscar(ActionEvent event) {
         if (!barraBusqueda.getText().trim().isEmpty()) {
             ObservableList<Envio> resultadosBusqueda = FXCollections.observableArrayList();
+            String barraBusquedaTexto = barraBusqueda.getText().trim().toUpperCase();
+            
             for (Envio envio : envios) {
-                String idNumeroGuia = envio.getNumeroGuia().chars().mapToObj(c -> Character.isLetter(c)
-                        ? Character.toUpperCase((char) c) : (char) c).collect(StringBuilder::new,
-                        StringBuilder::append, StringBuilder::append).toString();
+                String idNumeroGuia = envio.getNumeroGuia().toUpperCase();
 
-                String barraBusquedaTexto = barraBusqueda.getText().trim().chars().mapToObj(c -> Character.isLetter(c)
-                        ? Character.toUpperCase((char) c) : (char) c).collect(StringBuilder::new, StringBuilder::append,
-                        StringBuilder::append).toString();
-
-                if (idNumeroGuia.startsWith(barraBusquedaTexto)) {
+                if (idNumeroGuia.contains(barraBusquedaTexto)) {
                     resultadosBusqueda.add(envio);
                 }
             }
@@ -226,11 +236,15 @@ public class FXMLEnviosController implements Initializable {
     private void btnEstatus(ActionEvent event) {
         Envio envio = tablaEnvios.getSelectionModel().getSelectedItem();
         if (envio != null) {
-            if (!envio.getEstatus().equals("Pendiente")) {
-                envio.setCalleDestino(noPersonalColaborador);
-                Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioCambiarEstatus.fxml",
-                        (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), envio,
-                        new FXMLFormularioCambiarEstatusController());
+            if (!EstadosEnvioDAO.obtenerPorId(envio.getIdEstadosEnvio()).getEstadoEnvio().equals("recibido en sucursal")) {
+                if (!EstadosEnvioDAO.obtenerPorId(envio.getIdEstadosEnvio()).getEstadoEnvio().equals("entregado")) {
+                    envio.setCalleDestino(noPersonalColaborador);
+                    Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioCambiarEstatus.fxml",
+                            (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), envio,
+                            new FXMLFormularioCambiarEstatusController());
+                } else {
+                    Alertas.mostrarAlertaSimple("Acción incorrecta", "No se puede cambiar el estado del envio a un envio que ya esta entregado.", Alert.AlertType.WARNING);
+                }
             } else {
                 Alertas.mostrarAlertaSimple("Acción incorrecta", "No se puede cambiar el estado del envio a un envio que no ha sido confirmado.", Alert.AlertType.WARNING);
             }
@@ -248,7 +262,7 @@ public class FXMLEnviosController implements Initializable {
         Envio envio = tablaEnvios.getSelectionModel().getSelectedItem();
         Mensaje msj = new Mensaje();
         if (envio != null) {
-            if (envio.getEstatus().equals("Pendiente")) {
+            if (EstadosEnvioDAO.obtenerPorId(envio.getIdEstadosEnvio()).getEstadoEnvio().equals("recibido en sucursal")) {
                 boolean confirmado = mostrarAlertaConfirmacion("Confirmar paquetes",
                         "¿Está seguro de continuar con la asignacion de costos del envio?\nAsegurese de tener todos lo paquetes correspondientes asignados a este envio");
                 if (confirmado) {

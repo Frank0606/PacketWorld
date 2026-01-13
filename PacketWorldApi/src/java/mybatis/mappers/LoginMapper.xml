@@ -18,7 +18,6 @@
       r.nombre AS nombreRol,
       c.idSucursal,
       s.nombreCorto AS nombreSucursal,
-      c.fotografia,
       c.numeroLicencia,
       c.fechaAlta
     FROM Colaborador c

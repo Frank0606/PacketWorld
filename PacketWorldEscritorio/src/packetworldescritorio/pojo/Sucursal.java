@@ -11,7 +11,7 @@ public class Sucursal {
     private String colonia;
     private String codigoPostal;
     private String ciudad;
-    private String estado;
+    private Integer idEstado;
 
     public Sucursal() {
     }
@@ -88,16 +88,16 @@ public class Sucursal {
         this.ciudad = ciudad;
     }
 
-    public String getEstado() {
-        return estado;
+    public Integer getIdEstado() {
+        return idEstado;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
     }
 
     @Override
     public String toString() {
-        return idSucursal + " - " + nombreCorto;
+        return nombreCorto;
     }
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Relleno superior -->
+    <item>
+        <bitmap
+            android:src="@drawable/fondo"
+            android:alpha="128"
+            android:gravity="top"
+            android:tileMode="repeat" />
+    </item>
+
+    <!-- Relleno inferior -->
+    <item>
+        <bitmap
+            android:src="@drawable/fondo"
+            android:alpha="128"
+            android:gravity="bottom"
+            android:tileMode="repeat" />
+    </item>
+
+    <!-- Imagen principal centrada (SIN deformar) -->
+    <item>
+        <bitmap
+            android:src="@drawable/fondo"
+            android:alpha="128"
+            android:gravity="center" />
+    </item>
+
+
+</layer-list>

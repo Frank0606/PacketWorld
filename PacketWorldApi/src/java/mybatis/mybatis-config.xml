@@ -25,6 +25,8 @@
         <mapper resource="mybatis/mappers/EnvioConductorMapper.xml" />
         <mapper resource="mybatis/mappers/EnvioHistorialMapper.xml" />
         <mapper resource="mybatis/mappers/EnvioMapper.xml" />
+        <mapper resource="mybatis/mappers/EstadoMapper.xml" />
+        <mapper resource="mybatis/mappers/EstadosEnvioMapper.xml" />
         <mapper resource="mybatis/mappers/LoginMapper.xml" />
         <mapper resource="mybatis/mappers/PaqueteMapper.xml" />
         <mapper resource="mybatis/mappers/RolMapper.xml"/>

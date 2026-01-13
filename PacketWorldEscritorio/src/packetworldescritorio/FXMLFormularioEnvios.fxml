@@ -15,62 +15,148 @@
         </ImageView>
 
         <!-- Número de guía -->
-        <Label layoutX="63.0" layoutY="50.0" text="Número de guía:">
-            <font><Font name="Candara" size="18.0" /></font>
+        <Label layoutX="63.0" layoutY="50.0" prefWidth="214.0" text="Número de guía:" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
         </Label>
         <TextField fx:id="tfNumeroGuia" layoutX="63.0" layoutY="72.0" prefHeight="31.0" prefWidth="214.0">
-            <font><Font name="Candara" size="18.0" /></font>
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
         </TextField>
 
         <!-- Cliente -->
-        <Label layoutX="63.0" layoutY="120.0" text="Cliente:">
-            <font><Font name="Candara" size="18.0" /></font>
+        <Label layoutX="63.0" layoutY="120.0" prefWidth="214.0" text="Cliente:" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
         </Label>
         <ComboBox fx:id="cbCliente" layoutX="63.0" layoutY="142.0" prefHeight="31.0" prefWidth="214.0" />
-        <Label fx:id="labelErrorIdCliente" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-               layoutX="63.0" layoutY="180.0" prefHeight="22.0" prefWidth="214.0"
-               textAlignment="RIGHT" textFill="#BC9E82">
-            <font><Font name="Candara Bold" size="18.0" /></font>
-        </Label>
-        <Label fx:id="lblDireccionDestino" layoutX="63.0" layoutY="205.0" text="Dirección destino (Cliente)">
-            <font><Font name="Candara Italic" size="16.0" /></font>
+        <Label fx:id="labelErrorIdCliente" layoutX="63.0" layoutY="180.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
         </Label>
 
         <!-- Sucursal (Origen) -->
-        <Label layoutX="359.0" layoutY="120.0" text="Origen:">
-            <font><Font name="Candara" size="18.0" /></font>
+        <Label layoutX="359.0" layoutY="120.0" prefWidth="214.0" text="Origen:" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
         </Label>
         <ComboBox fx:id="cbSucursal" layoutX="359.0" layoutY="142.0" prefHeight="31.0" prefWidth="214.0" />
-        <Label fx:id="labelErrorIdSucursal" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-               layoutX="359.0" layoutY="180.0" prefHeight="22.0" prefWidth="214.0"
-               textAlignment="RIGHT" textFill="#BC9E82">
-            <font><Font name="Candara Bold" size="18.0" /></font>
+        <Label fx:id="labelErrorIdSucursal" layoutX="359.0" layoutY="180.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
         </Label>
-        <Label fx:id="lblDireccionOrigen" layoutX="359.0" layoutY="205.0" text="Dirección origen (Sucursal)">
-            <font><Font name="Candara Italic" size="16.0" /></font>
+        <Label fx:id="lblDireccionOrigen" layoutX="644.0" layoutY="380.0" prefWidth="214.0" text="Dirección origen (Sucursal)" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara Italic" size="16.0" />
+            </font>
         </Label>
 
         <!-- Conductor -->
-        <Label layoutX="652.0" layoutY="120.0" text="Conductor:">
-            <font><Font name="Candara" size="18.0" /></font>
+        <Label layoutX="652.0" layoutY="120.0" prefWidth="214.0" text="Conductor:" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
         </Label>
         <ComboBox fx:id="cbColaborador" layoutX="652.0" layoutY="142.0" prefHeight="31.0" prefWidth="214.0" />
-        <Label fx:id="labelErrorIdColaborador" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-               layoutX="652.0" layoutY="180.0" prefHeight="22.0" prefWidth="214.0"
-               textAlignment="RIGHT" textFill="#BC9E82">
-            <font><Font name="Candara Bold" size="18.0" /></font>
+        <Label fx:id="labelErrorIdColaborador" layoutX="652.0" layoutY="180.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
         </Label>
 
         <!-- Botones -->
-        <Button fx:id="btnGuardar" layoutX="236.0" layoutY="555.0" onAction="#btnGuardar"
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;"
-                text="Guardar" textFill="WHITE">
-            <font><Font name="Candara Bold" size="18.0" /></font>
+        <Button fx:id="btnGuardar" layoutX="236.0" layoutY="555.0" onAction="#btnGuardar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Guardar" textFill="WHITE">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
         </Button>
-        <Button fx:id="btnCancelar" layoutX="609.0" layoutY="555.0" onAction="#btnCancelar"
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;"
-                text="Cancelar" textFill="WHITE">
-            <font><Font name="Candara Bold" size="18.0" /></font>
+        <Button fx:id="btnCancelar" layoutX="609.0" layoutY="555.0" onAction="#btnCancelar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px; -fx-padding: 10px;" text="Cancelar" textFill="WHITE">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
         </Button>
+      <TextField fx:id="tfCalle" layoutX="63.0" layoutY="288.0" prefHeight="31.0" prefWidth="214.0" />
+      <TextField fx:id="tfNumero" layoutX="63.0" layoutY="374.0" prefHeight="31.0" prefWidth="214.0" />
+      <TextField fx:id="tfColonia" layoutX="63.0" layoutY="467.0" prefHeight="31.0" prefWidth="214.0" />
+      <TextField fx:id="tfCp" layoutX="359.0" layoutY="288.0" prefHeight="31.0" prefWidth="214.0" />
+      <TextField fx:id="tfCiudad" layoutX="359.0" layoutY="374.0" prefHeight="31.0" prefWidth="214.0" />
+      <ComboBox fx:id="cbEstado" layoutX="359.0" layoutY="467.0" prefHeight="31.0" prefWidth="214.0" />
+      <Label layoutX="63.0" layoutY="266.0" prefWidth="214.0" text="Calle:" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="63.0" layoutY="352.0" prefWidth="214.0" text="Número:" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="64.0" layoutY="445.0" prefWidth="214.0" text="Colonia:" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="359.0" layoutY="266.0" prefWidth="214.0" text="Codigo postal:" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="359.0" layoutY="352.0" prefWidth="214.0" text="Ciudad:" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="359.0" layoutY="445.0" prefWidth="214.0" text="Estado:" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorCalle" layoutX="64.0" layoutY="319.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorNumero" layoutX="63.0" layoutY="405.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorColonia" layoutX="64.0" layoutY="498.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorCp" layoutX="359.0" layoutY="319.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorCiudad" layoutX="359.0" layoutY="405.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorEstado" layoutX="359.0" layoutY="498.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelErrorNombre" layoutX="360.0" layoutY="103.0" prefWidth="214.0" textFill="#BC9E82" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="359.0" layoutY="50.0" prefWidth="214.0" text="Nombre de quien recibe:" textOverrun="CLIP" wrapText="true">
+         <font>
+            <Font name="Candara" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfNombre" layoutX="359.0" layoutY="72.0" prefHeight="31.0" prefWidth="214.0" />
     </children>
 </AnchorPane>

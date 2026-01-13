@@ -26,6 +26,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.EstadosDAO;
+import packetworldescritorio.modelo.dao.EstadosEnvioDAO;
 
 public class FXMLFormularioPaquetesController implements Initializable, ControladorPrincipal<Paquete> {
 
@@ -106,7 +108,7 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
                         "Cliente: " + newVal.getNombreDestinatario() + "\nDestino: "
                         + newVal.getCalleDestino() + " #" + newVal.getNumeroDestino() + "\n"
                         + newVal.getColoniaDestino() + " " + newVal.getCpDestino() + "\n"
-                        + newVal.getCiudadDestino() + ", " + newVal.getEstadoDestino()
+                        + newVal.getCiudadDestino() + ", " + EstadosDAO.obtenerEstado(newVal.getIdEstadoDestino())
                 );
             }
         });
@@ -157,7 +159,9 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
     }
 
     private boolean validarCampos() {
+
         boolean valid = true;
+
         labelErrorDescripcion.setText("");
         labelErrorPeso.setText("");
         labelErrorProfundidad.setText("");
@@ -165,68 +169,70 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
         labelErrorAncho.setText("");
         labelErrorIdEnvio.setText("");
 
-        // Validar descripción
-        if (tfDescripcion.getText() == null || tfDescripcion.getText().trim().isEmpty()
-                || tfDescripcion.getText().length() > 255) {
-            labelErrorDescripcion.setText("Descripción inválida");
+        String descripcion = tfDescripcion.getText() != null ? tfDescripcion.getText().trim() : "";
+
+        if (descripcion.isEmpty()) {
+            labelErrorDescripcion.setText("Descripción vacía");
+            valid = false;
+        } else if (descripcion.length() > 255) {
+            labelErrorDescripcion.setText("Descripción demasiado larga (máximo 255 caracteres)");
             valid = false;
         }
 
-        // Validar peso
-        try {
-            Double peso = Double.valueOf(tfPeso.getText());
-            if (peso == null || tfPeso.getText().trim().isEmpty()
-                    || tfPeso.getText().length() > 10 || !tfPeso.getText().matches("\\d+(\\.\\d{1,2})?")) {
-                labelErrorPeso.setText("Peso inválido");
-                valid = false;
-            }
-        } catch (NumberFormatException e) {
+        String pesoText = tfPeso.getText() != null ? tfPeso.getText().trim() : "";
+
+        if (pesoText.isEmpty()) {
+            labelErrorPeso.setText("Peso vacío");
+            valid = false;
+        } else if (!pesoText.matches("\\d+(\\.\\d{1,2})?")) {
             labelErrorPeso.setText("Peso debe ser un número válido con hasta 2 decimales");
             valid = false;
+        } else if (pesoText.length() > 10) {
+            labelErrorPeso.setText("Peso demasiado largo");
+            valid = false;
         }
 
-        // Validar profundidad
-        try {
-            Double profundidad = Double.valueOf(tfProfundidad.getText());
-            if (profundidad == null || tfProfundidad.getText().trim().isEmpty()
-                    || tfProfundidad.getText().length() > 10 || !tfProfundidad.getText().matches("\\d+(\\.\\d{1,2})?")) {
-                labelErrorProfundidad.setText("Profundidad inválida");
-                valid = false;
-            }
-        } catch (NumberFormatException e) {
+        String profundidadText = tfProfundidad.getText() != null ? tfProfundidad.getText().trim() : "";
+
+        if (profundidadText.isEmpty()) {
+            labelErrorProfundidad.setText("Profundidad vacía");
+            valid = false;
+        } else if (!profundidadText.matches("\\d+(\\.\\d{1,2})?")) {
             labelErrorProfundidad.setText("Profundidad debe ser un número válido con hasta 2 decimales");
             valid = false;
+        } else if (profundidadText.length() > 10) {
+            labelErrorProfundidad.setText("Profundidad demasiado larga");
+            valid = false;
         }
 
-        // Validar alto
-        try {
-            Double alto = Double.valueOf(tfAlto.getText());
-            if (alto == null || tfAlto.getText().trim().isEmpty()
-                    || tfAlto.getText().length() > 10 || !tfAlto.getText().matches("\\d+(\\.\\d{1,2})?")) {
-                labelErrorAlto.setText("Alto inválido");
-                valid = false;
-            }
-        } catch (NumberFormatException e) {
+        String altoText = tfAlto.getText() != null ? tfAlto.getText().trim() : "";
+
+        if (altoText.isEmpty()) {
+            labelErrorAlto.setText("Alto vacío");
+            valid = false;
+        } else if (!altoText.matches("\\d+(\\.\\d{1,2})?")) {
             labelErrorAlto.setText("Alto debe ser un número válido con hasta 2 decimales");
             valid = false;
-        }
-
-        // Validar ancho
-        try {
-            Double ancho = Double.valueOf(tfAncho.getText());
-            if (ancho == null || tfAncho.getText().trim().isEmpty()
-                    || tfAncho.getText().length() > 10 || !tfAncho.getText().matches("\\d+(\\.\\d{1,2})?")) {
-                labelErrorAncho.setText("Ancho inválido");
-                valid = false;
-            }
-        } catch (NumberFormatException e) {
-            labelErrorAncho.setText("Ancho debe ser un número válido con hasta 2 decimales");
+        } else if (altoText.length() > 10) {
+            labelErrorAlto.setText("Alto demasiado largo");
             valid = false;
         }
 
-        // Validar id del paquete
+        String anchoText = tfAncho.getText() != null ? tfAncho.getText().trim() : "";
+
+        if (anchoText.isEmpty()) {
+            labelErrorAncho.setText("Ancho vacío");
+            valid = false;
+        } else if (!anchoText.matches("\\d+(\\.\\d{1,2})?")) {
+            labelErrorAncho.setText("Ancho debe ser un número válido con hasta 2 decimales");
+            valid = false;
+        } else if (anchoText.length() > 10) {
+            labelErrorAncho.setText("Ancho demasiado largo");
+            valid = false;
+        }
+
         if (cbIdEnvios.getValue() == null) {
-            labelErrorIdEnvio.setText("Seleccione un ID de envío válido");
+            labelErrorIdEnvio.setText("Seleccione un ID de envío");
             valid = false;
         }
 
@@ -261,7 +267,7 @@ public class FXMLFormularioPaquetesController implements Initializable, Controla
 
     private void cargarEnvios() {
         List<Envio> envios = EnviosDAO.obtenerEnvios();
-        envios.removeIf(envio -> !envio.getEstatus().equals("Pendiente"));
+        envios.removeIf(envio -> !EstadosEnvioDAO.obtenerPorId(envio.getIdEstadosEnvio()).getEstadoEnvio().equals("recibido en sucursal"));
         if (envios != null && !envios.isEmpty()) {
             listaObservableEnvios = FXCollections.observableArrayList(envios);
             cbIdEnvios.setItems(listaObservableEnvios);

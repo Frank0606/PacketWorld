@@ -17,7 +17,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
+import packetworldescritorio.modelo.dao.EstadosDAO;
 import packetworldescritorio.modelo.dao.SucursalDAO;
+import packetworldescritorio.pojo.Estado;
 import packetworldescritorio.pojo.Mensaje;
 import packetworldescritorio.pojo.Sucursal;
 import packetworldescritorio.utilidades.Alertas;
@@ -27,7 +29,7 @@ import packetworldescritorio.utilidades.Funciones;
 public class FXMLFormularioSucursalController implements Initializable, ControladorPrincipal<Sucursal> {
 
     @FXML
-    private TextField tfCodigo;
+    private Label tfCodigo;
     @FXML
     private Label labelErrorCodigo;
     @FXML
@@ -59,7 +61,7 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
     @FXML
     private Label labelErrorCiudad;
     @FXML
-    private TextField tfEstado;
+    private ComboBox<Estado> tfEstado;
     @FXML
     private Label labelErrorEstado;
     @FXML
@@ -69,12 +71,14 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
 
     private Sucursal sucursal;
     @FXML
-    private ComboBox<String> cbEstatus;
+    private Label cbEstatus;
 
     private ObservableList<String> listaObservableSucursales;
+    private ObservableList<Estado> listaObservableEstados;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cargarEstados();
         configurarTextField(tfColonia, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{0,25}"));
         tfColonia.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
@@ -83,7 +87,7 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
                 tfColonia.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfCalle, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{0,50}"));
+        configurarTextField(tfCalle, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{0,25}"));
         tfCalle.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -91,7 +95,7 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
                 tfCalle.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfNombreCorto, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{9,50}"));
+        configurarTextField(tfNombreCorto, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ0-9\\s]{9,30}"));
         tfNombreCorto.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -99,7 +103,7 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
                 tfNombreCorto.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfCiudad, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,50}"));
+        configurarTextField(tfCiudad, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,25}"));
         tfCiudad.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -107,16 +111,16 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
                 tfCiudad.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfEstado, Pattern.compile("[a-zA-ZáéíóúÁÉÍÓÚ\\s]{0,50}"));
-        tfEstado.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (newValue != null && !newValue.isEmpty()) {
-                String primerCaracter = newValue.substring(0, 1).toUpperCase();
-                String resto = newValue.substring(1);
-                tfEstado.setText(primerCaracter + resto);
-            }
-        });
-        configurarTextField(tfNumero, Pattern.compile("[0-9]{0,5}"));
+        configurarTextField(tfNumero, Pattern.compile("[a-zA-Z0-9]{0,5}"));
         configurarTextField(tfCodigoPostal, Pattern.compile("[0-9]{0,5}"));
+    }
+
+    private void cargarEstados() {
+        List<Estado> estados = EstadosDAO.obtenerTodos();
+        if (estados != null && !estados.isEmpty()) {
+            listaObservableEstados = FXCollections.observableArrayList(estados);
+            tfEstado.setItems(listaObservableEstados);
+        }
     }
 
     private void configurarTextField(TextField textField, Pattern pattern) {
@@ -135,28 +139,23 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
         int cont = 0, posicion = 0;
         tfCodigo.setText(this.sucursal.getCodigo());
         tfNombreCorto.setText(this.sucursal.getNombreCorto());
-
-        listaObservableSucursales = FXCollections.observableArrayList("Activa", "Inactiva");
-        cbEstatus.setItems(listaObservableSucursales);
-        List<Sucursal> sucursales = SucursalDAO.obtenerSucursales();
-        for (Sucursal suc : sucursales) {
-            for (String estatus : listaObservableSucursales) {
-                cont++;
-                if (suc.getEstatus().equals(estatus)) {
-                    posicion = cont;
-                }
-            }
-            cont = 0;
-        }
-        
-        cbEstatus.getSelectionModel().select(posicion-1);
-
         tfCalle.setText(this.sucursal.getCalle());
         tfNumero.setText(this.sucursal.getNumero());
         tfColonia.setText(this.sucursal.getColonia());
         tfCodigoPostal.setText(this.sucursal.getCodigoPostal());
         tfCiudad.setText(this.sucursal.getCiudad());
-        tfEstado.setText(this.sucursal.getEstado());
+        int pos = buscarEstado(this.sucursal.getIdEstado());
+        tfEstado.getSelectionModel().select(pos);
+        cbEstatus.setText(this.sucursal.getEstatus());
+    }
+
+    private int buscarEstado(Integer idEstado) {
+        for (int i = 0; i < listaObservableEstados.size(); i++) {
+            if (listaObservableEstados.get(i).getIdEstado() == idEstado) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void editarDatosSucursal() {
@@ -191,26 +190,22 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
                 this.sucursal = new Sucursal();
             }
 
-            String estatus = ((cbEstatus.getSelectionModel().getSelectedItem() != null)
-                    ? cbEstatus.getSelectionModel().getSelectedItem()
-                    : null);
-            if(estatus == null || estatus.isEmpty()){
-                estatus = tfEstatus.getText();
-            }
-            
+            Integer idEstado = ((tfEstado.getSelectionModel().getSelectedItem() != null) ? tfEstado.getSelectionModel().getSelectedItem().getIdEstado() : null);
+
             sucursal.setCodigo(tfCodigo.getText());
             sucursal.setNombreCorto(tfNombreCorto.getText());
-            sucursal.setEstatus(estatus);
             sucursal.setCalle(tfCalle.getText());
             sucursal.setNumero(tfNumero.getText());
             sucursal.setColonia(tfColonia.getText());
             sucursal.setCodigoPostal(tfCodigoPostal.getText());
             sucursal.setCiudad(tfCiudad.getText());
-            sucursal.setEstado(tfEstado.getText());
+            sucursal.setIdEstado(idEstado);
 
             if (btnGuardar.getText().equals("Editar")) {
+                sucursal.setEstatus(cbEstatus.getText());
                 editarDatosSucursal();
             } else {
+                sucursal.setEstatus("Activa");
                 guardarDatosSucursal();
             }
         } else {
@@ -221,7 +216,10 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
     }
 
     private boolean validarCampos() {
+
         boolean valid = true;
+
+        // Limpiar errores
         labelErrorNombreCorto.setText("");
         labelErrorCalle.setText("");
         labelErrorNumero.setText("");
@@ -230,45 +228,77 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
         labelErrorCiudad.setText("");
         labelErrorEstado.setText("");
 
-        if (tfNombreCorto.getText() == null || tfNombreCorto.getText().trim().isEmpty()
-                || (tfNombreCorto.getText().length() < 10 || tfNombreCorto.getText().length() > 50)) {
-            labelErrorNombreCorto.setText("Nombre corto inválido");
+        String nombreCorto = tfNombreCorto.getText() != null ? tfNombreCorto.getText().trim() : "";
+
+        if (nombreCorto.isEmpty()) {
+            labelErrorNombreCorto.setText("Nombre corto vacío");
+            valid = false;
+        } else if (nombreCorto.length() < 10) {
+            labelErrorNombreCorto.setText("Nombre corto demasiado corto (mínimo 10 caracteres)");
+            valid = false;
+        } else if (nombreCorto.length() > 50) {
+            labelErrorNombreCorto.setText("Nombre corto demasiado largo (máximo 50 caracteres)");
             valid = false;
         }
 
-        if (tfCalle.getText() == null || tfCalle.getText().trim().isEmpty()
-                || (tfCalle.getText().length() < 1 || tfCalle.getText().length() > 50)) {
-            labelErrorCalle.setText("Nombre de calle inválido");
+        String calle = tfCalle.getText() != null ? tfCalle.getText().trim() : "";
+
+        if (calle.isEmpty()) {
+            labelErrorCalle.setText("Nombre de calle vacío");
+            valid = false;
+        } else if (calle.length() > 50) {
+            labelErrorCalle.setText("Nombre de calle demasiado largo (máximo 50 caracteres)");
             valid = false;
         }
 
-        if (tfNumero.getText() == null || tfNumero.getText().trim().isEmpty()
-                || (tfNumero.getText().length() < 1 || tfNumero.getText().length() > 5)) {
-            labelErrorNumero.setText("Número inválido");
+        String numero = tfNumero.getText() != null ? tfNumero.getText().trim() : "";
+
+        if (numero.isEmpty()) {
+            labelErrorNumero.setText("Número vacío");
+            valid = false;
+        } else if (numero.length() > 5) {
+            labelErrorNumero.setText("Número demasiado largo (máximo 5 caracteres)");
             valid = false;
         }
 
-        if (tfColonia.getText() == null || tfColonia.getText().trim().isEmpty()
-                || (tfColonia.getText().length() < 3 || tfColonia.getText().length() > 50)) {
-            labelErrorColonia.setText("Colonia inválido");
+        String colonia = tfColonia.getText() != null ? tfColonia.getText().trim() : "";
+
+        if (colonia.isEmpty()) {
+            labelErrorColonia.setText("Colonia vacía");
+            valid = false;
+        } else if (colonia.length() < 3) {
+            labelErrorColonia.setText("Colonia demasiado corta (mínimo 3 caracteres)");
+            valid = false;
+        } else if (colonia.length() > 50) {
+            labelErrorColonia.setText("Colonia demasiado larga (máximo 50 caracteres)");
             valid = false;
         }
 
-        if (tfCodigoPostal.getText() == null || tfCodigoPostal.getText().trim().isEmpty()
-                || (tfCodigoPostal.getText().length() != 5)) {
-            labelErrorCodigoPostal.setText("Colonia inválido");
+        String codigoPostal = tfCodigoPostal.getText() != null ? tfCodigoPostal.getText().trim() : "";
+
+        if (codigoPostal.isEmpty()) {
+            labelErrorCodigoPostal.setText("Código postal vacío");
+            valid = false;
+        } else if (!codigoPostal.matches("\\d{5}")) {
+            labelErrorCodigoPostal.setText("El código postal debe tener exactamente 5 dígitos");
             valid = false;
         }
 
-        if (tfCiudad.getText() == null || tfCiudad.getText().trim().isEmpty()
-                || (tfCiudad.getText().length() < 3 || tfCiudad.getText().length() > 50)) {
-            labelErrorCiudad.setText("Colonia inválido");
+        String ciudad = tfCiudad.getText() != null ? tfCiudad.getText().trim() : "";
+
+        if (ciudad.isEmpty()) {
+            labelErrorCiudad.setText("Ciudad vacía");
+            valid = false;
+        } else if (ciudad.length() < 3) {
+            labelErrorCiudad.setText("Ciudad demasiado corta (mínimo 3 caracteres)");
+            valid = false;
+        } else if (ciudad.length() > 50) {
+            labelErrorCiudad.setText("Ciudad demasiado larga (máximo 50 caracteres)");
             valid = false;
         }
 
-        if (tfEstado.getText() == null || tfEstado.getText().trim().isEmpty()
-                || (tfEstado.getText().length() < 3 || tfEstado.getText().length() > 50)) {
-            labelErrorEstado.setText("Colonia inválido");
+        if (tfEstado.getValue() == null) {
+            labelErrorEstado.setText("Seleccione un estado");
             valid = false;
         }
 
@@ -300,11 +330,7 @@ public class FXMLFormularioSucursalController implements Initializable, Controla
     @Override
     public void setDatos(Sucursal sucursal) {
         this.sucursal = sucursal;
-        tfCodigo.setEditable(false);
-        tfCodigo.setDisable(true);
 
-        //txNumeroLicencia.setVisible(false);
-        //tfVIM.setVisible(false);
         if (sucursal != null) {
             cargarDatos();
             tfEstatus.setDisable(true);

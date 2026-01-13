@@ -87,28 +87,4 @@ public class ImpUnidad {
         }
         return msj;
     }
-
-    public static Mensaje eliminar(String vin) {
-        Mensaje msj = new Mensaje();
-        SqlSession conn = MybatisUtil.obtenerConexion();
-
-        if (conn != null) {
-            try {
-                int result = conn.delete("UnidadMapper.eliminar", vin);
-                conn.commit();
-
-                if (result > 0) {
-                    msj.setError(false);
-                    msj.setMensaje("Unidad eliminada con éxito.");
-                } else {
-                    msj.setError(true);
-                    msj.setMensaje("No se pudo eliminar la unidad.");
-                }
-            } catch (Exception e) {
-                msj.setError(true);
-                msj.setMensaje(e.getMessage());
-            }
-        }
-        return msj;
-    }
 }

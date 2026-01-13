@@ -17,27 +17,27 @@
                 <Image url="@recursos/fondo_paquetes.png" />
             </image>
         </ImageView>
-        <Label layoutX="648.0" layoutY="301.0" text="Codigo Postal:">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="59.0" layoutY="304.0" text="Codigo Postal:">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <TextField fx:id="tfApellidoMaterno" layoutX="63.0" layoutY="323.0">
+        <TextField fx:id="tfApellidoMaterno" layoutX="652.0" layoutY="96.0">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </TextField>
-        <Label layoutX="61.0" layoutY="185.0" text="Apellido Paterno: ">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="356.0" layoutY="74.0" text="Apellido Paterno: ">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <TextField fx:id="tfApellidoPaterno" layoutX="63.0" layoutY="209.0">
+        <TextField fx:id="tfApellidoPaterno" layoutX="358.0" layoutY="98.0">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </TextField>
-        <Label layoutX="63.0" layoutY="77.0" text="Nombre: ">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="63.0" layoutY="77.0" text="Nombre: ">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
@@ -47,22 +47,12 @@
                 <Font name="Candara" size="18.0" />
             </font>
         </TextField>
-        <Label layoutX="357.0" layoutY="77.0" text="Correo Electronico:">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="64.0" layoutY="407.0" text="Correo Electronico:">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <TextField fx:id="tfCorreoElectronico" layoutX="357.0" layoutY="99.0">
-            <font>
-                <Font name="Candara" size="18.0" />
-            </font>
-        </TextField>
-        <Label layoutX="357.0" layoutY="185.0" text="Contraseña:">
-            <font>
-                <Font name="Candara" size="18.0" />
-            </font>
-        </Label>
-        <TextField fx:id="tfContrasenia" layoutX="357.0" layoutY="207.0">
+        <TextField fx:id="tfCorreoElectronico" layoutX="64.0" layoutY="429.0">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
@@ -72,12 +62,12 @@
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <TextField fx:id="tfCalle" layoutX="357.0" layoutY="323.0">
+        <TextField fx:id="tfCalle" layoutX="63.0" layoutY="207.0">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </TextField>
-        <Label layoutX="357.0" layoutY="301.0" text="Calle:">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="63.0" layoutY="188.0" text="Calle:">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
@@ -87,125 +77,182 @@
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-      <Label fx:id="labelErrorNombreCliente" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="63.0" layoutY="133.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorApellidoM" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="63.0" layoutY="363.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorContrasenia" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="357.0" layoutY="237.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorApellidoP" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="63.0" layoutY="248.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorCalle" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="357.0" layoutY="352.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorCorreo" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="357.0" layoutY="133.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tfColonia" layoutX="652.0" layoutY="99.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </TextField>
-      <Label layoutX="652.0" layoutY="77.0" text="Colonia:">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorColonia" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="652.0" layoutY="133.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="657.0" layoutY="185.0" text="Telefono:">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tfTelefono" layoutX="652.0" layoutY="207.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </TextField>
-      <Label fx:id="labelErrorTelefono" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="652.0" layoutY="237.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tfCodigoPostal" layoutX="652.0" layoutY="323.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </TextField>
-      <Label fx:id="labelErrorCP" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="652.0" layoutY="352.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="63.0" layoutY="301.0" text="Apellido Materno: ">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tfNumeroCasa" layoutX="357.0" layoutY="426.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </TextField>
-      <Label layoutX="357.0" layoutY="404.0" text="Número de casa:">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorNumeroCasa" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="357.0" layoutY="468.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelErrorCiudad" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="63.0" layoutY="458.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="63.0" layoutY="407.0" text="Ciudad:">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tfCiudad" layoutX="63.0" layoutY="429.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </TextField>
-      <Label fx:id="labelErrorEstado" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="652.0" layoutY="458.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
-         <font>
-            <Font name="Candara Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="652.0" layoutY="407.0" text="Estado:">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="tfEstado" layoutX="652.0" layoutY="429.0">
-         <font>
-            <Font name="Candara" size="18.0" />
-         </font>
-      </TextField>
+        <Label fx:id="labelErrorNombreCliente"
+               layoutX="63.0"
+               layoutY="133.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label fx:id="labelErrorApellidoM"
+               layoutX="652.0"
+               layoutY="136.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label fx:id="labelErrorApellidoP"
+               layoutX="358.0"
+               layoutY="137.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label fx:id="labelErrorCalle"
+               layoutX="63.0"
+               layoutY="239.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label fx:id="labelErrorCorreo"
+               layoutX="64.0"
+               layoutY="463.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="tfColonia" layoutX="652.0" layoutY="207.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </TextField>
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="652.0" layoutY="185.0" text="Colonia:">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelErrorColonia"
+               layoutX="652.0"
+               layoutY="241.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="363.0" layoutY="407.0" text="Telefono:">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <TextField fx:id="tfTelefono" layoutX="358.0" layoutY="429.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </TextField>
+        <Label fx:id="labelErrorTelefono"
+               layoutX="358.0"
+               layoutY="459.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="tfCodigoPostal" layoutX="63.0" layoutY="326.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </TextField>
+        <Label fx:id="labelErrorCP"
+               layoutX="63.0"
+               layoutY="355.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="652.0" layoutY="74.0" text="Apellido Materno: ">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <TextField fx:id="tfNumeroCasa" layoutX="358.0" layoutY="210.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </TextField>
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="358.0" layoutY="188.0" text="Número de casa:">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <Label fx:id="labelErrorNumeroCasa"
+               layoutX="358.0"
+               layoutY="252.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label fx:id="labelErrorCiudad"
+               layoutX="356.0"
+               layoutY="355.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="356.0" layoutY="304.0" text="Ciudad:">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <TextField fx:id="tfCiudad" layoutX="356.0" layoutY="326.0">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </TextField>
+        <Label fx:id="labelErrorEstado"
+               layoutX="652.0"
+               layoutY="355.0"
+               prefWidth="214.0"
+               wrapText="true"
+               textOverrun="CLIP"
+               textFill="#BC9E82">
+            <font>
+                <Font name="Candara Bold" size="18.0"/>
+            </font>
+        </Label>
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="652.0" layoutY="304.0" text="Estado:">
+            <font>
+                <Font name="Candara" size="18.0" />
+            </font>
+        </Label>
+        <ComboBox fx:id="tfEstado" layoutX="652.0" layoutY="328.0" prefHeight="31.0" prefWidth="214.0" />
     </children>
 </AnchorPane>

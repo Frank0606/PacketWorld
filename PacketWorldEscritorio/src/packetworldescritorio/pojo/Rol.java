@@ -30,6 +30,6 @@ public class Rol {
 
     @Override
     public String toString() {
-        return idRol + " - " + nombre;
+        return nombre;
     }
 }

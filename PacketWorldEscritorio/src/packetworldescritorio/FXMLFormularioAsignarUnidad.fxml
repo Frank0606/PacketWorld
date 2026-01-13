@@ -17,24 +17,24 @@
                 <Image url="@recursos/fondo_paquetes.png" />
             </image>
         </ImageView>
-        <Label layoutX="104.0" layoutY="221.0" text="Conductor:">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="104.0" layoutY="221.0" text="Conductor:">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
         <ComboBox fx:id="cbColaborador" layoutX="104.0" layoutY="251.0" prefWidth="200.0" />
-        <Label fx:id="labelErrorColaborador" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="104.0" layoutY="291.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" fx:id="labelErrorColaborador" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="104.0" layoutY="291.0" prefHeight="22.0" textAlignment="RIGHT" textFill="#BC9E82">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="620.0" layoutY="221.0" text="Unidad:">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" layoutX="620.0" layoutY="221.0" text="Unidad:">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
         <ComboBox fx:id="cbUnidad" layoutX="620.0" layoutY="251.0" prefWidth="200.0" />
-        <Label fx:id="labelErrorUnidad" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="620.0" layoutY="291.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
+        <Label prefWidth="214.0" textOverrun="CLIP" wrapText="true" fx:id="labelErrorUnidad" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="620.0" layoutY="291.0" prefHeight="22.0" textAlignment="RIGHT" textFill="#BC9E82">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>

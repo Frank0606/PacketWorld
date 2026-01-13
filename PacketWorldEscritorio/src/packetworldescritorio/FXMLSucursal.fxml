@@ -9,56 +9,45 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="680.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="packetworldescritorio.FXMLSucursalController">
+<AnchorPane prefHeight="680.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="packetworldescritorio.FXMLSucursalController">
     <children>
         <TableView fx:id="tablaSucursales" layoutY="160.0" prefHeight="520.0" prefWidth="900.0">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" />
             </padding>
             <columns>
-                <TableColumn fx:id="colCodigo" text="Código" prefWidth="75.0"/>
-                <TableColumn fx:id="colNombreCorto" text="Nombre" prefWidth="75.0"/>
-                <TableColumn fx:id="colEstatus" text="Estatus" prefWidth="75.0"/>
-                <TableColumn fx:id="colDireccion" text="Direccion" prefWidth="75.0"/>
-                <TableColumn fx:id="colCiudad" text="Ciudad" prefWidth="75.0"/>
-                <TableColumn fx:id="colEstado" text="Estado" prefWidth="75.0"/>
+                <TableColumn fx:id="colCodigo" prefWidth="75.0" text="Código" />
+                <TableColumn fx:id="colNombreCorto" prefWidth="75.0" text="Nombre" />
+                <TableColumn fx:id="colEstatus" prefWidth="75.0" text="Estatus" />
+                <TableColumn fx:id="colDireccion" prefWidth="75.0" text="Direccion" />
+                <TableColumn fx:id="colCiudad" prefWidth="75.0" text="Ciudad" />
+                <TableColumn fx:id="colEstado" prefWidth="75.0" text="Estado" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
         </TableView>
-        <Button fx:id="btnBuscar" layoutX="20.0" layoutY="80.0" mnemonicParsing="false" 
-                onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" 
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;"
-                text="Buscar" textFill="WHITE">
+        <Button fx:id="btnBuscar" layoutX="705.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;" text="Buscar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <Button fx:id="btnAgregar" layoutX="540.0" layoutY="80.0" onAction="#btnAgregar"
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;"
-                text="Agregar" textFill="WHITE">
+        <Button fx:id="btnAgregar" layoutX="222.0" layoutY="97.0" onAction="#btnAgregar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;" text="Agregar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <Button fx:id="btnEditar" layoutX="650.0" layoutY="80.0" onAction="#btnEditar"
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;"
-                text="Editar" textFill="WHITE">
+        <Button fx:id="btnEditar" layoutX="415.0" layoutY="97.0" onAction="#btnEditar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;" text="Editar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <Button fx:id="btnEliminar" layoutX="750.0" layoutY="80.0" onAction="#btnEliminar"
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;"
-                text="Eliminar" textFill="WHITE">
+        <Button fx:id="btnEliminar" layoutX="590.0" layoutY="97.0" onAction="#btnEliminar" style="-fx-background-color: #BC9E82; -fx-border-radius: 60px; -fx-background-radius: 60px;" text="Eliminar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <TextField fx:id="barraBusqueda" layoutX="120.0" layoutY="80.0" prefHeight="40.0" prefWidth="400.0" promptText="Buscar colaborador por No. de personal, nombre o rol." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
+        <TextField fx:id="barraBusqueda" layoutX="222.0" layoutY="40.0" prefHeight="40.0" prefWidth="456.0" promptText="Buscar sucursal por código, nombre o estatus." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>

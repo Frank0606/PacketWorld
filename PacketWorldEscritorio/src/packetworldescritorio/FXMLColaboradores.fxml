@@ -9,9 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="680.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="packetworldescritorio.FXMLColaboradoresController">
+<AnchorPane prefHeight="680.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="packetworldescritorio.FXMLColaboradoresController">
     <children>
         <TableView fx:id="tablaColaboradores" layoutY="160.0" prefHeight="520.0" prefWidth="900.0">
             <padding>
@@ -29,39 +27,27 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
         </TableView>
-        <Button fx:id="btnBuscar" layoutX="20.0" layoutY="80.0" mnemonicParsing="false" 
-                onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" 
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" 
-                text="Buscar" textFill="WHITE">
+        <Button fx:id="btnBuscar" layoutX="705.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Buscar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <Button fx:id="btnAgregar" layoutX="540.0" layoutY="80.0" mnemonicParsing="false" 
-                onAction="#btnAgregar" prefHeight="40.0" prefWidth="100.0" 
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" 
-                text="Agregar" textFill="WHITE">
+        <Button fx:id="btnAgregar" layoutX="286.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnAgregar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Agregar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <Button fx:id="btnEditar" layoutX="650.0" layoutY="80.0" mnemonicParsing="false" 
-                onAction="#btnEditar" prefHeight="40.0" prefWidth="90.0" 
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" 
-                text="Editar" textFill="WHITE">
+        <Button fx:id="btnEditar" layoutX="405.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Editar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <Button fx:id="btnEliminar" layoutX="750.0" layoutY="80.0" mnemonicParsing="false" 
-                onAction="#btnEliminar" prefHeight="40.0" prefWidth="100.0" 
-                style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" 
-                text="Eliminar" textFill="WHITE">
+        <Button fx:id="btnEliminar" layoutX="516.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Eliminar" textFill="WHITE">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <TextField fx:id="barraBusqueda" layoutX="120.0" layoutY="80.0" prefHeight="40.0" prefWidth="400.0" promptText="Buscar colaborador por No. de personal, nombre o rol." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
+        <TextField fx:id="barraBusqueda" layoutX="216.0" layoutY="40.0" prefHeight="40.0" prefWidth="468.0" promptText="Buscar colaborador por No. de personal, nombre o rol." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>

@@ -11,12 +11,63 @@ CREATE TABLE Rol (
     nombre VARCHAR(50) NOT NULL UNIQUE
 );
 
+CREATE TABLE EstadosEnvio (
+    idEstadosEnvio INT NOT NULL PRIMARY KEY,
+    estadoEnvio VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Estados (
+    idEstado INT NOT NULL PRIMARY KEY,
+    estadoMexico VARCHAR(100) NOT NULL UNIQUE
+);
+
+INSERT INTO EstadosEnvio (idEstadosEnvio, estadoEnvio) VALUES
+(1, 'recibido en sucursal'),
+(2, 'procesado'),
+(3, 'en transito'),
+(4, 'detenido'),
+(5, 'entregado'),
+(6, 'cancelado');
+
+INSERT INTO Estados (idEstado, estadoMexico) VALUES
+(1, 'Aguascalientes'),
+(2, 'Baja California'),
+(3, 'Baja California Sur'),
+(4, 'Campeche'),
+(5, 'Coahuila'),
+(6, 'Colima'),
+(7, 'Chiapas'),
+(8, 'Chihuahua'),
+(9, 'Ciudad de México'),
+(10, 'Durango'),
+(11, 'Guanajuato'),
+(12, 'Guerrero'),
+(13, 'Hidalgo'),
+(14, 'Jalisco'),
+(15, 'México'),
+(16, 'Michoacán'),
+(17, 'Morelos'),
+(18, 'Nayarit'),
+(19, 'Nuevo León'),
+(20, 'Oaxaca'),
+(21, 'Puebla'),
+(22, 'Querétaro'),
+(23, 'Quintana Roo'),
+(24, 'San Luis Potosí'),
+(25, 'Sinaloa'),
+(26, 'Sonora'),
+(27, 'Tabasco'),
+(28, 'Tamaulipas'),
+(29, 'Tlaxcala'),
+(30, 'Veracruz'),
+(31, 'Yucatán'),
+(32, 'Zacatecas');
+
 INSERT INTO Rol(nombre) VALUES
 ('Administrador'),
 ('Ejecutivo de tienda'),
 ('Conductor');
 
---   SUCURSALES
 CREATE TABLE Sucursal (
     idSucursal INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(20) NOT NULL UNIQUE,
@@ -27,7 +78,8 @@ CREATE TABLE Sucursal (
     colonia VARCHAR(100) NOT NULL,
     codigoPostal VARCHAR(10) NOT NULL,
     ciudad VARCHAR(100) NOT NULL,
-    estado VARCHAR(100) NOT NULL
+    idEstado INT NOT NULL,
+    CONSTRAINT fk_estado FOREIGN KEY (idEstado) REFERENCES Estados(idEstado)
 );
 
 --   TIPOS DE UNIDAD
@@ -78,7 +130,7 @@ CREATE TABLE Colaborador (
     FOREIGN KEY (idUnidad) REFERENCES Unidad(idUnidad)
 );
 
---   CLIENTES
+-- CLIENTES
 CREATE TABLE Cliente (
     idCliente INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -89,11 +141,12 @@ CREATE TABLE Cliente (
     colonia VARCHAR(100) NOT NULL,
     codigoPostal VARCHAR(10) NOT NULL,
     ciudad VARCHAR(100) NOT NULL,
-    estado VARCHAR(100) NOT NULL,
+    idEstado INT NOT NULL,
     telefono VARCHAR(20),
     correo VARCHAR(150),
-    contrasena VARCHAR(255) NOT NULL,
-    foto BLOB
+    CONSTRAINT fk_cliente_estado
+        FOREIGN KEY (idEstado)
+        REFERENCES Estados(idEstado)
 );
 
 -- BAJAS DE UNIDADES
@@ -116,43 +169,46 @@ CREATE TABLE ConductorUnidad (
     FOREIGN KEY (idUnidad) REFERENCES Unidad(idUnidad)
 );
 
---   ENVIOS
 CREATE TABLE Envio (
     idEnvio INT AUTO_INCREMENT PRIMARY KEY,
     idCliente INT NOT NULL,
-    idColaborador INT, -- nuevo campo
+    idColaborador INT,
     nombreDestinatario VARCHAR(100) NOT NULL,
-    apellidoPaternoDest VARCHAR(100) NOT NULL,
-    apellidoMaternoDest VARCHAR(100),
     idSucursalOrigen INT NOT NULL,
     calleDestino VARCHAR(100) NOT NULL,
     numeroDestino VARCHAR(20) NOT NULL,
     coloniaDestino VARCHAR(100) NOT NULL,
     cpDestino VARCHAR(10) NOT NULL,
     ciudadDestino VARCHAR(100) NOT NULL,
-    estadoDestino VARCHAR(100) NOT NULL,
     numeroGuia VARCHAR(50) NOT NULL UNIQUE,
-    distanciaKm DECIMAL(10,2) NOT NULL,
-    costoKm DECIMAL(10,2) NOT NULL,
-    costoPaquetes DECIMAL(10,2) NOT NULL,
-    costoTotal DECIMAL(10,2) NOT NULL,
-    estatus ENUM('Pendiente','En tránsito','Entregado','Cancelado') DEFAULT 'Pendiente',
+
+    distanciaKm DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    costoKm DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    costoPaquetes DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    costoTotal DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+
+    idEstadosEnvio INT NOT NULL,
+    idEstadoDestino INT NOT NULL,
     fechaCreacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+
     FOREIGN KEY (idCliente) REFERENCES Cliente(idCliente),
     FOREIGN KEY (idSucursalOrigen) REFERENCES Sucursal(idSucursal),
-    FOREIGN KEY (idColaborador) REFERENCES Colaborador(idColaborador)
+    FOREIGN KEY (idColaborador) REFERENCES Colaborador(idColaborador),
+    FOREIGN KEY (idEstadosEnvio) REFERENCES EstadosEnvio(idEstadosEnvio),
+    FOREIGN KEY (idEstadoDestino) REFERENCES Estados(idEstado)
 );
 
 --   HISTORIAL DE ESTADOS DEL ENVÍO
 CREATE TABLE EnvioHistorial (
     idHistorial INT AUTO_INCREMENT PRIMARY KEY,
     idEnvio INT NOT NULL,
-    estatus ENUM('Pendiente','En tránsito','Entregado','Cancelado') NOT NULL,
+    idEstadosEnvio INT NOT NULL,
     comentario VARCHAR(255),
     fechaCambio DATETIME DEFAULT CURRENT_TIMESTAMP,
     idColaborador INT NOT NULL,
     FOREIGN KEY (idEnvio) REFERENCES Envio(idEnvio),
-    FOREIGN KEY (idColaborador) REFERENCES Colaborador(idColaborador)
+    FOREIGN KEY (idColaborador) REFERENCES Colaborador(idColaborador),
+    FOREIGN KEY (idEstadosEnvio) REFERENCES EstadosEnvio(idEstadosEnvio)
 );
 
 --   PAQUETES DE UN ENVÍO
@@ -179,15 +235,14 @@ CREATE TABLE EnvioConductor (
     FOREIGN KEY (idConductor) REFERENCES Colaborador(idColaborador)
 );
 
-
 -- DATOS DE PRUEBA PACKETWORLD
 
 
 -- SUCURSALES
-INSERT INTO Sucursal (codigo, nombreCorto, estatus, calle, numero, colonia, codigoPostal, ciudad, estado)
+INSERT INTO Sucursal (codigo, nombreCorto, estatus, calle, numero, colonia, codigoPostal, ciudad, idEstado)
 VALUES
-('SUC001','Sucursal Centro','Activa','Av. Juárez','123','Centro','94000','Córdoba','Veracruz'),
-('SUC002','Sucursal Norte','Activa','Calle Hidalgo','45','Industrial','94100','Orizaba','Veracruz');
+('SUC001','Sucursal Centro','Activa','Av. Juárez','123','Centro','94000','Córdoba',30),
+('SUC002','Sucursal Norte','Activa','Calle Hidalgo','45','Industrial','94100','Orizaba',30);
 
 -- UNIDADES (ahora con anio, vin, noIdentificacion y numeroPersonal)
 INSERT INTO Unidad (marca, modelo, anio, vin, noIdentificacion, numeroPersonal, idTipoUnidad, numeroInterno, estatus)
@@ -202,11 +257,11 @@ VALUES
 ('María','García','Hernández','GAHM850505MVZRRR02','maria.garcia@packetworld.com','EMP002','abcdsegura',2,1,NULL,NULL),
 ('Carlos','Ramírez','Santos','RASC900707HDFRRR03','carlos.ramirez@packetworld.com','EMP003','xyzsegura',3,2,1,'LIC67890');
 
--- CLIENTES (ahora con contraseña)
-INSERT INTO Cliente (nombre, apellidoPaterno, apellidoMaterno, calle, numero, colonia, codigoPostal, ciudad, estado, telefono, correo, contrasena)
+INSERT INTO Cliente 
+(nombre, apellidoPaterno, apellidoMaterno, calle, numero, colonia, codigoPostal, ciudad, idEstado, telefono, correo)
 VALUES
-('Ana','Martínez','Ruiz','Av. Reforma','321','Centro','91700','Veracruz','Veracruz','2711234567','ana.martinez@mail.com','cliente123'),
-('Luis','Torres','Gómez','Calle Morelos','56','San José','94020','Tlaltetela','Veracruz','2717654321','luis.torres@mail.com','seguro456');
+('Ana','Martínez','Ruiz','Av. Reforma','321','Centro','91700','Veracruz',30,'2711234567','ana.martinez@mail.com'),
+('Luis','Torres','Gómez','Calle Morelos','56','San José','94020','Tlaltetela',30,'2717654321','luis.torres@mail.com');
 
 -- BAJA DE UNIDAD
 INSERT INTO UnidadBaja (idUnidad, motivo)
@@ -218,25 +273,25 @@ INSERT INTO ConductorUnidad (idConductor, idUnidad, numeroPersonal)
 VALUES
 (3,1,'EMP003');
 
--- ENVÍOS (ahora con idColaborador)
+-- ENVÍOS (ahora con idEstadosEnvio en lugar de estatus)
 INSERT INTO Envio (
-    idCliente, idColaborador, nombreDestinatario, apellidoPaternoDest, apellidoMaternoDest, idSucursalOrigen,
-    calleDestino, numeroDestino, coloniaDestino, cpDestino, ciudadDestino, estadoDestino,
-    numeroGuia, distanciaKm, costoKm, costoPaquetes, costoTotal, estatus
+    idCliente, idColaborador, nombreDestinatario,
+    idSucursalOrigen, calleDestino, numeroDestino, coloniaDestino, cpDestino, ciudadDestino,
+    numeroGuia, distanciaKm, costoKm, costoPaquetes, costoTotal, idEstadosEnvio, idEstadoDestino
 ) VALUES
-(1, 3, 'Pedro', 'López', 'Ramírez', 1,
- 'Calle Juárez', '12', 'Centro', '94030', 'Córdoba', 'Veracruz',
- 'GUIA001', 16.78, 67.12, 50.00, 117.12, 'En tránsito'),
-(2, 3, 'Sofía', 'Hernández', 'Martínez', 2,
- 'Av. Hidalgo', '34', 'Industrial', '94120', 'Orizaba', 'Veracruz',
- 'GUIA002', 88.41, 353.64, 0.00, 353.64, 'En tránsito');
+(1, 3, 'Pedro', 1,
+ 'Calle Juárez', '12', 'Centro', '94030', 'Córdoba',
+ 'GUIA001', 16.78, 67.12, 50.00, 117.12, 3, 30),
+(2, 3, 'Sofía', 2,
+ 'Av. Hidalgo', '34', 'Industrial', '94120', 'Orizaba',
+ 'GUIA002', 88.41, 353.64, 0.00, 353.64, 3, 30);
 
--- HISTORIAL DE ENVÍO
-INSERT INTO EnvioHistorial (idEnvio, estatus, comentario, idColaborador, fechaCambio)
+-- HISTORIAL DE ENVÍO (ahora con idEstadosEnvio)
+INSERT INTO EnvioHistorial (idEnvio, idEstadosEnvio, comentario, idColaborador, fechaCambio)
 VALUES
-(1,'En tránsito','Paquete en camino',1, DATE_SUB(NOW(), INTERVAL 8 HOUR)),
-(1,'Entregado','Recibido por el cliente',2, NOW()),
-(2,'En tránsito','Salida de sucursal',3, DATE_SUB(NOW(), INTERVAL 5 HOUR));
+(1, 3, 'Paquete en camino', 1, DATE_SUB(NOW(), INTERVAL 8 HOUR)),
+(1, 5, 'Recibido por el cliente', 2, NOW()),
+(2, 3, 'Salida de sucursal', 3, DATE_SUB(NOW(), INTERVAL 5 HOUR));
 
 -- Añadir un atributo de fecha y hora para la actulizacion de los estatus
 

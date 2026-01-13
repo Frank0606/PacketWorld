@@ -30,9 +30,9 @@ public class ClientesDAO {
         return cliente;
     }
 
-    public static Cliente obtenerClientesId(int idColaborador) {
+    public static Cliente obtenerClientesId(int idCliente) {
         Cliente cliente = null;
-        String url = Constantes.URL_WS + "cliente/obtener-id/" + idColaborador;
+        String url = Constantes.URL_WS + "cliente/obtener-id/" + idCliente;
         RespuestaHTTP respuesta = ConexionWS.peticionGET(url);
 
         if (respuesta.getCodigoRespuesta() == HttpURLConnection.HTTP_OK) {

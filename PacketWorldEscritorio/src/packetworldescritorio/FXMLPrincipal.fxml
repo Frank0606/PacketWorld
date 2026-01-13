@@ -12,12 +12,12 @@
     <children>
         <HBox prefHeight="120.0" prefWidth="1200.0" style="-fx-background-color: #BC9E82;">
             <children>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="120.0" prefWidth="491.0" style="-fx-background-color: #BC9E82;" text="PacketWorld" textAlignment="CENTER" textFill="WHITE">
+                <Label textOverrun="CLIP" wrapText="true" alignment="CENTER" contentDisplay="CENTER" prefHeight="120.0" prefWidth="491.0" style="-fx-background-color: #BC9E82;" text="PacketWorld" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="Candara" size="64.0" />
                     </font>
                 </Label>
-                <Label alignment="CENTER" prefHeight="120.0" prefWidth="750.0" style="-fx-background-color: BC9E82;" text="Sistema de Gestión" textFill="WHITE">
+                <Label textOverrun="CLIP" wrapText="true" alignment="CENTER" prefHeight="120.0" prefWidth="750.0" style="-fx-background-color: BC9E82;" text="Sistema de Gestión" textFill="WHITE">
                     <font>
                         <Font name="Candara Bold" size="24.0" />
                     </font>

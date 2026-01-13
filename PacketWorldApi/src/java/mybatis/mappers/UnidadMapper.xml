@@ -66,10 +66,4 @@
         WHERE idUnidad = #{idUnidad};
     </update>
 
-    <!-- Eliminar unidad -->
-    <delete id="eliminar" parameterType="String">
-        DELETE FROM Unidad
-        WHERE vin = #{vin};
-    </delete>
-
 </mapper>

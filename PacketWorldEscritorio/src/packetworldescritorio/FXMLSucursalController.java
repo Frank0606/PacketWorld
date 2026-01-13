@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import packetworldescritorio.modelo.dao.EnviosDAO;
+import packetworldescritorio.modelo.dao.EstadosDAO;
 import packetworldescritorio.pojo.Mensaje;
 import packetworldescritorio.modelo.dao.SucursalDAO;
 import packetworldescritorio.pojo.Envio;
@@ -26,7 +27,7 @@ import static packetworldescritorio.utilidades.Alertas.mostrarAlertaConfirmacion
 import packetworldescritorio.utilidades.Funciones;
 
 public class FXMLSucursalController implements Initializable {
-
+    
     @FXML
     private TableView<Sucursal> tablaSucursales;
     @FXML
@@ -38,7 +39,7 @@ public class FXMLSucursalController implements Initializable {
     @FXML
     private TableColumn colCiudad;
     @FXML
-    private TableColumn colEstado;
+    private TableColumn<Sucursal, String> colEstado;
     @FXML
     private Button btnAgregar;
     @FXML
@@ -47,20 +48,20 @@ public class FXMLSucursalController implements Initializable {
     private Button btnEliminar;
     @FXML
     private Button btnBuscar;
-
+    
     private ObservableList<Sucursal> sucursales;
-
+    
     @FXML
     private TableColumn<Sucursal, String> colDireccion;
     @FXML
     private TextField barraBusqueda;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacion();
     }
-
+    
     private void configurarTabla() {
         colCodigo.setCellValueFactory(new PropertyValueFactory("codigo"));
         colNombreCorto.setCellValueFactory(new PropertyValueFactory("nombreCorto"));
@@ -69,12 +70,15 @@ public class FXMLSucursalController implements Initializable {
             String nombreCompleto = c.getCalle() + " " + c.getNumero() + " " + c.getColonia();
             return new SimpleStringProperty(nombreCompleto);
         });
-
         colEstatus.setCellValueFactory(new PropertyValueFactory("estatus"));
         colCiudad.setCellValueFactory(new PropertyValueFactory("ciudad"));
-        colEstado.setCellValueFactory(new PropertyValueFactory("estado"));
+        colEstado.setCellValueFactory(cellData -> {
+            Sucursal c = cellData.getValue();
+            String nombreCompleto = EstadosDAO.obtenerEstado(c.getIdEstado()).getEstadoMexico();
+            return new SimpleStringProperty(nombreCompleto);
+        });
     }
-
+    
     private void cargarInformacion() {
         sucursales = FXCollections.observableArrayList();
         List<Sucursal> WSList = SucursalDAO.obtenerSucursales();
@@ -87,36 +91,37 @@ public class FXMLSucursalController implements Initializable {
         }
         barraBusqueda.setText("");
     }
-
+    
     @FXML
     private void btnAgregar(ActionEvent event) {
         Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioSucursal.fxml",
                 (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), null,
                 new FXMLFormularioSucursalController());
     }
-
+    
     @FXML
     private void btnEditar(ActionEvent event) {
         Sucursal sucursal = tablaSucursales.getSelectionModel().getSelectedItem();
         if (sucursal != null) {
-            Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioSucursal.fxml",
-                    (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), sucursal,
-                    new FXMLFormularioSucursalController());
+            if (sucursal.getEstatus().equals("Inactiva")) {
+                Alertas.mostrarAlertaSimple("Advertencia", "Esta sucursal esta inactiva por lo tanto no se puede editar. Intente con otra.", Alert.AlertType.WARNING);
+            } else {
+                Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioSucursal.fxml",
+                        (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), sucursal,
+                        new FXMLFormularioSucursalController());
+            }
         } else {
             Alertas.mostrarAlertaSimple("Seleccionar sucursal.", "Para editar debes seleccionar una sucursal "
                     + "de la tabla.", Alert.AlertType.WARNING);
         }
     }
-
+    
     @FXML
     private void btnEliminar(ActionEvent event) {
         Sucursal sucursal = tablaSucursales.getSelectionModel().getSelectedItem();
         if (sucursal != null) {
             if (sucursal.getEstatus().equals("Inactiva")) {
-                boolean confirmado = Alertas.mostrarAlertaConfirmacion("Confirmar eliminación", "¿Esta seguro de querer eliminar esta sucursal?\nYa se encuentra inactiva, por lo que eliminarla hara que desaparezca de los registros.");
-                if (confirmado) {
-                    eliminarSucursal(sucursal);
-                }
+                Alertas.mostrarAlertaSimple("Advertencia", "Esta sucursal ya esta inactiva.", Alert.AlertType.WARNING);
             } else {
                 desactivarSucursal(sucursal);
             }
@@ -124,13 +129,13 @@ public class FXMLSucursalController implements Initializable {
             Alertas.mostrarAlertaSimple("Seleccionar sucursal.", "Para eliminar debes seleccionar un sucursal de la tabla.", Alert.AlertType.WARNING);
         }
     }
-
+    
     private void desactivarSucursal(Sucursal sucursal) {
         Mensaje msj = new Mensaje();
         boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
                 "¿Está seguro de que desea dar de baja esta sucursal?");
         if (confirmado) {
-
+            
             msj = SucursalDAO.darBajaSucursal(sucursal.getIdSucursal());
             if (!msj.isError()) {
                 Alertas.mostrarAlertaSimple("Sucursal eliminada", "La sucursal ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
@@ -140,53 +145,25 @@ public class FXMLSucursalController implements Initializable {
             }
         }
     }
-
-    private void eliminarSucursal(Sucursal sucursal) {
-        Mensaje msj = new Mensaje();
-        boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
-                "¿Está seguro de que desea eliminar esta sucursal?");
-        if (confirmado) {
-            List<Envio> envios = EnviosDAO.obtenerEnvios();
-            boolean tieneEnvios = false;
-            for (Envio envio : envios) {
-                if (envio.getIdSucursalOrigen() == sucursal.getIdSucursal()) {
-                    tieneEnvios = true;
-                }
-            }
-            if (tieneEnvios) {
-                Alertas.mostrarAlertaSimple("Problemas de eliminación", "La sucursal no se puede eliminar debido a que tiene envios asignados a ella. Borre los envios que corresponden a esta sucursal para poder eliminarla", Alert.AlertType.ERROR);
-            } else {
-                msj = SucursalDAO.eliminarSucursal(sucursal.getIdSucursal());
-                if (!msj.isError()) {
-                    Alertas.mostrarAlertaSimple("Sucursal eliminada", "La sucursal ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
-                    cargarInformacion();
-                } else {
-                    Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar la sucursal, intente nuevamente.", Alert.AlertType.WARNING);
-                }
-            }
-        }
-    }
-
+    
     @FXML
     private void btnBuscar(ActionEvent event) {
         if (!barraBusqueda.getText().trim().isEmpty()) {
             ObservableList<Sucursal> resultadosBusqueda = FXCollections.observableArrayList();
             String barraBusquedaTexto = barraBusqueda.getText().trim().toUpperCase();
-
+            
             for (Sucursal sucursal : sucursales) {
                 String codigo = sucursal.getCodigo().toUpperCase();
                 String nombreCorto = sucursal.getNombreCorto().toUpperCase();
                 String estatus = sucursal.getEstatus().toUpperCase();
-                String estado = sucursal.getEstado().toUpperCase();
-
+                
                 if (codigo.contains(barraBusquedaTexto)
                         || nombreCorto.contains(barraBusquedaTexto)
-                        || estatus.contains(barraBusquedaTexto)
                         || estatus.contains(barraBusquedaTexto)) {
                     resultadosBusqueda.add(sucursal);
                 }
             }
-
+            
             if (!resultadosBusqueda.isEmpty()) {
                 tablaSucursales.setItems(resultadosBusqueda);
             } else {
@@ -199,5 +176,5 @@ public class FXMLSucursalController implements Initializable {
             tablaSucursales.setItems(sucursales);
         }
     }
-
+    
 }

@@ -63,10 +63,10 @@ public class WSEnvio {
     }
     
     @GET
-    @Path("guia-direccion/{guia}")
+    @Path("envio-conductor/{idConductor}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Envio obtenerEnvioGuiaDireccion(@PathParam("guia") String guia) {
-        return ImpEnvio.obtenerEnvioGuiaDireccion(guia);
+    public List<Envio> obtenerEnvioGuiaDireccion(@PathParam("idConductor") int idConductor) {
+        return ImpEnvio.obtenerEnvioGuiaDireccion(idConductor);
     }
 
 }

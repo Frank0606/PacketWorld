@@ -11,17 +11,16 @@ public class Cliente {
     private String colonia;
     private String codigoPostal;
     private String ciudad;
-    private String estado;
+    private Integer idEstado;
     private String telefono;
     private String correo;
-    private String contrasena;
 
     public Cliente() {
     }
 
     public Cliente(Integer idCliente, String nombre, String apellidoPaterno, String apellidoMaterno,
-            String calle, String numero, String colonia, String codigoPostal, String ciudad, String estado, 
-            String telefono, String correo, String contrasena) {
+            String calle, String numero, String colonia, String codigoPostal, String ciudad, Integer idEstado, 
+            String telefono, String correo) {
         this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -31,10 +30,9 @@ public class Cliente {
         this.colonia = colonia;
         this.codigoPostal = codigoPostal;
         this.ciudad = ciudad;
-        this.estado = estado;
+        this.idEstado = idEstado;
         this.telefono = telefono;
         this.correo = correo;
-        this.contrasena = contrasena;
     }
 
     public Integer getIdCliente() {
@@ -117,14 +115,6 @@ public class Cliente {
         this.correo = correo;
     }
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
     public String getCiudad() {
         return ciudad;
     }
@@ -133,12 +123,12 @@ public class Cliente {
         this.ciudad = ciudad;
     }
 
-    public String getEstado() {
-        return estado;
+    public Integer getIdEstado() {
+        return idEstado;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setIdEstado(Integer idEstado) {
+        this.idEstado = idEstado;
     }
 
     @Override

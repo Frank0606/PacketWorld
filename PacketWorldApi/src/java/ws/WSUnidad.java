@@ -42,11 +42,4 @@ public class WSUnidad {
         Unidad unidad = new Gson().fromJson(json, Unidad.class);
         return ImpUnidad.editar(unidad);
     }
-
-    @DELETE
-    @Path("eliminar/{vin}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Mensaje eliminar(@PathParam("vin") String vin) {
-        return ImpUnidad.eliminar(vin);
-    }
 }

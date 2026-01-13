@@ -17,18 +17,28 @@
                 <Image url="@recursos/fondo_paquetes.png" />
             </image>
         </ImageView>
-        <Label layoutX="429.0" layoutY="118.0" text="Envio:">
+        <Label layoutX="429.0" layoutY="118.0" prefWidth="214.0" text="Envio:" textOverrun="CLIP" wrapText="true">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="620.0" layoutY="221.0" text="Nuevo estado:">
+        <Label layoutX="620.0" layoutY="221.0" prefWidth="214.0" text="Nuevo estado:" textOverrun="CLIP" wrapText="true">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
         <ComboBox fx:id="cbEstadoNuevo" layoutX="620.0" layoutY="251.0" prefWidth="200.0" />
-        <Label fx:id="labelErrorEstadoNuevo" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="620.0" layoutY="291.0" prefHeight="22.0" prefWidth="214.0" textAlignment="RIGHT" textFill="#BC9E82">
+        <Label fx:id="labelErrorEstadoNuevo"
+               alignment="CENTER_RIGHT"
+               contentDisplay="RIGHT"
+               layoutX="620.0"
+               layoutY="291.0"
+               prefHeight="44.0"
+               prefWidth="214.0"
+               textAlignment="RIGHT"
+               textFill="#BC9E82"
+               textOverrun="CLIP"
+               wrapText="true">
             <font>
                 <Font name="Candara Bold" size="18.0" />
             </font>
@@ -43,30 +53,45 @@
                 <Font name="Candara Bold" size="18.0" />
             </font>
         </Button>
-        <Label fx:id="tfEnvio" layoutX="344.0" layoutY="147.0">
+        <Label fx:id="tfEnvio" layoutX="344.0" layoutY="147.0" prefWidth="214.0" textOverrun="CLIP" wrapText="true">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="397.0" layoutY="221.0" text="Estado actual:">
+        <Label layoutX="397.0" layoutY="221.0" prefWidth="214.0" text="Estado actual:" textOverrun="CLIP" wrapText="true">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <Label fx:id="labelEstadoActual" layoutX="397.0" layoutY="267.0">
+        <Label fx:id="labelEstadoActual" layoutX="397.0" layoutY="267.0" prefWidth="214.0" textOverrun="CLIP" wrapText="true">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <Label layoutX="150.0" layoutY="222.0" text="Comentario:" >
+        <Label layoutX="150.0" layoutY="222.0" prefWidth="214.0" text="Comentario:" textOverrun="CLIP" wrapText="true">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </Label>
-        <TextArea fx:id="taComentario" layoutX="66.0" layoutY="251.0" prefHeight="200.0" prefWidth="249.0" >
+        <TextArea fx:id="taComentario" layoutX="66.0" layoutY="251.0" prefHeight="200.0" prefWidth="249.0">
             <font>
                 <Font name="Candara" size="18.0" />
             </font>
         </TextArea>
+        <Label fx:id="labelErrorComentario"
+               alignment="CENTER_RIGHT"
+               contentDisplay="RIGHT"
+               layoutX="66.0"
+               layoutY="463.0"
+               prefWidth="249.0"
+               prefHeight="60.0"
+               textAlignment="RIGHT"
+               textFill="#BC9E82"
+               textOverrun="CLIP"
+               wrapText="true">
+            <font>
+                <Font name="Candara Bold" size="18.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>

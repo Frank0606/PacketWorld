@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EstadosEnvioMapper">
+
+    <select id="obtenerTodos" resultType="pojo.EstadosEnvio">
+        SELECT idEstadosEnvio, estadoEnvio
+        FROM EstadosEnvio;
+    </select>
+
+    <select id="obtenerPorId" parameterType="int" resultType="pojo.EstadosEnvio">
+        SELECT idEstadosEnvio, estadoEnvio
+        FROM EstadosEnvio
+        WHERE idEstadosEnvio = #{idEstadosEnvio};
+    </select>
+
+    <insert id="registrar" parameterType="pojo.EstadosEnvio">
+        INSERT INTO EstadosEnvio (estadoEnvio)
+        VALUES (#{estadoEnvio});
+    </insert>
+
+    <update id="editar" parameterType="pojo.EstadosEnvio">
+        UPDATE EstadosEnvio
+        SET estadoEnvio = #{estadoEnvio}
+        WHERE idEstadosEnvio = #{idEstadosEnvio};
+    </update>
+
+    <delete id="eliminar" parameterType="int">
+        DELETE FROM EstadosEnvio
+        WHERE idEstadosEnvio = #{idEstadosEnvio};
+    </delete>
+
+</mapper>

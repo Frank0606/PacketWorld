@@ -16,6 +16,7 @@ public class Colaborador {
     private String nombreSucursal;
     private Integer idUnidad;
     private byte[] fotografia;
+    private String fotoBase64;
     private String numeroLicencia;
     private String fechaAlta;
 
@@ -24,7 +25,7 @@ public class Colaborador {
 
     public Colaborador(int idColaborador, String nombre, String apellidoPaterno, String apellidoMaterno, 
             String curp, String correo, String numeroPersonal, String contrasena, int idRol, 
-            String nombreRol, Integer idSucursal, String nombreSucursal, int idUnidad, byte[] fotografia, 
+            String nombreRol, Integer idSucursal, String nombreSucursal, int idUnidad, byte[] fotografia, String fotoBase64, 
             String numeroLicencia, String fechaAlta) {
         this.idColaborador = idColaborador;
         this.nombre = nombre;
@@ -40,8 +41,17 @@ public class Colaborador {
         this.nombreSucursal = nombreSucursal;
         this.idUnidad = idUnidad;
         this.fotografia = fotografia;
+        this.fotoBase64 = fotoBase64;
         this.numeroLicencia = numeroLicencia;
         this.fechaAlta = fechaAlta;
+    }
+
+    public String getFotoBase64() {
+        return fotoBase64;
+    }
+
+    public void setFotoBase64(String fotoBase64) {
+        this.fotoBase64 = fotoBase64;
     }
 
     public int getIdColaborador() {

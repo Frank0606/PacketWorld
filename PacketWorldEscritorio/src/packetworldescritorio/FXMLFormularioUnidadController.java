@@ -63,7 +63,7 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarTipoUnidad();
-        configurarTextField(tfMarca, Pattern.compile("[a-zA-Z]{0,25}"));
+        configurarTextField(tfMarca, Pattern.compile("[a-zA-Z\\s]{0,20}"));
         tfMarca.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -71,7 +71,7 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
                 tfMarca.setText(primerCaracter + resto);
             }
         });
-        configurarTextField(tfModelo, Pattern.compile("[a-zA-Z0-9]{0,25}"));
+        configurarTextField(tfModelo, Pattern.compile("[a-zA-Z0-9\\s]{0,20}"));
         tfModelo.textProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue != null && !newValue.isEmpty()) {
                 String primerCaracter = newValue.substring(0, 1).toUpperCase();
@@ -107,15 +107,15 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
 
             Integer idTipoUnidad = ((cbTipoUnidad.getSelectionModel().getSelectedItem() != null) ? cbTipoUnidad.getSelectionModel().getSelectedItem().getIdTipoUnidad() : null);
 
-            unidad.setMarca(tfMarca.getText().toUpperCase());
-            unidad.setModelo(tfModelo.getText().toUpperCase());
+            unidad.setMarca(tfMarca.getText());
+            unidad.setModelo(tfModelo.getText());
             unidad.setAnio(Integer.parseInt(tfAnio.getText()));
             unidad.setVin(tfVin.getText().toUpperCase());
             unidad.setNoIdentificacion(noIdentificacion.toUpperCase());
             unidad.setIdTipoUnidad(idTipoUnidad);
             unidad.setNumeroInterno(unidad.getAnio() + unidad.getVin().substring(0, 4));
             unidad.setEstatus("Activa");
-            
+
             if (btnGuardar.getText().equals("Editar")) {
                 editarDatosUnidad();
             } else {
@@ -153,25 +153,43 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
         labelErrorTipoUnidad.setText("");
 
         // Validar marca
-        if (tfMarca.getText() == null || tfMarca.getText().trim().isEmpty()
-                || tfMarca.getText().length() > 50) {
-            labelErrorMarca.setText("Marca inválida");
+        if (tfMarca.getText() == null || tfMarca.getText().trim().isEmpty()) {
+            labelErrorMarca.setText("Campo de marca vacío.");
+            valid = false;
+        } else if (tfMarca.getText().length() > 20) {
+            labelErrorMarca.setText("Nombre de marca demsiado largo");
+            valid = false;
+        } else if (tfMarca.getText().length() < 1) {
+            labelErrorMarca.setText("Nombre de marca demasiado corto.");
             valid = false;
         }
 
         // Validar modelo
-        if (tfModelo.getText() == null || tfModelo.getText().trim().isEmpty()
-                || tfModelo.getText().length() > 50) {
-            labelErrorModelo.setText("Modelo inválido");
+        if (tfModelo.getText() == null || tfModelo.getText().trim().isEmpty()) {
+            labelErrorModelo.setText("Campo de modelo vacío.");
+            valid = false;
+        } else if (tfModelo.getText().length() > 20) {
+            labelErrorModelo.setText("Nombre de modelo demasiado largo.");
+            valid = false;
+        } else if (tfModelo.getText().length() < 1) {
+            labelErrorModelo.setText("Nombre de modelo demasiado corto.");
             valid = false;
         }
 
         // Validar año
         try {
             int anio = Integer.parseInt(tfAnio.getText());
-            if (tfAnio.getText() == null || tfAnio.getText().trim().isEmpty()
-                    || tfAnio.getText().length() != 4 || anio < 1980 || anio > anioActual) {
-                labelErrorAnio.setText("Año inválido");
+            if (tfAnio.getText() == null || tfAnio.getText().trim().isEmpty()) {
+                labelErrorAnio.setText("Campo vacío de año");
+                valid = false;
+            } else if (tfAnio.getText().length() != 4) {
+                labelErrorAnio.setText("Año no valido. Muy corto.");
+                valid = false;
+            } else if (anio < 1980) {
+                labelErrorAnio.setText("Año demasiado antiguo. Mayor a 1980 por favor.");
+                valid = false;
+            } else if (anio > anioActual + 1) {
+                labelErrorAnio.setText("Año superior al siguiente.");
                 valid = false;
             }
         } catch (NumberFormatException e) {
@@ -180,9 +198,11 @@ public class FXMLFormularioUnidadController implements Initializable, Controlado
         }
 
         // Validar VIN
-        if (tfVin.getText() == null || tfVin.getText().trim().isEmpty()
-                || tfVin.getText().length() > 17) {
-            labelErrorVin.setText("VIN inválido");
+        if (tfVin.getText() == null || tfVin.getText().trim().isEmpty()) {
+            labelErrorVin.setText("Campo VIN vacío.");
+            valid = false;
+        } else if(tfVin.getText().length() > 17 || tfVin.getText().length() < 17) {
+            labelErrorVin.setText("Tamaño de VIN incorrecto");
             valid = false;
         }
 

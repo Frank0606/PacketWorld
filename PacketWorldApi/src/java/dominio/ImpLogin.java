@@ -16,7 +16,6 @@ public class ImpLogin {
 
         if (conexionBD != null) {
             try {
-                // Los nombres del MAP deben coincidir EXACTAMENTE con el mapper
                 Map<String, Object> parametros = new LinkedHashMap<>();
                 parametros.put("numeroPersonal", numeroPersonal);
                 parametros.put("contrasena", contrasena);

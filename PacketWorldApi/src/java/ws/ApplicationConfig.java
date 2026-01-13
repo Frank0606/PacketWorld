@@ -22,6 +22,8 @@ public class ApplicationConfig extends Application {
         resources.add(ws.WSEnvio.class);
         resources.add(ws.WSEnvioConductor.class);
         resources.add(ws.WSEnvioHistorial.class);
+        resources.add(ws.WSEstado.class);
+        resources.add(ws.WSEstadosEnvio.class);
         resources.add(ws.WSLogin.class);
         resources.add(ws.WSPaquete.class);
         resources.add(ws.WSRol.class);

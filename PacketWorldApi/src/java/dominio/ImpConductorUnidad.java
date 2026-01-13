@@ -41,7 +41,7 @@ public class ImpConductorUnidad {
                 int insert = con.insert("ConductorUnidadMapper.registrarAsignacion", nueva);
 
                 con.update("ConductorUnidadMapper.actualizarUnidadConductor", nueva);
-
+                con.update("ConductorUnidadMapper.actualizarConductor", nueva);
                 con.commit();
 
                 msj.setError(insert <= 0);

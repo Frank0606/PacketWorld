@@ -29,7 +29,11 @@
         SET numeroPersonal = #{numeroPersonal}
         WHERE idUnidad = #{idUnidad};
     </update>
-
+    <update id="actualizarConductor" parameterType="pojo.ConductorUnidad">
+        UPDATE Colaborador
+        SET idUnidad = #{idUnidad}
+        WHERE numeroPersonal = #{numeroPersonal};
+    </update>
 
     <!-- Eliminar asignación (liberar unidad) -->
     <delete id="eliminarAsignacion" parameterType="int">

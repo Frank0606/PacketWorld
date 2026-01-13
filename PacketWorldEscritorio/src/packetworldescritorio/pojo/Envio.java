@@ -4,51 +4,52 @@ public class Envio {
 
     private int idEnvio;
     private int idCliente;
-    private int idColaborador;
+    private Integer idColaborador;
     private String nombreDestinatario;
-    private String apellidoPaternoDest;
-    private String apellidoMaternoDest;
     private int idSucursalOrigen;
     private String calleDestino;
     private String numeroDestino;
     private String coloniaDestino;
     private String cpDestino;
     private String ciudadDestino;
-    private String estadoDestino;
+    private Integer idEstadosEnvio;
+    private Integer idEstadoDestino;
     private String numeroGuia;
     private float distanciaKm;
     private float costoKm;
     private float costoPaquetes;
     private float costoTotal;
-    private String estatus;
     private String fechaCreacion;
 
     public Envio() {
     }
 
-    public Envio(int idEnvio, int idCliente, int idColaborador, String nombreDestinatario, String apellidoPaternoDest, String apellidoMaternoDest, int idSucursalOrigen, String calleDestino, String numeroDestino, String coloniaDestino, String cpDestino, String ciudadDestino, String estadoDestino, String numeroGuia, float distanciaKm, float costoKm, float costoPaquetes, float costoTotal, String estatus, String fechaCreacion) {
+    public Envio(int idEnvio, int idCliente, Integer idColaborador, String nombreDestinatario,
+            int idSucursalOrigen,
+            String calleDestino, String numeroDestino, String coloniaDestino, String cpDestino,
+            String ciudadDestino, Integer idEstadosEnvio, Integer idEstadoDestino,
+            String numeroGuia, float distanciaKm, float costoKm, float costoPaquetes,
+            float costoTotal, String fechaCreacion) {
         this.idEnvio = idEnvio;
         this.idCliente = idCliente;
         this.idColaborador = idColaborador;
         this.nombreDestinatario = nombreDestinatario;
-        this.apellidoPaternoDest = apellidoPaternoDest;
-        this.apellidoMaternoDest = apellidoMaternoDest;
         this.idSucursalOrigen = idSucursalOrigen;
         this.calleDestino = calleDestino;
         this.numeroDestino = numeroDestino;
         this.coloniaDestino = coloniaDestino;
         this.cpDestino = cpDestino;
         this.ciudadDestino = ciudadDestino;
-        this.estadoDestino = estadoDestino;
+        this.idEstadosEnvio = idEstadosEnvio;
+        this.idEstadoDestino = idEstadoDestino;
         this.numeroGuia = numeroGuia;
         this.distanciaKm = distanciaKm;
         this.costoKm = costoKm;
         this.costoPaquetes = costoPaquetes;
         this.costoTotal = costoTotal;
-        this.estatus = estatus;
         this.fechaCreacion = fechaCreacion;
     }
-    
+
     public int getIdEnvio() {
         return idEnvio;
     }
@@ -79,22 +80,6 @@ public class Envio {
 
     public void setNombreDestinatario(String nombreDestinatario) {
         this.nombreDestinatario = nombreDestinatario;
-    }
-
-    public String getApellidoPaternoDest() {
-        return apellidoPaternoDest;
-    }
-
-    public void setApellidoPaternoDest(String apellidoPaternoDest) {
-        this.apellidoPaternoDest = apellidoPaternoDest;
-    }
-
-    public String getApellidoMaternoDest() {
-        return apellidoMaternoDest;
-    }
-
-    public void setApellidoMaternoDest(String apellidoMaternoDest) {
-        this.apellidoMaternoDest = apellidoMaternoDest;
     }
 
     public int getIdSucursalOrigen() {
@@ -145,14 +130,6 @@ public class Envio {
         this.ciudadDestino = ciudadDestino;
     }
 
-    public String getEstadoDestino() {
-        return estadoDestino;
-    }
-
-    public void setEstadoDestino(String estadoDestino) {
-        this.estadoDestino = estadoDestino;
-    }
-
     public String getNumeroGuia() {
         return numeroGuia;
     }
@@ -193,14 +170,6 @@ public class Envio {
         this.costoTotal = costoTotal;
     }
 
-    public String getEstatus() {
-        return estatus;
-    }
-
-    public void setEstatus(String estatus) {
-        this.estatus = estatus;
-    }
-
     public String getFechaCreacion() {
         return fechaCreacion;
     }
@@ -209,10 +178,24 @@ public class Envio {
         this.fechaCreacion = fechaCreacion;
     }
 
+    public int getIdEstadosEnvio() {
+        return idEstadosEnvio;
+    }
+
+    public void setIdEstadosEnvio(int idEstadosEnvio) {
+        this.idEstadosEnvio = idEstadosEnvio;
+    }
+
+    public Integer getIdEstadoDestino() {
+        return idEstadoDestino;
+    }
+
+    public void setIdEstadoDestino(Integer idEstadoDestino) {
+        this.idEstadoDestino = idEstadoDestino;
+    }
+
     @Override
     public String toString() {
         return numeroGuia;
     }
-    
-    
 }

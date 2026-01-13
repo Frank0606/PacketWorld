@@ -61,7 +61,6 @@ public class FXMLFormularioBajaUnidadController implements Initializable, Contro
             BajaUnidad baja = new BajaUnidad();
             baja.setIdUnidad(unidad.getIdUnidad());
             baja.setMotivo(tfDescripcion.getText());
-            baja.setFechaBaja(LocalDate.now().toString());
             registrarBaja(baja);
         }
     }
@@ -71,14 +70,6 @@ public class FXMLFormularioBajaUnidadController implements Initializable, Contro
         if (!msj.isError()) {
             Alertas.mostrarAlertaSimple("Registro exitoso.", "La baja de unidad fue registrada correctamente",
                     Alert.AlertType.INFORMATION);
-            
-            msj = UnidadesDAO.eliminarUnidad(unidad.getVin());
-
-            if (!msj.isError()) {
-                Alertas.mostrarAlertaSimple("Unidad eliminado", "El unidad ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
-            } else {
-                Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar la unidad, intente nuevamente. ", Alert.AlertType.WARNING);
-            }
             cerrarVentana();
         } else {
             Alertas.mostrarAlertaSimple("Error al guardar", msj.getMensaje(), Alert.AlertType.ERROR);

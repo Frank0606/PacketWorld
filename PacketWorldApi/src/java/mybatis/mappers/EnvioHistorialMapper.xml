@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="EnvioHistorialMapper">
 
-    <select id="obtenerPorEnvio" parameterType="int" resultType="pojo.EnvioHistorial">
-        SELECT idHistorial, idEnvio, estatus, comentario, fechaCambio, idColaborador
+    <!-- Obtener historial por envío -->
+    <select id="obtenerPorEnvio"
+            parameterType="int"
+            resultType="pojo.EnvioHistorial">
+        SELECT
+        idHistorial,
+        idEnvio,
+        idEstadosEnvio,
+        comentario,
+        fechaCambio,
+        idColaborador
         FROM EnvioHistorial
         WHERE idEnvio = #{idEnvio}
         ORDER BY fechaCambio ASC;
     </select>
 
-    <insert id="registrar" parameterType="pojo.EnvioHistorial">
-        INSERT INTO EnvioHistorial(idEnvio, estatus, comentario, idColaborador)
-        VALUES (#{idEnvio}, #{estatus}, #{comentario}, #{idColaborador});
+    <!-- Registrar nuevo cambio de estado -->
+    <insert id="registrar"
+            parameterType="pojo.EnvioHistorial">
+        INSERT INTO EnvioHistorial (
+        idEnvio,
+        idEstadosEnvio,
+        comentario,
+        idColaborador,
+        fechaCambio
+        )
+        VALUES (
+        #{idEnvio},
+        #{idEstadosEnvio},
+        #{comentario},
+        #{idColaborador},
+        #{fechaCambio}
+        );
     </insert>
-    
-    <update id="actualizarEstatusEnvio" parameterType="pojo.Envio">
-        UPDATE Envio
-        SET 
-        estatus = #{estatus}
-        WHERE idEnvio = #{idEnvio};
-    </update>
 
 </mapper>

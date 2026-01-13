@@ -77,30 +77,15 @@ public class FXMLColaboradoresController implements Initializable {
         boolean confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
                 "¿Está seguro de que desea eliminar este colaborador?");
         if (confirmado) {
-            confirmado = mostrarAlertaConfirmacion("Confirmar eliminación",
-                    "¿Realmente está seguro de que desea eliminar este colaborador?");
-            if (confirmado) {
-                if (colaborador.getIdRol() == 3) {
-                    if (colaborador.getIdUnidad() == null || colaborador.getIdUnidad() == 0) {
-                        for (Envio envio : envios) {
-                            if (envio.getIdColaborador() == colaborador.getIdColaborador()) {
-                                Alertas.mostrarAlertaSimple("Error al eliminar", "No se puede eliminar a un conductor que "
-                                        + "tenga envíos asignados. Elimine los envíos primero.", Alert.AlertType.ERROR);
-                                return;
-                            }
+            if (colaborador.getIdRol() == 3) {
+                if (colaborador.getIdUnidad() == null || colaborador.getIdUnidad() == 0) {
+                    for (Envio envio : envios) {
+                        if (envio.getIdColaborador() == colaborador.getIdColaborador()) {
+                            Alertas.mostrarAlertaSimple("Error al eliminar", "No se puede eliminar a un conductor que "
+                                    + "tenga envíos asignados. Elimine los envíos primero.", Alert.AlertType.ERROR);
+                            return;
                         }
-                        Mensaje msj = ColaboradoresDAO.eliminarColaborador(colaborador.getNumeroPersonal());
-                        if (!msj.isError()) {
-                            Alertas.mostrarAlertaSimple("Colaborador eliminado", "El colaborador ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
-                            cargarInformacion();
-                        } else {
-                            Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el colaborador, intente nuevamente.", Alert.AlertType.WARNING);
-                        }
-                    } else {
-                        Alertas.mostrarAlertaSimple("Error al eliminar", "No se puede eliminar a un conductor que "
-                                + "tenga una unidad asignada. Libere la unidad primero.", Alert.AlertType.ERROR);
                     }
-                } else {
                     Mensaje msj = ColaboradoresDAO.eliminarColaborador(colaborador.getNumeroPersonal());
                     if (!msj.isError()) {
                         Alertas.mostrarAlertaSimple("Colaborador eliminado", "El colaborador ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
@@ -108,7 +93,19 @@ public class FXMLColaboradoresController implements Initializable {
                     } else {
                         Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el colaborador, intente nuevamente.", Alert.AlertType.WARNING);
                     }
+                } else {
+                    Alertas.mostrarAlertaSimple("Error al eliminar", "No se puede eliminar a un conductor que "
+                            + "tenga una unidad asignada. Libere la unidad primero.", Alert.AlertType.ERROR);
                 }
+            } else {
+                Mensaje msj = ColaboradoresDAO.eliminarColaborador(colaborador.getNumeroPersonal());
+                if (!msj.isError()) {
+                    Alertas.mostrarAlertaSimple("Colaborador eliminado", "El colaborador ha sido eliminado correctamente.", Alert.AlertType.INFORMATION);
+                    cargarInformacion();
+                } else {
+                    Alertas.mostrarAlertaSimple("Error al eliminar.", "No se pudo eliminar el colaborador, intente nuevamente.", Alert.AlertType.WARNING);
+                }
+
             }
         }
     }
@@ -177,14 +174,12 @@ public class FXMLColaboradoresController implements Initializable {
 
             for (Colaborador colaborador : colaboradores) {
                 String noPersonal = colaborador.getNumeroPersonal().toUpperCase();
-                String nombre = colaborador.getNombre().toUpperCase();
+                String nombre = colaborador.getNombre().toUpperCase() + " " + colaborador.getApellidoPaterno().toUpperCase() + " " + colaborador.getApellidoMaterno().toUpperCase();
                 String rol = colaborador.getNombreRol().toUpperCase();
-                String nombreSucursal = colaborador.getNombreSucursal().toUpperCase();
 
                 if (noPersonal.contains(barraBusquedaTexto)
                         || nombre.contains(barraBusquedaTexto)
-                        || rol.contains(barraBusquedaTexto)
-                        || nombreSucursal.contains(barraBusquedaTexto)) {
+                        || rol.contains(barraBusquedaTexto)) {
                     resultadosBusqueda.add(colaborador);
                 }
             }

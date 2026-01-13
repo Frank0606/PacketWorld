@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -53,6 +54,8 @@ public class FXMLUnidadesController implements Initializable {
     private TableColumn<Unidad, String> colDescripcion;
     @FXML
     private TableColumn colEstatus;
+    @FXML
+    private Label lblHeaderColaborador;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,37 +68,16 @@ public class FXMLUnidadesController implements Initializable {
         if (!barraBusqueda.getText().trim().isEmpty()) {
             ObservableList<Unidad> resultadosBusqueda = FXCollections.observableArrayList();
             String textoBusqueda = barraBusqueda.getText().trim().toUpperCase();
+
             for (Unidad unidad : unidades) {
-                String vin = unidad.getVin().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
+                String vin = unidad.getVin().toUpperCase();
+                String marca = unidad.getMarca().toUpperCase();
+                String noIdentificacion = unidad.getNoIdentificacion().toUpperCase();
 
-                String marca = unidad.getMarca().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
-
-                String noIdentificacion = unidad.getNoIdentificacion().chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
-
-                String textoBusquedaUpperCase = textoBusqueda.chars()
-                        .mapToObj(c -> Character.isLetter(c) ? Character.toUpperCase((char) c) : (char) c)
-                        .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                        .toString();
-
-                if (vin.startsWith(textoBusquedaUpperCase)) {
+                if (vin.contains(textoBusqueda)
+                        || marca.contains(textoBusqueda)
+                        || noIdentificacion.contains(textoBusqueda)) {
                     resultadosBusqueda.add(unidad);
-                } else {
-                    if (marca.startsWith(textoBusquedaUpperCase)) {
-                        resultadosBusqueda.add(unidad);
-                    } else {
-                        if (noIdentificacion.startsWith(textoBusquedaUpperCase)) {
-                            resultadosBusqueda.add(unidad);
-                        }
-                    }
                 }
             }
             if (!resultadosBusqueda.isEmpty()) {
@@ -120,6 +102,14 @@ public class FXMLUnidadesController implements Initializable {
     private void btnEditar(ActionEvent event) {
         Unidad unidad = tablaUnidades.getSelectionModel().getSelectedItem();
         if (unidad != null) {
+            if ("Baja".equalsIgnoreCase(unidad.getEstatus())) {
+                Alertas.mostrarAlertaSimple(
+                        "Unidad en baja",
+                        "No puedes editar una unidad que ya está dada de baja.",
+                        Alert.AlertType.WARNING
+                );
+                return;
+            }
             Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioUnidad.fxml",
                     (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), unidad,
                     new FXMLFormularioUnidadController());
@@ -150,7 +140,7 @@ public class FXMLUnidadesController implements Initializable {
                 );
                 return;
             }
-            
+
             eliminarUnidad(unidad.getVin());
         } else {
             Alertas.mostrarAlertaSimple(
@@ -165,9 +155,13 @@ public class FXMLUnidadesController implements Initializable {
     private void btnAsignar(ActionEvent event) {
         Unidad unidad = tablaUnidades.getSelectionModel().getSelectedItem();
         if (unidad != null) {
-            Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioAsignarUnidad.fxml",
-                    (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), unidad,
-                    new FXMLFormularioAsignarUnidadController());
+            if (unidad.getEstatus().equals("Baja")) {
+                Alertas.mostrarAlertaSimple("Atencion", "Esta unidad esta dada de baja. No puede asignarse a un conductor.", Alert.AlertType.WARNING);
+            } else {
+                Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioAsignarUnidad.fxml",
+                        (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), unidad,
+                        new FXMLFormularioAsignarUnidadController());
+            }
         } else {
             Funciones.cargarVistaConDatos("/packetworldescritorio/FXMLFormularioAsignarUnidad.fxml",
                     (AnchorPane) barraBusqueda.getScene().lookup("#contenedorPrincipal"), null,

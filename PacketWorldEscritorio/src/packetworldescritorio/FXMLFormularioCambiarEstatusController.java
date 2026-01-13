@@ -27,12 +27,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import packetworldescritorio.modelo.dao.EnvioHistorialDAO;
+import packetworldescritorio.modelo.dao.EstadosEnvioDAO;
 import packetworldescritorio.pojo.EnvioHistorial;
+import packetworldescritorio.pojo.EstadosEnvio;
 
 public class FXMLFormularioCambiarEstatusController implements Initializable, ControladorPrincipal<Envio> {
 
     @FXML
-    private ComboBox<String> cbEstadoNuevo;
+    private ComboBox<EstadosEnvio> cbEstadoNuevo;
     @FXML
     private Button btnAsignar;
     @FXML
@@ -42,13 +44,15 @@ public class FXMLFormularioCambiarEstatusController implements Initializable, Co
     @FXML
     private Label labelEstadoActual;
 
-    private List<String> estados;
+    private List<EstadosEnvio> estados;
     private Envio envio;
 
     @FXML
     private Label labelErrorEstadoNuevo;
     @FXML
     private TextArea taComentario;
+    @FXML
+    private Label labelErrorComentario;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -76,53 +80,46 @@ public class FXMLFormularioCambiarEstatusController implements Initializable, Co
     }
 
     private void cargarInformacion() {
-        labelEstadoActual.setText(this.envio.getEstatus());
+        labelEstadoActual.setText(EstadosEnvioDAO.obtenerPorId(envio.getIdEstadosEnvio()).getEstadoEnvio());
         tfEnvio.setText(this.envio.getNumeroGuia());
     }
 
     private void cargarEstados() {
-        int cont = 0, posicion = 0;
-        estados = new ArrayList();
-        estados.add("En tránsito");
-        estados.add("Entregado");
-        estados.add("Cancelado");
-        ObservableList<String> estadoTemp = FXCollections.observableArrayList(estados);
-        cbEstadoNuevo.setItems(estadoTemp);
-        List<Envio> envios = EnviosDAO.obtenerEnvios();
-        for (Envio env : envios) {
-            for (String estado : estados) {
-                cont++;
-                if (env.getEstatus().equals(estado)) {
-                    posicion = cont;
-                }
+        estados = EstadosEnvioDAO.obtenerTodos();
+
+        List<EstadosEnvio> estadosFiltrados = new ArrayList<>();
+        for (EstadosEnvio estado : estados) {
+            String nombre = estado.getEstadoEnvio().toLowerCase();
+            if (!nombre.equals("procesado") && !nombre.equals("recibido en sucursal")) {
+                estadosFiltrados.add(estado);
             }
-            cont = 0;
         }
-        cbEstadoNuevo.getSelectionModel().select(posicion - 1);
+
+        ObservableList<EstadosEnvio> estadoTemp = FXCollections.observableArrayList(estadosFiltrados);
+        cbEstadoNuevo.setItems(estadoTemp);
     }
 
     @FXML
     private void btnCambiar(ActionEvent event) {
         if (validarCampos()) {
             LocalDateTime ahora = LocalDateTime.now();
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm");
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
             String fecha = ahora.format(formato);
 
             EnvioHistorial envio = new EnvioHistorial();
 
-            envio.setEstatus(cbEstadoNuevo.getSelectionModel().getSelectedItem());
+            envio.setIdEstadosEnvio(cbEstadoNuevo.getSelectionModel().getSelectedItem().getIdEstadosEnvio());
             envio.setIdColaborador(this.envio.getIdColaborador());
             envio.setFechaCambio(fecha);
             envio.setIdEnvio(this.envio.getIdEnvio());
             envio.setComentario(taComentario.getText());
-            System.out.println(envio.toString());
 
             Mensaje msj = EnvioHistorialDAO.registrar(envio);
 
             if (!msj.isError()) {
                 Alertas.mostrarAlertaSimple("Actualizacion de estatus exitoso", "Se cambio el estatus del envio a "
-                        + cbEstadoNuevo.getSelectionModel().getSelectedItem().toLowerCase() + " exitosamente.", Alert.AlertType.INFORMATION);
+                        + cbEstadoNuevo.getSelectionModel().getSelectedItem().getEstadoEnvio().toLowerCase() + " exitosamente.", Alert.AlertType.INFORMATION);
                 cerrarVentana();
             } else {
                 Alertas.mostrarAlertaSimple("Problema en la actualizacion",
@@ -137,13 +134,19 @@ public class FXMLFormularioCambiarEstatusController implements Initializable, Co
     private boolean validarCampos() {
         boolean valid = true;
         labelErrorEstadoNuevo.setText("");
-
-        if (cbEstadoNuevo.getSelectionModel().getSelectedItem().isEmpty()
-                || cbEstadoNuevo.getSelectionModel().getSelectedItem() == null) {
+        labelErrorComentario.setText("");
+        EstadosEnvio estadoSeleccionado = cbEstadoNuevo.getSelectionModel().getSelectedItem();
+        if (estadoSeleccionado == null) {
             valid = false;
             labelErrorEstadoNuevo.setText("Selecciona un estado.");
+        } else {
+            String nombreEstado = estadoSeleccionado.getEstadoEnvio().toLowerCase();
+            if ((nombreEstado.equals("detenido") || nombreEstado.equals("cancelado"))
+                    && (taComentario.getText() == null || taComentario.getText().trim().isEmpty())) {
+                valid = false;
+                labelErrorComentario.setText("El comentario es obligatorio para estados detenidos o cancelados.");
+            }
         }
-
         return valid;
     }
 

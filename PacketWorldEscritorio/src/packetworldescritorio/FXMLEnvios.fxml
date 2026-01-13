@@ -27,37 +27,37 @@
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy></TableView>
-      <Button fx:id="btnBuscar" layoutX="20.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Buscar" textFill="WHITE">
+      <Button fx:id="btnBuscar" layoutX="618.0" layoutY="40.0" mnemonicParsing="false" onAction="#btnBuscar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Buscar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnAgregar" layoutX="581.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnAgregar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Agregar" textFill="WHITE">
+      <Button fx:id="btnAgregar" layoutX="400.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnAgregar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Agregar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnEditar" layoutX="688.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Editar" textFill="WHITE">
+      <Button fx:id="btnEditar" layoutX="510.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnEditar" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Editar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnEliminar" layoutX="786.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Eliminar" textFill="WHITE">
+      <Button fx:id="btnEliminar" layoutX="613.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnEliminar" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Eliminar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <TextField fx:id="barraBusqueda" layoutX="120.0" layoutY="80.0" prefHeight="40.0" prefWidth="224.0" promptText="Buscar envio por Numero de guia." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
+      <TextField fx:id="barraBusqueda" layoutX="300.0" layoutY="40.0" prefHeight="40.0" prefWidth="300.0" promptText="Buscar envio por Numero de guia." style="-fx-border-radius: 60; -fx-background-radius: 60; -fx-background-color: #E6E0E9; -fx-border-color: #BC9E82;">
          <font>
             <Font name="Candara" size="18.0" />
          </font>
       </TextField>
-      <Button fx:id="btnEstatus" layoutX="475.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnEstatus" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Estatus" textFill="WHITE">
+      <Button fx:id="btnEstatus" layoutX="288.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnEstatus" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Estatus" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnConfirmar" layoutX="357.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnCompletarCostos" prefHeight="40.0" prefWidth="107.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Confirmar" textFill="WHITE">
+      <Button fx:id="btnConfirmar" layoutX="171.0" layoutY="100.0" mnemonicParsing="false" onAction="#btnCompletarCostos" prefHeight="40.0" prefWidth="107.0" style="-fx-background-color: #BC9E82; -fx-border-radius: 60; -fx-background-radius: 60;" text="Confirmar" textFill="WHITE">
          <font>
             <Font name="Candara Bold" size="18.0" />
          </font>
